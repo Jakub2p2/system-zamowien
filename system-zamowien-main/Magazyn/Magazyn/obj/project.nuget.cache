@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Mvofw5kQfaFf8QWiq2d3RrRQpLnchv1JMw8G2hGPl/CvZDbyBz8S2KEhnK8NWTtkh1KKkmmfJMGxJhu5I9e9SA==",
+  "dgSpecHash": "UIeTMBpniAIcpLfj2LpXaLQR/QHhwmLwfEIW6aK0QilIo8rC3kl28tahFwbm8s/iSKgX4EtAYpVWkwZp0DaQNw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\USER\\source\\repos\\system-zamowien-main\\Magazyn\\Magazyn\\Magazyn.csproj",
+  "projectFilePath": "C:\\Users\\aleks\\OneDrive\\Pulpit\\system-zamowien-main\\Magazyn\\Magazyn\\Magazyn.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\USER\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
-    "C:\\Users\\USER\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
-    "C:\\Users\\USER\\.nuget\\packages\\npgsql\\8.0.5\\npgsql.8.0.5.nupkg.sha512"
+    "C:\\Users\\aleks\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\aleks\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\aleks\\.nuget\\packages\\npgsql\\8.0.5\\npgsql.8.0.5.nupkg.sha512"
   ],
   "logs": []
 }

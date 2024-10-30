@@ -55,7 +55,7 @@ namespace Magazyn
         public bool check_Empty() // sprawdzianie czy pola sa puste (nie dziala ze spacja)
         {
             if (textBox1.TextLength == 0 || textBox2.TextLength == 0 || textBox3.TextLength == 0 || textBox4.TextLength == 0 || role_select.Text == null || password_text.TextLength == 0 || confirm_pass_text.TextLength == 0)
-            return true;
+                return true;
             else return false;
         }
         private void save_button_Click(object sender, EventArgs e)
@@ -82,7 +82,7 @@ namespace Magazyn
                     cmd.Parameters.AddWithValue("username", login);
                     cmd.Parameters.AddWithValue("password", password);
                     cmd.Parameters.AddWithValue("ranga", role);
-                    cmd.ExecuteNonQueryAsync();
+                    cmd.ExecuteNonQuery();
 
                     MessageBox.Show(query);
 
@@ -93,6 +93,11 @@ namespace Magazyn
                     MessageBox.Show("Hasła nie są takie same!");
                 }
             }
+        }
+
+        private void add_user_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
