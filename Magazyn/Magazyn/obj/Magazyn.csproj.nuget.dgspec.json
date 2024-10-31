@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\USER\\source\\repos\\system-zamowien-main\\system-zamowien-main\\system-zamowien-main\\Magazyn\\Magazyn\\Magazyn.csproj": {}
+    "C:\\Users\\aleks\\OneDrive\\Pulpit\\Magazyn\\Magazyn\\Magazyn.csproj": {}
   },
   "projects": {
-    "C:\\Users\\USER\\source\\repos\\system-zamowien-main\\system-zamowien-main\\system-zamowien-main\\Magazyn\\Magazyn\\Magazyn.csproj": {
+    "C:\\Users\\aleks\\OneDrive\\Pulpit\\Magazyn\\Magazyn\\Magazyn.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\USER\\source\\repos\\system-zamowien-main\\system-zamowien-main\\system-zamowien-main\\Magazyn\\Magazyn\\Magazyn.csproj",
+        "projectUniqueName": "C:\\Users\\aleks\\OneDrive\\Pulpit\\Magazyn\\Magazyn\\Magazyn.csproj",
         "projectName": "Magazyn",
-        "projectPath": "C:\\Users\\USER\\source\\repos\\system-zamowien-main\\system-zamowien-main\\system-zamowien-main\\Magazyn\\Magazyn\\Magazyn.csproj",
-        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\USER\\source\\repos\\system-zamowien-main\\system-zamowien-main\\system-zamowien-main\\Magazyn\\Magazyn\\obj\\",
+        "projectPath": "C:\\Users\\aleks\\OneDrive\\Pulpit\\Magazyn\\Magazyn\\Magazyn.csproj",
+        "packagesPath": "C:\\Users\\aleks\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aleks\\OneDrive\\Pulpit\\Magazyn\\Magazyn\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\aleks\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -64,7 +64,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

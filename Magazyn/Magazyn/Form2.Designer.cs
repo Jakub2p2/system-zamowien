@@ -205,6 +205,7 @@
             Controls.Add(label1);
             Name = "add_user";
             Text = "Dodaj użytkownika";
+            Load += add_user_Load_1;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -88,7 +88,7 @@ namespace Magazyn
                             id_rows = Convert.ToInt32(result);
                             id_rows++;
                         }
-                        string query = "INSERT INTO uzytkownicy(id, username, password, ranga) VALUES("+id_rows+",'" + login + "','" + password + "','" + role + "')";
+                        string query = "INSERT INTO uzytkownicy(id, username, password, ranga) VALUES(" + id_rows + ",'" + login + "','" + password + "','" + role + "')";
                         using (NpgsqlCommand command = new NpgsqlCommand(query, connection)) // wysyłanie danych
                         {
                             command.Parameters.AddWithValue("id", id_rows);
@@ -109,6 +109,11 @@ namespace Magazyn
         }
 
         private void add_user_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void add_user_Load_1(object sender, EventArgs e)
         {
 
         }

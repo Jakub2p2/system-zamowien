@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Npgsql;
+
 
 namespace Magazyn
 {
@@ -21,24 +21,9 @@ namespace Magazyn
         }
         public string connect_string = "";
 
-        private void Connect_db() // Polaczenie z baza danych
-        {
-            string strConnDtb = "Server=185.157.80.106; port=5432; user id=postgres; password=123; database=Uzytkownicy; ";
-            NpgsqlConnection vCon;
-            NpgsqlCommand vCmd;
-            try
-            {
-                vCon = new NpgsqlConnection();
-                vCon.ConnectionString = strConnDtb;
-                connect_string = strConnDtb;
-                if (vCon.State == System.Data.ConnectionState.Closed) vCon.Open();
-            }
-            catch
-            { // w razie braku połączenia z bazą
-                MessageBox.Show("Błąd połączenia z bazą danych", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-            }
-        }
+       
+        string con_string = String.Format("server=185.157.80.106;" + "port=5432;" + "user id=postgres;" + "password=123; " + "database=Uzytkownicy;"); //string polaczeniowy z baza
+        private NpgsqlConnection con;
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -49,22 +34,34 @@ namespace Magazyn
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Connect_db();
-            var sql = @"SELECT username, password FROM uzytkownicy";
-            //using var dataSource = NpgsqlDataSource.Create(connect_string);
-            //using var cmd = dataSource.CreateCommand(sql);
-            //using var reader = cmd.ExecuteReader(); // czytnik danych
-            string password = passtxt.Text;
-            string user = usertxt.Text;
-            if (user == "admin" && password == "password") // imitacja logowania
+            
+            try
             {
-                var main_form = new Form1();
-                main_form.Show();
-                this.Hide();
+                con.Open();
+                var sql = @"SELECT * FROM usr_login(:_username,:_password)";
+                using var cmd = new NpgsqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("_username", usertxt.Text);
+                cmd.Parameters.AddWithValue("_password", passtxt.Text);
+
+                int res = (int)cmd.ExecuteScalar();
+
+                con.Close();
+                if (res == 1) //kwerenda zakonczona sukcesem
+                {
+                   this.Hide();
+                    var main_form = new Form1();
+                    main_form.Show();
+                }
+                else if (res == 0) //blad
+                {
+                    MessageBox.Show("Prosze sprawdz dane", "Błąd logowania", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    return;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Błędny login lub hasło!");
+                MessageBox.Show("Błąd: " + ex.Message, "Coś poszło nie tak", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                con.Close();
             }
         }
 
@@ -75,6 +72,7 @@ namespace Magazyn
 
         private void Form_Login_Load(object sender, EventArgs e)
         {
+            con = new NpgsqlConnection(con_string);
             //usertxt.Text = string.Empty;
             //passtxt.Text = string.Empty;
         }
