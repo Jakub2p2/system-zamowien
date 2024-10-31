@@ -1,0 +1,144 @@
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('img/tlo.jpg');
+    background-size: cover;
+}
+
+.rotating-image {
+    width: 300px;
+    height: 300px; 
+    background-image: url('img/kolo.png');
+    background-size: cover;
+    animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.button-bar {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(10px); 
+    padding: 10px;
+    text-align: center;
+    z-index: 1000; 
+    display: flex; 
+    justify-content: flex-end; 
+}
+
+.button-bar button, 
+#loginForm form button, 
+.form-button {
+    background-color: #333; 
+    border: none; 
+    color: white; 
+    padding: 10px 20px; 
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block; 
+    font-size: 16px; 
+    margin: 4px 2px; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    transition: background-color 0.3s, transform 0.3s; 
+}
+
+.button-bar button:hover, 
+#loginForm form button:hover, 
+.form-button:hover {
+    background-color: #555; 
+    transform: scale(1.05); 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
+}
+
+.form-container {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px; 
+    height: auto; 
+    width: auto;
+    background-color: rgba(0, 0, 0, 0.7); 
+    border: 1px solid #000; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+}
+
+#loginForm, #registerForm {
+    padding: 20px; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    color: white; 
+}
+
+#loginForm form, 
+#registerForm form {
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+}
+
+#loginForm h2, 
+#registerForm h2 {
+    font-size: 24px; 
+    text-align: center; 
+    margin-bottom: 20px; 
+}
+
+#loginForm form input, 
+.form-input {
+    padding: 15px; 
+    font-size: 18px; 
+    width: 90%; 
+    border-radius: 5px; 
+    border: 1px solid #555; 
+    background-color: rgba(255, 255, 255, 0.1); 
+    color: white; 
+    margin-bottom: 10px; 
+}
+
+#registerForm form select {
+    width: 102%;
+    background-color: rgba(255, 255, 255, 0.1); 
+    color: white; 
+    padding: 15px; 
+    border-radius: 5px; 
+    border: 1px solid #555; 
+    appearance: none; 
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+}
+
+#registerForm form select option {
+    background-color: rgba(0, 0, 0, 0.7); 
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 5px;
+    position: relative; 
+    top: 10px;
+    width: 100%; 
+    text-align: center; 
+}
