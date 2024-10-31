@@ -10,11 +10,14 @@ namespace Magazyn{
         string table = "";
         private void Connect_db() // Polaczenie z baza danych
         {
-            try{
+            try
+            {
                 vCon = new NpgsqlConnection();
                 vCon.ConnectionString = strConnDtb;
                 if (vCon.State == System.Data.ConnectionState.Closed) vCon.Open();
-            }catch{
+            }
+            catch
+            { // w razie braku po³¹czenia z baz¹
                 MessageBox.Show("B³¹d po³¹czenia z baz¹ danych", "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
@@ -30,16 +33,20 @@ namespace Magazyn{
             dt.Load(dr);
             return dt;
         }
-        public Form1(){
+        public Form1()
+        {
             InitializeComponent();
         }
         public void show_table() // funkcja pokazujaca tabelê
         {
-            try{
+            try
+            {
                 DataTable dtgetdata = new DataTable();
                 dtgetdata = getData("SELECT * FROM " + table + ";");
                 tabela.DataSource = dtgetdata;
-            }catch{
+            }
+            catch
+            {
                 MessageBox.Show("B³ad po³¹czenia z tabel¹", "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             Cursor.Current = Cursor.Current;
@@ -47,8 +54,10 @@ namespace Magazyn{
         private void Form1_Load(object sender, EventArgs e) // przy za³adowaniu aplikacji
         {
             Connect_db();
-            //show_table();
+            // var login = new Form_Login();
+            // login.ShowDialog();
         }
+        /// ZDARZENIA PRZYCISKÓW
         private void button_users_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -78,6 +87,18 @@ namespace Magazyn{
             Cursor.Current = Cursors.WaitCursor;
             table = "paczki";
             show_table();
+        }
+
+        private void addusr_btn_Click(object sender, EventArgs e) // otwiera formularz z tworzeniem nowego uzytkownika
+        {
+            var add_usr_form = new add_user();
+            add_usr_form.Show();
+        }
+
+        private void addelivery_btn_Click(object sender, EventArgs e)
+        {
+            var addelivery_form = new delivery_form();
+            addelivery_form.Show();
         }
     }
 }

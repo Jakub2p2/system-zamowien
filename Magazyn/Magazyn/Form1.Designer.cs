@@ -34,6 +34,8 @@
             button_products = new Button();
             button_delivery = new Button();
             button_package = new Button();
+            addusr_btn = new Button();
+            addelivery_btn = new Button();
             ((System.ComponentModel.ISupportInitialize)tabela).BeginInit();
             SuspendLayout();
             // 
@@ -50,7 +52,7 @@
             // tabela
             // 
             tabela.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            tabela.Location = new Point(41, 101);
+            tabela.Location = new Point(41, 201);
             tabela.Name = "tabela";
             tabela.Size = new Size(743, 274);
             tabela.TabIndex = 1;
@@ -95,11 +97,34 @@
             button_package.UseVisualStyleBackColor = true;
             button_package.Click += button_package_Click;
             // 
+            // addusr_btn
+            // 
+            addusr_btn.Location = new Point(41, 163);
+            addusr_btn.Name = "addusr_btn";
+            addusr_btn.Size = new Size(131, 23);
+            addusr_btn.TabIndex = 6;
+            addusr_btn.Text = "Dodaj użytkownika";
+            addusr_btn.UseVisualStyleBackColor = true;
+            addusr_btn.Click += addusr_btn_Click;
+            // 
+            // addelivery_btn
+            // 
+            addelivery_btn.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            addelivery_btn.Location = new Point(502, 163);
+            addelivery_btn.Name = "addelivery_btn";
+            addelivery_btn.Size = new Size(131, 23);
+            addelivery_btn.TabIndex = 7;
+            addelivery_btn.Text = "Dodaj sposób dostawy";
+            addelivery_btn.UseVisualStyleBackColor = true;
+            addelivery_btn.Click += addelivery_btn_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(825, 406);
+            ClientSize = new Size(825, 487);
+            Controls.Add(addelivery_btn);
+            Controls.Add(addusr_btn);
             Controls.Add(button_package);
             Controls.Add(button_delivery);
             Controls.Add(button_products);
@@ -122,5 +147,7 @@
         private Button button_products;
         private Button button_delivery;
         private Button button_package;
+        private Button addusr_btn;
+        private Button addelivery_btn;
     }
 }
