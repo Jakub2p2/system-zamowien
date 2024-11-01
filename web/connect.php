@@ -12,4 +12,5 @@ $connection = pg_connect($connectionString);
 if (!$connection) {
     throw new Exception("Błąd połączenia z bazą danych.");
 }
+
 ?>
