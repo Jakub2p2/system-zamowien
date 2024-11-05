@@ -95,22 +95,10 @@ namespace Magazyn{
             add_usr_form.Show();
         }
 
-        private void addelivery_btn_Click(object sender, EventArgs e) //otwiera formularz z tworzeniem nowego sposobu dostawu
+        private void addelivery_btn_Click(object sender, EventArgs e)
         {
             var addelivery_form = new delivery_form();
             addelivery_form.Show();
-        }
-
-        private void addpackage_Click(object sender, EventArgs e)
-        {
-            var addpackage_form = new package_form();
-            addpackage_form.Show();
-        }
-
-        private void addproduct_btn_Click(object sender, EventArgs e)
-        {
-            var addproduct_form = new product_form();
-            addproduct_form.Show();
         }
     }
 }

@@ -48,7 +48,6 @@
             // 
             usertxt.Location = new Point(73, 44);
             usertxt.Name = "usertxt";
-            usertxt.PlaceholderText = "login";
             usertxt.Size = new Size(138, 23);
             usertxt.TabIndex = 1;
             usertxt.Text = "admin";
@@ -58,7 +57,6 @@
             // 
             passtxt.Location = new Point(73, 73);
             passtxt.Name = "passtxt";
-            passtxt.PlaceholderText = "password";
             passtxt.Size = new Size(138, 23);
             passtxt.TabIndex = 2;
             passtxt.Text = "password";

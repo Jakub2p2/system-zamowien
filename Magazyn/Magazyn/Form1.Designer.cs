@@ -36,8 +36,6 @@
             button_package = new Button();
             addusr_btn = new Button();
             addelivery_btn = new Button();
-            addpackage = new Button();
-            addproduct_btn = new Button();
             ((System.ComponentModel.ISupportInitialize)tabela).BeginInit();
             SuspendLayout();
             // 
@@ -120,35 +118,11 @@
             addelivery_btn.UseVisualStyleBackColor = true;
             addelivery_btn.Click += addelivery_btn_Click;
             // 
-            // addpackage
-            // 
-            addpackage.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            addpackage.Location = new Point(653, 163);
-            addpackage.Name = "addpackage";
-            addpackage.Size = new Size(131, 23);
-            addpackage.TabIndex = 8;
-            addpackage.Text = "Dodaj nową paczkę";
-            addpackage.UseVisualStyleBackColor = true;
-            addpackage.Click += addpackage_Click;
-            // 
-            // addproduct_btn
-            // 
-            addproduct_btn.Font = new Font("Segoe UI", 7F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            addproduct_btn.Location = new Point(344, 163);
-            addproduct_btn.Name = "addproduct_btn";
-            addproduct_btn.Size = new Size(131, 23);
-            addproduct_btn.TabIndex = 9;
-            addproduct_btn.Text = "Dodaj nowy produkt";
-            addproduct_btn.UseVisualStyleBackColor = true;
-            addproduct_btn.Click += addproduct_btn_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(825, 487);
-            Controls.Add(addproduct_btn);
-            Controls.Add(addpackage);
             Controls.Add(addelivery_btn);
             Controls.Add(addusr_btn);
             Controls.Add(button_package);
@@ -175,7 +149,5 @@
         private Button button_package;
         private Button addusr_btn;
         private Button addelivery_btn;
-        private Button addpackage;
-        private Button addproduct_btn;
     }
 }

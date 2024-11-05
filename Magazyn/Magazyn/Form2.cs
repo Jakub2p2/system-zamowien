@@ -66,10 +66,10 @@ namespace Magazyn
             if (check_Empty()) MessageBox.Show("Nie wszystkie pola są uzupełnione");
             else // jesli wszystkie pola sa zapelnione
             {
-                string name = textBox1.Text;
-                string surname = textBox2.Text;
+                //string name = textBox1.Text;
+                //string surname = textBox2.Text;
                 string login = textBox3.Text;
-                string email = textBox4.Text;
+                //string email = textBox4.Text;
                 string role = role_select.Text;
                 string password = password_text.Text;
                 string confirm_password = confirm_pass_text.Text;
@@ -88,16 +88,13 @@ namespace Magazyn
                             id_rows = Convert.ToInt32(result);
                             id_rows++;
                         }
-                        string query = "INSERT INTO uzytkownicy(imie, nazwisko, login, haslo, email, ranga, id) VALUES(" + name + ",'" + surname + "','" + login + "','" + password + "','" + email + "','" + role + "','" + id_rows + "')";
+                        string query = "INSERT INTO uzytkownicy(id, username, password, ranga) VALUES(" + id_rows + ",'" + login + "','" + password + "','" + role + "')";
                         using (NpgsqlCommand command = new NpgsqlCommand(query, connection)) // wysyłanie danych
                         {
-                            command.Parameters.AddWithValue("imie", name);
-                            command.Parameters.AddWithValue("nazwisko", surname);
-                            command.Parameters.AddWithValue("email", email);
-                            command.Parameters.AddWithValue("login", login);
+                            command.Parameters.AddWithValue("id", id_rows);
+                            command.Parameters.AddWithValue("username", login);
                             command.Parameters.AddWithValue("password", password);
                             command.Parameters.AddWithValue("ranga", role);
-                            command.Parameters.AddWithValue("id", id_rows);
                             int rowsAffected = command.ExecuteNonQuery(); // wysłanie danych
                             MessageBox.Show("Dodano użytkownika!!!");
                             this.Close();
