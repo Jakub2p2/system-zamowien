@@ -23,6 +23,9 @@ session_start();
     <div class="error-message" style="display: <?= isset($_SESSION['error']) ? 'block' : 'none'; ?>;">
         <?= isset($_SESSION['error']) ? $_SESSION['error'] : 'Brak błędów do wyświetlenia.'; ?>
     </div>
+    <div class="success-message" style="display: <?= isset($_SESSION['success']) ? 'block' : 'none'; ?>;">
+        <?= isset($_SESSION['success']) ? $_SESSION['success'] : 'Brak sukcesów do wyświetlenia.'; ?>
+    </div>
     <div class="rotating-image"></div>
     <div class="form-container">
         <div id="loginForm" style="display:none;">
@@ -39,6 +42,12 @@ session_start();
         <div id="registerForm" style="display:none;">
             <h2>Rejestracja</h2>
             <form action="register.php" method="post">
+                <label for="firstName">Imię:</label>
+                <input type="text" id="firstName" name="firstName" required autocomplete="given-name" class="form-input">
+                
+                <label for="lastName">Nazwisko:</label>
+                <input type="text" id="lastName" name="lastName" required autocomplete="family-name" class="form-input">
+                
                 <label for="newUsername">Login:</label>
                 <input type="text" id="newUsername" name="newUsername" required autocomplete="new-username" class="form-input">
                 
@@ -53,9 +62,9 @@ session_start();
                 
                 <label for="role">Rola użytkownika:</label>
                 <select id="role" name="role" required class="form-input">
-                    <option value="administrator">Administrator</option>
-                    <option value="sprzedawca">Sprzedawca</option>
-                    <option value="magazynier">Magazynier</option>
+                    <option value="Administrator">Administrator</option>
+                    <option value="Sprzedawca">Sprzedawca</option>
+                    <option value="Magazynier">Magazynier</option>
                 </select>
                 
                 <button type="submit" class="form-button">Zarejestruj się</button>
