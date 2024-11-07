@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result && pg_num_rows($result) > 0) {
         $user = pg_fetch_assoc($result);
 
-        if ($password === $user['haslo']) {
+        if (password_verify($password, $user['haslo'])) {
             session_start();
             $_SESSION['user_id'] = $user['id'];
             header("Location: dashboard.php");

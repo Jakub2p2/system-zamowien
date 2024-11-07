@@ -1,10 +1,10 @@
 <?php
 
-$host = '185.157.80.106';
-$db = 'Uzytkownicy';
-$user = 'postgres';
-$pass = '123';
-$port = '5432';
+$host = 'pg-26a19d25-paczkimagazyn.h.aivencloud.com';
+$db = 'paczuszki';
+$user = 'avnadmin';
+$pass = 'AVNS_3UbLex9BxU_ZYRZvxaY';
+$port = '13890';
 
 $connectionString = "host=$host port=$port dbname=$db user=$user password=$pass";
 $connection = pg_connect($connectionString);

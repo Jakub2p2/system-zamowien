@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newPassword = $_POST['newPassword'];
     $confirmPassword = $_POST['confirmPassword'];
     $email = trim($_POST['email']);
-    $role = $_POST['role'];
+    $role = trim($_POST['role']);
 
     if ($newPassword !== $confirmPassword) {
         $_SESSION['error'] = 'Hasła nie zgadzają się.';
@@ -37,12 +37,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $result = pg_query_params($connection, "INSERT INTO uzytkownicy (imie, nazwisko, login, haslo, email, ranga) VALUES ($1, $2, $3, $4, $5, $6)", array($firstName, $lastName, $newUsername, $newPassword, $email, $role));
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
+    $result = pg_query_params($connection, 
+        "INSERT INTO uzytkownicy (imie, nazwisko, login, haslo, email, ranga) 
+         VALUES ($1, $2, $3, $4, $5, $6);", 
+        array($firstName, $lastName, $newUsername, $hashedPassword, $email, $role)
+    );
+
+    if (!$result) {
+        $_SESSION['error'] = 'Wystąpił błąd podczas rejestracji: ' . pg_last_error($connection);
+        pg_close($connection);
+        header('Location: index.php');
+        exit;
+    }
+
+    // Zamknięcie połączenia przed przekierowaniem
+    pg_close($connection);
+    
     $_SESSION['success'] = 'Rejestracja przebiegła pomyślnie.';
     header('Location: index.php');
     exit;
-
-    pg_close($connection);
 }
 ?>

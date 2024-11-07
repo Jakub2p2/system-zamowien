@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+$errorMessage = isset($_SESSION['error']) ? $_SESSION['error'] : '';
+$successMessage = isset($_SESSION['success']) ? $_SESSION['success'] : '';
+
+unset($_SESSION['error']);
+unset($_SESSION['success']);
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -20,11 +26,11 @@ session_start();
         <button onclick="showForm('login')">Zaloguj się</button>
         <button onclick="showForm('register')">Zarejestruj się</button>
     </div>
-    <div class="error-message" style="display: <?= isset($_SESSION['error']) ? 'block' : 'none'; ?>;">
-        <?= isset($_SESSION['error']) ? $_SESSION['error'] : 'Brak błędów do wyświetlenia.'; ?>
+    <div class="error-message" style="display: <?= !empty($errorMessage) ? 'block' : 'none'; ?>;">
+        <?= $errorMessage ?: 'Brak błędów do wyświetlenia.'; ?>
     </div>
-    <div class="success-message" style="display: <?= isset($_SESSION['success']) ? 'block' : 'none'; ?>;">
-        <?= isset($_SESSION['success']) ? $_SESSION['success'] : 'Brak sukcesów do wyświetlenia.'; ?>
+    <div class="success-message" style="display: <?= !empty($successMessage) ? 'block' : 'none'; ?>;">
+        <?= $successMessage ?: 'Brak sukcesów do wyświetlenia.'; ?>
     </div>
     <div class="rotating-image"></div>
     <div class="form-container">
@@ -73,6 +79,3 @@ session_start();
     </div>
 </body>
 </html>
-<?php
-unset($_SESSION['error']);
-?>
