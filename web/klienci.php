@@ -55,13 +55,8 @@ if (isset($_SESSION['user_id'])) {
                         <h2>Klienci</h2>
                         <form class="client-form" id="searchForm" method="GET">
                             <div class="form-group">
-                                <label for="imie">Imię:</label>
-                                <input type="text" id="imie" name="imie" class="form-control" value="<?php echo isset($_GET['imie']) ? htmlspecialchars($_GET['imie']) : ''; ?>">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="nazwisko">Nazwisko:</label>
-                                <input type="text" id="nazwisko" name="nazwisko" class="form-control" value="<?php echo isset($_GET['nazwisko']) ? htmlspecialchars($_GET['nazwisko']) : ''; ?>">
+                                <label for="nazwa">Nazwa:</label>
+                                <input type="text" id="nazwa" name="nazwa" class="form-control" value="<?php echo isset($_GET['nazwa']) ? htmlspecialchars($_GET['nazwa']) : ''; ?>">
                             </div>
                             
                             <div class="form-group">
@@ -108,15 +103,8 @@ if (isset($_SESSION['user_id'])) {
                             <table class="clients-table">
                                 <thead>
                                     <tr>
-                                        <th class="sortable" onclick="sortTable('imie')">
-                                            Imię
-                                            <div class="sort-arrows">
-                                                <span class="arrow up">▲</span>
-                                                <span class="arrow down">▼</span>
-                                            </div>
-                                        </th>
-                                        <th class="sortable" onclick="sortTable('nazwisko')">
-                                            Nazwisko
+                                        <th class="sortable" onclick="sortTable('nazwa')">
+                                            Nazwa
                                             <div class="sort-arrows">
                                                 <span class="arrow up">▲</span>
                                                 <span class="arrow down">▼</span>
@@ -141,15 +129,9 @@ if (isset($_SESSION['user_id'])) {
                                     $params = [];
                                     $param_counter = 1;
 
-                                    if (!empty($_GET['imie'])) {
-                                        $where_conditions[] = "LOWER(imie) LIKE LOWER($" . $param_counter . ")";
-                                        $params[] = "%" . $_GET['imie'] . "%";
-                                        $param_counter++;
-                                    }
-
-                                    if (!empty($_GET['nazwisko'])) {
-                                        $where_conditions[] = "LOWER(nazwisko) LIKE LOWER($" . $param_counter . ")";
-                                        $params[] = "%" . $_GET['nazwisko'] . "%";
+                                    if (!empty($_GET['nazwa'])) {
+                                        $where_conditions[] = "LOWER(nazwa) LIKE LOWER($" . $param_counter . ")";
+                                        $params[] = "%" . $_GET['nazwa'] . "%";
                                         $param_counter++;
                                     }
 
@@ -160,7 +142,7 @@ if (isset($_SESSION['user_id'])) {
                                     }
 
                                     if (!empty($_GET['regon'])) {
-                                        $where_conditions[] = "regon LIKE $" . $param_counter;
+                                        $where_conditions[] = "region LIKE $" . $param_counter;
                                         $params[] = "%" . $_GET['regon'] . "%";
                                         $param_counter++;
                                     }
@@ -202,26 +184,29 @@ if (isset($_SESSION['user_id'])) {
                                     if (!empty($where_conditions)) {
                                         $query .= " WHERE " . implode(" AND ", $where_conditions);
                                     }
-                                    $query .= " ORDER BY nazwisko, imie LIMIT $records_per_page OFFSET $offset";
+                                    $query .= " ORDER BY nazwa LIMIT $records_per_page OFFSET $offset";
 
                                     $stmt = pg_prepare($connection, "select_filtered", $query);
                                     $result = pg_execute($connection, "select_filtered", $params);
                                     
-                                    while ($row = pg_fetch_assoc($result)) {
-                                        echo "<tr>";
-                                        echo "<td>" . htmlspecialchars($row['imie']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['nazwisko']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['nip']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['regon']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['pesel']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['telefon']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['adres']) . "</td>";
-                                        echo "<td>
-                                                <button onclick='editClient(" . $row['id'] . ")'>Edytuj</button>
-                                                <button onclick='deleteClient(" . $row['id'] . ")'>Usuń</button>
-                                              </td>";
-                                        echo "</tr>";
+                                    if ($result) {
+                                        while ($row = pg_fetch_assoc($result)) {
+                                            echo "<tr>";
+                                            echo "<td>" . htmlspecialchars($row['nazwa']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($row['nip']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($row['region']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($row['pesel']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($row['telefon']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($row['adres']) . "</td>";
+                                            echo "<td>
+                                                    <button onclick='editClient(" . $row['id'] . ")'>Edytuj</button>
+                                                    <button onclick='deleteClient(" . $row['id'] . ")'>Usuń</button>
+                                                  </td>";
+                                            echo "</tr>";
+                                        }
+                                    } else {
+                                        echo "Wystąpił błąd podczas wykonywania zapytania.";
                                     }
                                     ?>
                                 </tbody>
@@ -267,13 +252,8 @@ if (isset($_SESSION['user_id'])) {
                                 <form id="addClientForm">
                                     <input type="hidden" id="modal-id" name="id">
                                     <div class="form-group">
-                                        <label for="modal-imie">Imię:</label>
-                                        <input type="text" id="modal-imie" name="imie" class="form-control" required>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="modal-nazwisko">Nazwisko:</label>
-                                        <input type="text" id="modal-nazwisko" name="nazwisko" class="form-control" required>
+                                        <label for="modal-nazwa">Nazwa:</label>
+                                        <input type="text" id="modal-nazwa" name="nazwa" class="form-control" required>
                                     </div>
                                     
                                     <div class="form-group">

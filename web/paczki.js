@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.disabled = true;
             
             const formData = new FormData(this);
-            savePackage(formData)
+            addPackage(formData)
                 .finally(() => {
                     submitButton.disabled = false;
                 });
@@ -18,25 +18,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-async function savePackage(formData) {
-    const url = formData.get('id') ? 'update_package.php' : 'add_package.php';
-    
+async function addPackage(formData) {
     try {
-        const response = await fetch(url, {
+        const response = await fetch('add_package.php', {
             method: 'POST',
             body: formData
         });
+        
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error('Błąd serwera: ' + text);
+            });
+        }
+        
         const data = await response.json();
         
         if (data.success) {
-            closeModal();
-            location.reload();
+            alert(data.message);
+            window.location.reload();
         } else {
-            alert(data.message || 'Wystąpił błąd podczas zapisywania paczki.');
+            throw new Error(data.message || 'Wystąpił nieznany błąd');
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Wystąpił błąd podczas zapisywania paczki.');
+        alert('Wystąpił błąd podczas zapisywania paczki: ' + error.message);
     }
 }
 
@@ -54,10 +59,20 @@ function closeModal() {
 }
 
 function editPackage(id) {
-    fetch('get_package.php?id=' + id)
-        .then(response => response.json())
+    fetch('get_package.php?id=' + encodeURIComponent(id))
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error('Błąd serwera: ' + text);
+                });
+            }
+            return response.json();
+        })
         .then(data => {
-            document.getElementById('modalTitle').textContent = 'Edytuj paczkę';
+            if (data.error) {
+                throw new Error(data.message);
+            }
+
             document.getElementById('modal-id').value = data.id;
             document.getElementById('modal-nr_listu').value = data.nr_listu || '';
             document.getElementById('modal-status').value = data.status || '';
@@ -68,44 +83,51 @@ function editPackage(id) {
             document.getElementById('modal-ubezpieczenie').value = data.ubezpieczenie || '';
             document.getElementById('modal-koszt_transportu').value = data.koszt_transportu || '';
             
-            const klientSelect = document.getElementById('modal-klient_id');
             if (data.klient_id) {
-                klientSelect.value = data.klient_id;
-            } else {
-                klientSelect.selectedIndex = 0;
+                document.getElementById('modal-klient_id').value = data.klient_id;
             }
             
+            document.getElementById('modalTitle').textContent = 'Edytuj paczkę';
             openModal();
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Wystąpił błąd podczas pobierania danych paczki.');
+            alert('Wystąpił błąd podczas pobierania danych paczki: ' + error.message);
         });
 }
 
 function deletePackage(id) {
-    if (confirm('Czy na pewno chcesz usunąć tę paczkę?')) {
-        const formData = new FormData();
-        formData.append('action', 'delete');
-        formData.append('id', id);
-
-        fetch('paczki_operations.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.reload();
-            } else {
-                alert(data.message || 'Nie udało się usunąć paczki.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Wystąpił błąd podczas usuwania paczki.');
-        });
+    if (!confirm('Czy na pewno chcesz usunąć tę paczkę?')) {
+        return;
     }
+
+    const formData = new FormData();
+    formData.append('id', id);
+
+    fetch('delete_package.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error('Błąd serwera: ' + text);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            window.location.reload();
+        } else {
+            throw new Error(data.message || 'Wystąpił nieznany błąd');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Wystąpił błąd podczas usuwania paczki: ' + error.message);
+    });
 }
 
 function resetForm() {

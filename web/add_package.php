@@ -1,46 +1,58 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
 require 'connect.php';
 require 'czy_zalogowany.php';
+
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response = ['success' => false, 'message' => ''];
     
     try {
-        $check_query = "SELECT id FROM paczki WHERE nr_listu = $1";
-        $check_result = pg_query_params($connection, $check_query, array($_POST['nr_listu']));
-        
-        if (pg_num_rows($check_result) > 0) {
-            $response['message'] = 'Paczka o takim numerze listu już istnieje.';
-            echo json_encode($response);
-            exit;
-        }
+        $data_utworzenia = !empty($_POST['data_utworzenia']) ? date('Y-m-d', strtotime($_POST['data_utworzenia'])) : null;
+        $data_odbioru = !empty($_POST['data_odbioru']) ? date('Y-m-d', strtotime($_POST['data_odbioru'])) : null;
+        $data_dostarczenia = !empty($_POST['data_dostarczenia']) ? date('Y-m-d', strtotime($_POST['data_dostarczenia'])) : null;
         
         $query = "INSERT INTO paczki (nr_listu, status, data_utworzenia, data_odbioru, 
                                     data_dostarczenia, wartosc, ubezpieczenie, 
                                     koszt_transportu, klient_id) 
-                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-                 RETURNING id";
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id";
         
         $params = array(
             $_POST['nr_listu'],
             $_POST['status'],
-            $_POST['data_utworzenia'],
-            !empty($_POST['data_odbioru']) ? $_POST['data_odbioru'] : null,
-            !empty($_POST['data_dostarczenia']) ? $_POST['data_dostarczenia'] : null,
+            $data_utworzenia,
+            $data_odbioru,
+            $data_dostarczenia,
             !empty($_POST['wartosc']) ? $_POST['wartosc'] : null,
             !empty($_POST['ubezpieczenie']) ? $_POST['ubezpieczenie'] : null,
             !empty($_POST['koszt_transportu']) ? $_POST['koszt_transportu'] : null,
             $_POST['klient_id']
         );
         
-        $result = pg_query_params($connection, $query, $params);
+        error_log("Params: " . print_r($params, true));
         
-        if ($result) {
+        $stmt = pg_prepare($connection, "add_package", $query);
+        if (!$stmt) {
+            throw new Exception(pg_last_error($connection));
+        }
+        
+        $result = pg_execute($connection, "add_package", $params);
+        if (!$result) {
+            throw new Exception(pg_last_error($connection));
+        }
+        
+        $row = pg_fetch_assoc($result);
+        if ($row) {
             $response['success'] = true;
             $response['message'] = 'Paczka została dodana pomyślnie.';
+            $response['id'] = $row['id'];
         } else {
-            $response['message'] = 'Błąd podczas dodawania paczki: ' . pg_last_error($connection);
+            throw new Exception('Nie udało się pobrać ID nowej paczki.');
         }
+        
     } catch (Exception $e) {
         $response['message'] = 'Wystąpił błąd: ' . $e->getMessage();
     }
@@ -48,4 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode($response);
     exit;
 }
+
+http_response_code(405);
+echo json_encode(['success' => false, 'message' => 'Metoda nie dozwolona']);
 ?> 

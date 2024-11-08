@@ -5,8 +5,7 @@ $response = ['success' => false, 'message' => ''];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
-    $imie = $_POST['imie'];
-    $nazwisko = $_POST['nazwisko'];
+    $nazwa = $_POST['nazwa'];
     $nip = $_POST['nip'];
     $regon = $_POST['regon'];
     $pesel = $_POST['pesel'];
@@ -15,19 +14,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $adres = $_POST['adres'];
     
     $query = "UPDATE klienci SET 
-              imie = $1, 
-              nazwisko = $2, 
-              nip = $3, 
-              regon = $4, 
-              pesel = $5, 
-              email = $6, 
-              telefon = $7, 
-              adres = $8 
-              WHERE id = $9";
+              nazwa = $1, 
+              nip = $2, 
+              region = $3, 
+              pesel = $4, 
+              email = $5, 
+              telefon = $6, 
+              adres = $7 
+              WHERE id = $8";
               
     $stmt = pg_prepare($connection, "update_client", $query);
     $result = pg_execute($connection, "update_client", [
-        $imie, $nazwisko, $nip, $regon, $pesel, 
+        $nazwa, $nip, $regon, $pesel, 
         $email, $telefon, $adres, $id
     ]);
     

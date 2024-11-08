@@ -2,6 +2,16 @@
 require 'czy_zalogowany.php';
 require 'connect.php';
 
+$statusy_paczek = [
+    'nowa',
+    'towar zamowiony',
+    'komplementacja paczki',
+    'towar przygotowany do wysylki',
+    'oczekiwanie na kuriera',
+    'towar odebrany przez kuriera',
+    'wydany'
+];
+
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
     $query = "SELECT imie, login, ranga FROM uzytkownicy WHERE id = $1";
@@ -59,7 +69,15 @@ if (isset($_SESSION['user_id'])) {
                             
                             <div class="form-group">
                                 <label for="status">Status:</label>
-                                <input type="text" id="status" name="status" class="form-control" value="<?php echo isset($_GET['status']) ? htmlspecialchars($_GET['status']) : ''; ?>">
+                                <select id="status" name="status" class="form-control">
+                                    <option value="">Wszystkie</option>
+                                    <?php foreach($statusy_paczek as $status): ?>
+                                        <option value="<?php echo htmlspecialchars($status); ?>" 
+                                            <?php echo (isset($_GET['status']) && $_GET['status'] === $status) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($status); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                             
                             <div class="form-group">
@@ -245,7 +263,7 @@ if (isset($_SESSION['user_id'])) {
 
                                     $order = strtolower($order) === 'desc' ? 'DESC' : 'ASC';
 
-                                    $query = "SELECT p.*, k.imie, k.nazwisko, k.nip 
+                                    $query = "SELECT p.*, k.nazwa, k.nip, k.region AS regon 
                                               FROM paczki p 
                                               LEFT JOIN klienci k ON p.klient_id = k.id";
                                     if (!empty($where_conditions)) {
@@ -271,7 +289,7 @@ if (isset($_SESSION['user_id'])) {
                                             echo "<td>" . htmlspecialchars($row['ubezpieczenie']) . "</td>";
                                             echo "<td>" . htmlspecialchars($row['koszt_transportu']) . "</td>";
                                             
-                                            $klient_info = htmlspecialchars($row['nazwisko'] . ' ' . $row['imie']);
+                                            $klient_info = htmlspecialchars($row['nazwa'] . ' ' . $row['nip']);
                                             if (!empty($row['nip'])) {
                                                 $klient_info .= ' (NIP: ' . htmlspecialchars($row['nip']) . ')';
                                             }
@@ -335,7 +353,13 @@ if (isset($_SESSION['user_id'])) {
                                     
                                     <div class="form-group">
                                         <label for="modal-status">Status:</label>
-                                        <input type="text" id="modal-status" name="status" class="form-control" required>
+                                        <select id="modal-status" name="status" class="form-control" required>
+                                            <?php foreach($statusy_paczek as $status): ?>
+                                                <option value="<?php echo htmlspecialchars($status); ?>">
+                                                    <?php echo htmlspecialchars($status); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
                                     
                                     <div class="form-group">
@@ -373,15 +397,15 @@ if (isset($_SESSION['user_id'])) {
                                         <select id="modal-klient_id" name="klient_id" class="form-control" required>
                                             <option value="">Wybierz klienta</option>
                                             <?php
-                                            $klienci_query = "SELECT id, imie, nazwisko, nip FROM klienci ORDER BY nazwisko, imie";
+                                            $klienci_query = "SELECT id, nazwa, nip FROM klienci ORDER BY nazwa";
                                             $klienci_result = pg_query($connection, $klienci_query);
                                             
                                             while ($klient = pg_fetch_assoc($klienci_result)) {
-                                                $klient_info = htmlspecialchars($klient['nazwisko'] . ' ' . $klient['imie']);
+                                                $klient_info = htmlspecialchars($klient['nazwa']);
                                                 if (!empty($klient['nip'])) {
                                                     $klient_info .= ' (NIP: ' . htmlspecialchars($klient['nip']) . ')';
                                                 }
-                                                echo '<option value="' . $klient['id'] . '">' . $klient_info . '</option>';
+                                                echo '<option value="' . htmlspecialchars($klient['id']) . '">' . $klient_info . '</option>';
                                             }
                                             ?>
                                         </select>

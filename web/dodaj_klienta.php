@@ -4,8 +4,7 @@ require 'connect.php';
 header('Content-Type: application/json');
 
 try {
-    $imie = $_POST['imie'] ?? '';
-    $nazwisko = $_POST['nazwisko'] ?? '';
+    $nazwa = $_POST['nazwa'] ?? '';
     $nip = $_POST['nip'] ?? null;
     $regon = $_POST['regon'] ?? null;
     $pesel = $_POST['pesel'] ?? null;
@@ -13,12 +12,12 @@ try {
     $telefon = $_POST['telefon'] ?? null;
     $adres = $_POST['adres'] ?? null;
 
-    $query = "INSERT INTO klienci (imie, nazwisko, nip, regon, pesel, email, telefon, adres) 
-              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)";
+    $query = "INSERT INTO klienci (nazwa, nip, region, pesel, email, telefon, adres) 
+              VALUES ($1, $2, $3, $4, $5, $6, $7)";
     
-    $result = pg_query_params($connection, $query, [
-        $imie,
-        $nazwisko,
+    $stmt = pg_prepare($connection, "insert_client", $query);
+    $result = pg_execute($connection, "insert_client", [
+        $nazwa,
         $nip,
         $regon,
         $pesel,

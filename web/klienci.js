@@ -37,10 +37,8 @@ function editClient(id) {
     fetch('pobierz_klienta.php?id=' + id)
         .then(response => response.json())
         .then(data => {
-            document.getElementById('modalTitle').textContent = 'Edytuj klienta';
             document.getElementById('modal-id').value = data.id;
-            document.getElementById('modal-imie').value = data.imie;
-            document.getElementById('modal-nazwisko').value = data.nazwisko;
+            document.getElementById('modal-nazwa').value = data.nazwa;
             document.getElementById('modal-nip').value = data.nip;
             document.getElementById('modal-regon').value = data.regon;
             document.getElementById('modal-pesel').value = data.pesel;
@@ -108,11 +106,11 @@ function deleteClient(id) {
 }
 
 let currentSort = {
-    column: 'nazwisko',
+    column: 'nazwa',
     direction: 'ASC'
 };
 
-function sortTable(column) {
+function sortTable(column, event) {
     if (currentSort.column === column) {
         currentSort.direction = currentSort.direction === 'ASC' ? 'DESC' : 'ASC';
     } else {
@@ -121,29 +119,41 @@ function sortTable(column) {
     }
 
     document.querySelectorAll('.arrow').forEach(arrow => arrow.classList.remove('active'));
-    const th = event.currentTarget;
-    const arrow = currentSort.direction === 'ASC' ? 
-        th.querySelector('.arrow.up') : 
-        th.querySelector('.arrow.down');
-    arrow.classList.add('active');
+    if (event && event.currentTarget) {
+        const th = event.currentTarget;
+        const arrow = currentSort.direction === 'ASC' ? 
+            th.querySelector('.arrow.up') : 
+            th.querySelector('.arrow.down');
+        if (arrow) {
+            arrow.classList.add('active');
+        }
+    }
 
-    fetch(`pobierz_posortowanych_klientow.php?column=${column}&direction=${currentSort.direction}`)
-        .then(response => response.json())
+    fetch(`pobierz_posortowanych_klientow.php?column=${encodeURIComponent(column)}&direction=${encodeURIComponent(currentSort.direction)}`)
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error('Błąd serwera: ' + text);
+                });
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('Otrzymane dane:', data);
+            
             const tbody = document.querySelector('.clients-table tbody');
             tbody.innerHTML = '';
 
             data.forEach(client => {
                 const row = `
                     <tr>
-                        <td>${escapeHtml(client.imie)}</td>
-                        <td>${escapeHtml(client.nazwisko)}</td>
-                        <td>${escapeHtml(client.nip)}</td>
-                        <td>${escapeHtml(client.regon)}</td>
-                        <td>${escapeHtml(client.pesel)}</td>
-                        <td>${escapeHtml(client.email)}</td>
-                        <td>${escapeHtml(client.telefon)}</td>
-                        <td>${escapeHtml(client.adres)}</td>
+                        <td>${escapeHtml(client.nazwa || '')}</td>
+                        <td>${escapeHtml(client.nip || '')}</td>
+                        <td>${escapeHtml(client.regon || '')}</td>
+                        <td>${escapeHtml(client.pesel || '')}</td>
+                        <td>${escapeHtml(client.email || '')}</td>
+                        <td>${escapeHtml(client.telefon || '')}</td>
+                        <td>${escapeHtml(client.adres || '')}</td>
                         <td>
                             <button onclick='editClient(${client.id})'>Edytuj</button>
                             <button onclick='deleteClient(${client.id})'>Usuń</button>
@@ -155,7 +165,7 @@ function sortTable(column) {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Wystąpił błąd podczas sortowania');
+            alert(error.message);
         });
 }
 
@@ -175,7 +185,13 @@ function changeRecordsPerPage(perPage) {
 }
 
 function resetForm() {
-    document.getElementById('searchForm').reset();
+    if (document.getElementById('regon')) document.getElementById('regon').value = '';
+    if (document.getElementById('pesel')) document.getElementById('pesel').value = '';
+    if (document.getElementById('email')) document.getElementById('email').value = '';
+    if (document.getElementById('telefon')) document.getElementById('telefon').value = '';
+    if (document.getElementById('adres')) document.getElementById('adres').value = '';
+    if (document.getElementById('nazwa')) document.getElementById('nazwa').value = '';
+    if (document.getElementById('nip')) document.getElementById('nip').value = '';
     window.location.href = 'klienci.php';
 }
 
@@ -194,8 +210,12 @@ document.addEventListener('click', function(event) {
     const sideMenu = document.getElementById('sideMenu');
     const hamburger = document.querySelector('.hamburger-menu');
     
-    if (!sideMenu.contains(event.target) && !hamburger.contains(event.target) && sideMenu.classList.contains('active')) {
-        sideMenu.classList.remove('active');
+    if (sideMenu && hamburger) {
+        if (!sideMenu.contains(event.target) && 
+            !hamburger.contains(event.target) && 
+            sideMenu.classList.contains('active')) {
+            sideMenu.classList.remove('active');
+        }
     }
 });
 
