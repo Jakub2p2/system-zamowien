@@ -1,6 +1,13 @@
 <?php
 require 'czy_zalogowany.php';
 require 'connect.php';
+require 'menu_permissions.php';
+
+$current_page = basename($_SERVER['PHP_SELF']);
+if (!hasPageAccess($_SESSION['user_ranga'], $current_page)) {
+    header("Location: dashboard.php");
+    exit();
+}
 
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
@@ -34,14 +41,11 @@ if (isset($_SESSION['user_id'])) {
 
             <div class="main-container">
 
-                <div class="side-menu">
+                <div class="side-menu" id="sideMenu">
                     <ul>
-                        <li><a href="dashboard.php">Strona główna</a></li>
-                        <li><a href="paczki.php">Zarządzanie paczkami</a></li>
-                        <li><a href="produkty.php">Zarządzanie produktami</a></li>
-                        <li><a href="klienci.php">Zarządzanie klientami</a></li>
-                        <li><a href="uzytkownicy.php">Lista użytkowników</a></li>
-                        <li><a href="dostawy.php">Zarządzanie dostawami</a></li>
+                        <?php foreach($menu_items as $item): ?>
+                            <li><a href="<?php echo $item['url']; ?>"><?php echo $item['name']; ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
                 

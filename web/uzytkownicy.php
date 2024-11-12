@@ -55,31 +55,36 @@ if (isset($_SESSION['user_id'])) {
 
                 <div class="content-area">
                     <div class="main-content">
-                        <h2>Produkty</h2>
+                        <h2>Użytkownicy</h2>
                         <form class="client-form" id="searchForm" method="GET">
                             <div class="form-group">
-                                <label for="nazwa">Nazwa:</label>
-                                <input type="text" id="nazwa" name="nazwa" class="form-control" value="<?php echo isset($_GET['nazwa']) ? htmlspecialchars($_GET['nazwa']) : ''; ?>">
+                                <label for="imie">Imię:</label>
+                                <input type="text" id="imie" name="imie" class="form-control" value="<?php echo isset($_GET['imie']) ? htmlspecialchars($_GET['imie']) : ''; ?>">
                             </div>
                             
                             <div class="form-group">
-                                <label for="cechy">Cechy:</label>
-                                <input type="text" id="cechy" name="cechy" class="form-control" value="<?php echo isset($_GET['cechy']) ? htmlspecialchars($_GET['cechy']) : ''; ?>">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="cena">Cena:</label>
-                                <input type="number" step="0.01" id="cena" name="cena" class="form-control" value="<?php echo isset($_GET['cena']) ? htmlspecialchars($_GET['cena']) : ''; ?>">
+                                <label for="nazwisko">Nazwisko:</label>
+                                <input type="text" id="nazwisko" name="nazwisko" class="form-control" value="<?php echo isset($_GET['nazwisko']) ? htmlspecialchars($_GET['nazwisko']) : ''; ?>">
                             </div>
 
                             <div class="form-group">
-                                <label for="waga">Waga:</label>
-                                <input type="number" step="0.01" id="waga" name="waga" class="form-control" value="<?php echo isset($_GET['waga']) ? htmlspecialchars($_GET['waga']) : ''; ?>">
+                                <label for="login">Login:</label>
+                                <input type="text" id="login" name="login" class="form-control" value="<?php echo isset($_GET['login']) ? htmlspecialchars($_GET['login']) : ''; ?>">
                             </div>
 
                             <div class="form-group">
-                                <label for="ilosc">Ilość:</label>
-                                <input type="number" id="ilosc" name="ilosc" class="form-control" value="<?php echo isset($_GET['ilosc']) ? htmlspecialchars($_GET['ilosc']) : ''; ?>">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" class="form-control" value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ranga">Ranga:</label>
+                                <select id="ranga" name="ranga" class="form-control">
+                                    <option value="">Wszystkie</option>
+                                    <option value="Administrator" <?php echo (isset($_GET['ranga']) && $_GET['ranga'] === 'Administrator') ? 'selected' : ''; ?>>Administrator</option>
+                                    <option value="Sprzedawca" <?php echo (isset($_GET['ranga']) && $_GET['ranga'] === 'Sprzedawca') ? 'selected' : ''; ?>>Sprzedawca</option>
+                                    <option value="Magazynier" <?php echo (isset($_GET['ranga']) && $_GET['ranga'] === 'Magazynier') ? 'selected' : ''; ?>>Magazynier</option>
+                                </select>
                             </div>
 
                             <div class="form-group button-group"><br>
@@ -87,38 +92,44 @@ if (isset($_SESSION['user_id'])) {
                                 <button type="button" class="reset-btn" onclick="resetForm()">Reset</button>
                             </div>
                         </form>
-
+                        
                         <div class="button-container">
-                            <button type="button" class="add-client-btn" onclick="openModal()">Dodaj produkt</button>
+                            <button type="button" class="add-client-btn" onclick="openModal()">Dodaj użytkownika</button>
                         </div>
 
                         <div class="table-container">
                             <table class="clients-table">
                                 <thead>
                                     <tr>
-                                        <th class="sortable" onclick="sortTable('nazwa')">
-                                            Nazwa
+                                        <th class="sortable" onclick="sortTable('imie')">
+                                            Imię
                                             <div class="sort-arrows">
                                                 <span class="arrow up">▲</span>
                                                 <span class="arrow down">▼</span>
                                             </div>
                                         </th>
-                                        <th>Cechy</th>
-                                        <th class="sortable" onclick="sortTable('cena')">
-                                            Cena
+                                        <th class="sortable" onclick="sortTable('nazwisko')">
+                                            Nazwisko
                                             <div class="sort-arrows">
                                                 <span class="arrow up">▲</span>
                                                 <span class="arrow down">▼</span>
                                             </div>
                                         </th>
-                                        <th class="sortable" onclick="sortTable('waga')">
-                                            Waga
+                                        <th class="sortable" onclick="sortTable('login')">
+                                            Login
                                             <div class="sort-arrows">
                                                 <span class="arrow up">▲</span>
                                                 <span class="arrow down">▼</span>
                                             </div>
                                         </th>
-                                        <th>Ilość</th>
+                                        <th class="sortable" onclick="sortTable('email')">
+                                            Email
+                                            <div class="sort-arrows">
+                                                <span class="arrow up">▲</span>
+                                                <span class="arrow down">▼</span>
+                                            </div>
+                                        </th>
+                                        <th>Ranga</th>
                                         <th>Akcje</th>
                                     </tr>
                                 </thead>
@@ -132,37 +143,37 @@ if (isset($_SESSION['user_id'])) {
                                     $params = [];
                                     $param_counter = 1;
 
-                                    if (!empty($_GET['nazwa'])) {
-                                        $where_conditions[] = "LOWER(nazwa) LIKE LOWER($" . $param_counter . ")";
-                                        $params[] = "%" . $_GET['nazwa'] . "%";
+                                    if (!empty($_GET['imie'])) {
+                                        $where_conditions[] = "LOWER(imie) LIKE LOWER($" . $param_counter . ")";
+                                        $params[] = "%" . $_GET['imie'] . "%";
                                         $param_counter++;
                                     }
 
-                                    if (!empty($_GET['cechy'])) {
-                                        $where_conditions[] = "LOWER(cechy) LIKE LOWER($" . $param_counter . ")";
-                                        $params[] = "%" . $_GET['cechy'] . "%";
+                                    if (!empty($_GET['nazwisko'])) {
+                                        $where_conditions[] = "LOWER(nazwisko) LIKE LOWER($" . $param_counter . ")";
+                                        $params[] = "%" . $_GET['nazwisko'] . "%";
                                         $param_counter++;
                                     }
 
-                                    if (!empty($_GET['cena'])) {
-                                        $where_conditions[] = "cena = $" . $param_counter;
-                                        $params[] = $_GET['cena'];
+                                    if (!empty($_GET['login'])) {
+                                        $where_conditions[] = "LOWER(login) LIKE LOWER($" . $param_counter . ")";
+                                        $params[] = "%" . $_GET['login'] . "%";
                                         $param_counter++;
                                     }
 
-                                    if (!empty($_GET['waga'])) {
-                                        $where_conditions[] = "waga = $" . $param_counter;
-                                        $params[] = $_GET['waga'];
+                                    if (!empty($_GET['email'])) {
+                                        $where_conditions[] = "LOWER(email) LIKE LOWER($" . $param_counter . ")";
+                                        $params[] = "%" . $_GET['email'] . "%";
                                         $param_counter++;
                                     }
 
-                                    if (!empty($_GET['ilosc'])) {
-                                        $where_conditions[] = "ilosc = $" . $param_counter;
-                                        $params[] = $_GET['ilosc'];
+                                    if (!empty($_GET['ranga'])) {
+                                        $where_conditions[] = "ranga = $" . $param_counter;
+                                        $params[] = $_GET['ranga'];
                                         $param_counter++;
                                     }
 
-                                    $count_query = "SELECT COUNT(*) as total FROM produkty";
+                                    $count_query = "SELECT COUNT(*) as total FROM uzytkownicy";
                                     if (!empty($where_conditions)) {
                                         $count_query .= " WHERE " . implode(" AND ", $where_conditions);
                                     }
@@ -171,27 +182,31 @@ if (isset($_SESSION['user_id'])) {
                                     $total_records = pg_fetch_assoc($count_result)['total'];
                                     $total_pages = ceil($total_records / $records_per_page);
 
-                                    $query = "SELECT * FROM produkty";
+                                    $query = "SELECT * FROM uzytkownicy";
                                     if (!empty($where_conditions)) {
                                         $query .= " WHERE " . implode(" AND ", $where_conditions);
                                     }
-                                    $query .= " ORDER BY nazwa LIMIT $records_per_page OFFSET $offset";
+                                    $query .= " ORDER BY nazwisko LIMIT $records_per_page OFFSET $offset";
 
                                     $stmt = pg_prepare($connection, "select_filtered", $query);
                                     $result = pg_execute($connection, "select_filtered", $params);
                                     
-                                    while ($row = pg_fetch_assoc($result)) {
-                                        echo "<tr>";
-                                        echo "<td>" . htmlspecialchars($row['nazwa']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['cechy']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['cena']) . " zł</td>";
-                                        echo "<td>" . htmlspecialchars($row['waga']) . " kg</td>";
-                                        echo "<td>" . htmlspecialchars($row['ilosc']) . "</td>";
-                                        echo "<td>
-                                                <button onclick='editProduct(" . $row['id'] . ")'>Edytuj</button>
-                                                <button onclick='deleteProduct(" . $row['id'] . ")'>Usuń</button>
-                                              </td>";
-                                        echo "</tr>";
+                                    if ($result) {
+                                        while ($row = pg_fetch_assoc($result)) {
+                                            echo "<tr>";
+                                            echo "<td>" . htmlspecialchars($row['imie']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($row['nazwisko']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($row['login']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($row['ranga']) . "</td>";
+                                            echo "<td>
+                                                    <button onclick='editUser(" . $row['id'] . ")'>Edytuj</button>
+                                                    <button onclick='deleteUser(" . $row['id'] . ")'>Usuń</button>
+                                                  </td>";
+                                            echo "</tr>";
+                                        }
+                                    } else {
+                                        echo "Wystąpił błąd podczas wykonywania zapytania.";
                                     }
                                     ?>
                                 </tbody>
@@ -230,35 +245,57 @@ if (isset($_SESSION['user_id'])) {
                             </div>
                         </div>
 
-                        <div id="productModal" class="modal">
+                        <div id="userModal" class="modal">
                             <div class="modal-content">
-                                <span class="close" onclick="closeModal()">&times;</span>
-                                <h3 id="modalTitle">Dodaj nowy produkt</h3>
-                                <form id="addProductForm">
+                                <span class="close">&times;</span>
+                                <h3 id="modalTitle">Dodaj nowego użytkownika</h3>
+                                <form id="addUserForm">
                                     <input type="hidden" id="modal-id" name="id">
+                                    
                                     <div class="form-group">
-                                        <label for="modal-nazwa">Nazwa:</label>
-                                        <input type="text" id="modal-nazwa" name="nazwa" class="form-control" required>
+                                        <label for="modal-imie">Imię:</label>
+                                        <input type="text" id="modal-imie" name="imie" class="form-control" required>
                                     </div>
                                     
                                     <div class="form-group">
-                                        <label for="modal-cechy">Cechy:</label>
-                                        <input type="text" id="modal-cechy" name="cechy" class="form-control">
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="modal-cena">Cena:</label>
-                                        <input type="number" step="0.01" id="modal-cena" name="cena" class="form-control" required>
+                                        <label for="modal-nazwisko">Nazwisko:</label>
+                                        <input type="text" id="modal-nazwisko" name="nazwisko" class="form-control" required>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="modal-waga">Waga (kg):</label>
-                                        <input type="number" step="0.01" id="modal-waga" name="waga" class="form-control" required>
+                                        <label for="modal-login">Login:</label>
+                                        <input type="text" id="modal-login" name="login" class="form-control" required>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="modal-ilosc">Ilość:</label>
-                                        <input type="number" id="modal-ilosc" name="ilosc" class="form-control" required>
+                                        <label for="modal-email">Email:</label>
+                                        <input type="email" id="modal-email" name="email" class="form-control" required>
+                                    </div>
+
+                                    <div class="form-group" id="changePasswordGroup" style="display: none;">
+                                        <label>
+                                            <input type="checkbox" id="changePassword" name="changePassword">
+                                            Zmień hasło
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group password-group">
+                                        <label for="modal-haslo">Hasło:</label>
+                                        <input type="password" id="modal-haslo" name="haslo" class="form-control" required>
+                                    </div>
+
+                                    <div class="form-group password-group">
+                                        <label for="modal-haslo2">Powtórz hasło:</label>
+                                        <input type="password" id="modal-haslo2" name="haslo2" class="form-control" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="modal-ranga">Ranga:</label>
+                                        <select id="modal-ranga" name="ranga" class="form-control" required>
+                                            <option value="Administrator">Administrator</option>
+                                            <option value="Sprzedawca">Sprzedawca</option>
+                                            <option value="Magazynier">Magazynier</option>
+                                        </select>
                                     </div>
 
                                     <div class="form-group">
@@ -283,4 +320,4 @@ if (isset($_SESSION['user_id'])) {
 ?>
 
 <link rel="stylesheet" type="text/css" href="main.css">
-<script src="produkty.js"></script>
+<script src="uzytkownicy.js"></script>
