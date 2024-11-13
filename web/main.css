@@ -580,3 +580,45 @@ body {
 #saveButton {
     margin-top: 30px;
 }
+
+.password-form-container {
+    max-width: 400px;
+    margin: 20px;
+    margin-left: 0px;
+}
+
+.password-form-container input[type="password"] {
+    width: 250px;
+    height: 35px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.password-form-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 14px;
+}
+
+.password-form-container .submit-btn {
+    width: 250px;
+    height: 35px;
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.password-form-container .submit-btn:hover {
+    background-color: #45a049;
+}
+
+.password-form-container .form-group {
+    margin-bottom: 15px;
+}

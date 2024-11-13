@@ -25,6 +25,12 @@ function getUserMenuItems($ranga) {
 }
 
 function hasPageAccess($ranga, $current_page) {
+    $public_pages = ['zmien_haslo.php'];
+    
+    if (in_array($current_page, $public_pages)) {
+        return true;
+    }
+
     $allowed_pages = array_column(getUserMenuItems($ranga), 'url');
     return in_array($current_page, $allowed_pages);
 }
