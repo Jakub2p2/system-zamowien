@@ -4,7 +4,7 @@ using System.Data;
 namespace Magazyn{
     public partial class Form1 : Form
     {
-        string strConnDtb = "Server=pg-26a19d25-paczkimagazyn.h.aivencloud.com; port=13890; user id=avnadmin; password=AVNS_3UbLex9BxU_ZYRZvxaY; database=paczuszki; ";
+        string strConnDtb = "Server=pg-26a19d25-paczkimagazyn.h.aivencloud.com; port=13890; user id=avnadmin; password=AVNS_3UbLex9BxU_ZYRZvxaY; database=paczuszki;";
         NpgsqlConnection vCon;
         NpgsqlCommand vCmd;
         string table = "";
@@ -46,6 +46,7 @@ namespace Magazyn{
             {
                 DataTable dtgetdata = new DataTable();
                 dtgetdata = getData("SELECT * FROM " + table + ";");
+                
                 tabela.DataSource = dtgetdata;
             }
             catch (Exception ex)
@@ -290,22 +291,34 @@ namespace Magazyn{
                     try
                     {
                         DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM" + table + "WHERE nazwa = '" + filtr_txt1.Text + "' OR cechy= '" + filtr_txt2.Text + "' ;");
+                        dtgetdata = getData("SELECT * FROM" + table + " WHERE nazwa = '" + filtr_txt1.Text + "' OR cechy= '" + filtr_txt2.Text + "' ;");
                         tabela.DataSource = dtgetdata;
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("B³ad po³¹czenia z tabel¹: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }                 
+                    }
+                    create_btn(table);
                     break;
                 case "paczki":
-                    
+                    try
+                    {
+                        DataTable dtgetdata = new DataTable();
+                        dtgetdata = getData("SELECT * FROM" + table + " WHERE nr_listu = '" + filtr_txt1.Text + "' OR klient_id = '" + filtr_txt2.Text + "' OR status ='"
+                            + comboBox_txt.Text +"' OR data_utworzenia ='" + date_utworzenia_txt.Text + "' ;");
+                        tabela.DataSource = dtgetdata;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("B³ad po³¹czenia z tabel¹: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    create_btn(table);
                     break;
                 case "klienci":
                     try
                     {
                         DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM " + table + "WHERE nazwa = '" + filtr_txt1.Text + "' OR nip = '" + filtr_txt2.Text + 
+                        dtgetdata = getData("SELECT * FROM " + table + " WHERE nazwa = '" + filtr_txt1.Text + "' OR nip = '" + filtr_txt2.Text + 
                         "' OR region = '" + filtr_txt3.Text + "' OR pesel = '" + filtr_txt4.Text + "' OR email = '" + filtr_txt5.Text + "' OR telefon = '" + filtr_txt6.Text + "' OR adres = '" + filtr_txt7.Text + "' ;");
                         tabela.DataSource = dtgetdata;
                     }
@@ -313,20 +326,21 @@ namespace Magazyn{
                     {
                         MessageBox.Show("B³ad po³¹czenia z tabel¹: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    create_btn(table);
                     break;
                 case "uzytkownicy":
                     try
                     {
                         DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM " + table + "WHERE nazwa = '" + filtr_txt1.Text + "' OR nazwisko = '" + filtr_txt2.Text + "' OR email = '" + filtr_txt3.Text + 
-                            "' OR login = '" + filtr_txt4.Text + "' OR rola = '" + comboBox_txt.Text + "' ;");
+                        dtgetdata = getData("SELECT * FROM " + table + " WHERE imie = '" + filtr_txt1.Text + "' OR nazwisko = '" + filtr_txt2.Text + "' OR email = '" + filtr_txt3.Text + 
+                            "' OR login = '" + filtr_txt4.Text + "' OR ranga = '" + comboBox_txt.Text + "' ;");
                         tabela.DataSource = dtgetdata;
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("B³ad po³¹czenia z tabel¹: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    
+                    create_btn(table);
                     break;
             }
         }
