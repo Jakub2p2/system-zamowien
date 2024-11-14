@@ -283,7 +283,7 @@ namespace Magazyn{
                     break;
             }
         }
-        private void search_btn_Click(object sender, EventArgs e) //funkcja wyszukujaca rekordy w tabelach (nie dziala)
+        private void search_btn_Click(object sender, EventArgs e) 
         {
             switch (table)
             {
