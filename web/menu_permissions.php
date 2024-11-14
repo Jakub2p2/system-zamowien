@@ -25,7 +25,7 @@ function getUserMenuItems($ranga) {
 }
 
 function hasPageAccess($ranga, $current_page) {
-    $public_pages = ['zmien_haslo.php'];
+    $public_pages = ['zmien_haslo.php', 'm_paczki.php'];
     
     if (in_array($current_page, $public_pages)) {
         return true;

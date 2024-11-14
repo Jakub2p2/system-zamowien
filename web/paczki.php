@@ -286,20 +286,20 @@ if (isset($_SESSION['user_id'])) {
                                     } else {
                                         while ($row = pg_fetch_assoc($result)) {
                                             echo "<tr>";
-                                            echo "<td>" . htmlspecialchars($row['nr_listu']) . "</td>";
-                                            echo "<td>" . htmlspecialchars($row['status']) . "</td>";
-                                            echo "<td>" . htmlspecialchars($row['data_utworzenia']) . "</td>";
-                                            echo "<td>" . htmlspecialchars($row['data_odbioru']) . "</td>";
-                                            echo "<td>" . htmlspecialchars($row['data_dostarczenia']) . "</td>";
-                                            echo "<td>" . htmlspecialchars($row['wartosc']) . "</td>";
-                                            echo "<td>" . htmlspecialchars($row['ubezpieczenie']) . "</td>";
-                                            echo "<td>" . htmlspecialchars($row['koszt_transportu']) . "</td>";
+                                            echo "<td onclick=\"window.location='m_paczki.php?id=" . $row['id'] . "'\" style=\"cursor: pointer;\">" . htmlspecialchars($row['nr_listu']) . "</td>";
+                                            echo "<td onclick=\"window.location='m_paczki.php?id=" . $row['id'] . "'\" style=\"cursor: pointer;\">" . htmlspecialchars($row['status']) . "</td>";
+                                            echo "<td onclick=\"window.location='m_paczki.php?id=" . $row['id'] . "'\" style=\"cursor: pointer;\">" . htmlspecialchars($row['data_utworzenia']) . "</td>";
+                                            echo "<td onclick=\"window.location='m_paczki.php?id=" . $row['id'] . "'\" style=\"cursor: pointer;\">" . htmlspecialchars($row['data_odbioru']) . "</td>";
+                                            echo "<td onclick=\"window.location='m_paczki.php?id=" . $row['id'] . "'\" style=\"cursor: pointer;\">" . htmlspecialchars($row['data_dostarczenia']) . "</td>";
+                                            echo "<td onclick=\"window.location='m_paczki.php?id=" . $row['id'] . "'\" style=\"cursor: pointer;\">" . htmlspecialchars($row['wartosc']) . "</td>";
+                                            echo "<td onclick=\"window.location='m_paczki.php?id=" . $row['id'] . "'\" style=\"cursor: pointer;\">" . htmlspecialchars($row['ubezpieczenie']) . "</td>";
+                                            echo "<td onclick=\"window.location='m_paczki.php?id=" . $row['id'] . "'\" style=\"cursor: pointer;\">" . htmlspecialchars($row['koszt_transportu']) . "</td>";
                                             
                                             $klient_info = htmlspecialchars($row['nazwa'] . ' ' . $row['nip']);
                                             if (!empty($row['nip'])) {
                                                 $klient_info .= ' (NIP: ' . htmlspecialchars($row['nip']) . ')';
                                             }
-                                            echo "<td>" . $klient_info . "</td>";
+                                            echo "<td onclick=\"window.location='m_paczki.php?id=" . $row['id'] . "'\" style=\"cursor: pointer;\">" . $klient_info . "</td>";
                                             
                                             echo "<td>
                                                     <button onclick='editPackage(" . $row['id'] . ")'>Edytuj</button>

@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $query = "INSERT INTO paczki (nr_listu, status, data_utworzenia, data_odbioru, 
                                     data_dostarczenia, wartosc, ubezpieczenie, 
-                                    koszt_transportu, klient_id) 
-                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id";
+                                    koszt_transportu, klient_id, created_by) 
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id";
         
         $params = array(
             $_POST['nr_listu'],
@@ -29,7 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             !empty($_POST['wartosc']) ? $_POST['wartosc'] : null,
             !empty($_POST['ubezpieczenie']) ? $_POST['ubezpieczenie'] : null,
             !empty($_POST['koszt_transportu']) ? $_POST['koszt_transportu'] : null,
-            $_POST['klient_id']
+            $_POST['klient_id'],
+            $_SESSION['user_id']
         );
         
         error_log("Params: " . print_r($params, true));

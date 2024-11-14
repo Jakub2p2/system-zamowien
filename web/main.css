@@ -622,3 +622,57 @@ body {
 .password-form-container .form-group {
     margin-bottom: 15px;
 }
+
+.package-info {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.package-info p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.package-info strong {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.package-details {
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+.package-info {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+.package-info:first-child {
+    margin-left: 0;
+}
+
+.package-info:last-child {
+    margin-right: 0;
+}
+
+.package-info p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.package-info strong {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}

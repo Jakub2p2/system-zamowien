@@ -1,11 +1,16 @@
 <?php
 session_start();
-
+if (isset($_SESSION['user_id'])) {
+    header("Location: dashboard.php");
+    exit();
+}
 $errorMessage = isset($_SESSION['error']) ? $_SESSION['error'] : '';
 $successMessage = isset($_SESSION['success']) ? $_SESSION['success'] : '';
 
 unset($_SESSION['error']);
 unset($_SESSION['success']);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
