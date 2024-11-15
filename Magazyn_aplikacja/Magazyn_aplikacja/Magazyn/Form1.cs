@@ -45,8 +45,25 @@ namespace Magazyn{
             try
             {
                 DataTable dtgetdata = new DataTable();
-                dtgetdata = getData("SELECT * FROM " + table + ";");
-                
+                switch (table)
+                {
+                    case "uzytkownicy":
+                        dtgetdata = getData("SELECT imie, nazwisko, login, email, ranga" + "  FROM " + table + ";");
+                        break;
+                    case "klienci":
+                        dtgetdata = getData("SELECT nazwa, nip, region, adres, email, telefon, pesel  FROM " + table + ";");
+                        break;
+                    case "produkty":
+                        dtgetdata = getData("SELECT nazwa, cechy, cena, waga, ilosc FROM " + table + ";");
+                        break;
+                    case "dostawy":
+                        dtgetdata = getData("SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_œledzenia FROM " + table + ";");
+                        break;
+                    case "paczki":
+                        dtgetdata = getData("SELECT status, data_utworzenia, data_odbioru, data_dostarczenia, ubezpieczenie, koszt_transportu, nr_listu, wartosc, klient_id FROM " 
+                            + table + ";");
+                        break;
+                }
                 tabela.DataSource = dtgetdata;
             }
             catch (Exception ex)
@@ -291,7 +308,7 @@ namespace Magazyn{
                     try
                     {
                         DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM" + table + " WHERE nazwa = '" + filtr_txt1.Text + "' OR cechy= '" + filtr_txt2.Text + "' ;");
+                        dtgetdata = getData("SELECT * FROM " + table + " WHERE nazwa = '" + filtr_txt1.Text + "' OR cechy= '" + filtr_txt2.Text + "' ;");
                         tabela.DataSource = dtgetdata;
                     }
                     catch (Exception ex)
@@ -304,7 +321,7 @@ namespace Magazyn{
                     try
                     {
                         DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM" + table + " WHERE nr_listu = '" + filtr_txt1.Text + "' OR klient_id = '" + filtr_txt2.Text + "' OR status ='"
+                        dtgetdata = getData("SELECT * FROM " + table + " WHERE nr_listu = '" + filtr_txt1.Text + "' OR klient_id = '" + filtr_txt2.Text + "' OR status ='"
                             + comboBox_txt.Text +"' OR data_utworzenia ='" + date_utworzenia_txt.Text + "' ;");
                         tabela.DataSource = dtgetdata;
                     }
@@ -349,6 +366,11 @@ namespace Magazyn{
         {
             filtr_txt1.Text = "";
             filtr_txt2.Text = "";
+            filtr_txt3.Text = "";
+            filtr_txt4.Text = "";
+            filtr_txt5.Text = "";
+            filtr_txt6.Text = "";
+            filtr_txt7.Text = "";
         }
         private void czysc_pola_filtr()
         {
