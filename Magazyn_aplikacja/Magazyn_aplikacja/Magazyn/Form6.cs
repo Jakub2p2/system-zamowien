@@ -19,6 +19,7 @@ namespace Magazyn
         string strConnDtb = "Server=pg-26a19d25-paczkimagazyn.h.aivencloud.com; port=13890; user id=avnadmin; password=AVNS_3UbLex9BxU_ZYRZvxaY; database=paczuszki; ";
         NpgsqlConnection vCon;
         NpgsqlCommand vCmd;
+        public string addORedit = "";
         string table = "";
         private void Connect_db() // Polaczenie z baza danych
         {
@@ -35,9 +36,24 @@ namespace Magazyn
                 Application.Exit();
             }
         }
-        public product_form()
+        public product_form(bool edit, string[] datas, int p_id)
         {
             InitializeComponent();
+            if (edit)
+            {
+                name_txt.Text = datas[0];
+                cecha_txt.Text = datas[1];
+                price_txt.Text = datas[2];
+                weight_txt.Text = datas[3];
+                count_txt.Text = datas[4];
+                addORedit = "edit";
+                this.Text = "Edytuj Produkt";
+            }
+            else
+            {
+                addORedit = "add";
+                this.Text = "Dodaj Produkt";
+            }
         }
         public bool check_Empty() // sprawdzianie czy pola sa puste (nie dziala ze spacja)
         {

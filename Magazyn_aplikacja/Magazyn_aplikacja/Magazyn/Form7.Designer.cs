@@ -201,6 +201,7 @@
             Controls.Add(label1);
             Name = "add_client";
             Text = "Dodaj klienta";
+            Load += add_client_Load;
             ResumeLayout(false);
             PerformLayout();
         }

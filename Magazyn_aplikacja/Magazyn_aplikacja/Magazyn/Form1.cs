@@ -154,6 +154,15 @@ namespace Magazyn{
                 case "dostawy":
                     query = $"SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia FROM {table} WHERE id = {buttonName};";
                     break;
+                case "produkty":
+                    query = $"SELECT nazwa, cechy, cena, waga, ilosc  FROM {table} WHERE id = {buttonName};";
+                    break;
+                case "klienci":
+                    query = $"SELECT imie, nip, region, pesel, email, telefon, adres FROM {table} WHERE id = {buttonName};";
+                    break;
+                case "paczki":
+                    query = $"SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia FROM {table} WHERE id = {buttonName};"; //do poprawienia
+                    break;
             }
             
             string[] userData;
@@ -197,6 +206,40 @@ namespace Magazyn{
                                         userData[1] = cena_ubz.ToString();
                                         userData[2] = link;
                                         userData[3] = cena_kg.ToString();
+                                        add_CreateEdit(true, Convert.ToInt32(buttonName), userData);
+                                        break;
+                                    case "produkty":
+                                        string nazwa = reader.GetString(0);
+                                        string cechy = reader.GetString(1);
+                                        double cena = reader.GetDouble(2);
+                                        double waga = reader.GetDouble(3);
+                                        int ilosc = reader.GetInt32(4);
+
+                                        userData = new string[5];
+                                        userData[0] = nazwa.ToString();
+                                        userData[1] = cechy.ToString(); 
+                                        userData[2] = waga.ToString();
+                                        userData[3] = ilosc.ToString();
+                                        userData[4] = cena.ToString();
+                                        add_CreateEdit(true, Convert.ToInt32(buttonName), userData);
+                                        break;
+                                    case "klienci":
+                                        string im = reader.GetString(0);
+                                        string nip = reader.GetString(1);
+                                        string region = reader.GetString(2);
+                                        string pesel = reader.GetString(3);
+                                        string emil = reader.GetString(4);
+                                        string telefon = reader.GetString(5);
+                                        string adres = reader.GetString(6);
+
+                                        userData = new string[7];
+                                        userData[0] = im.ToString();
+                                        userData[1] = nip.ToString();
+                                        userData[2] = region.ToString();
+                                        userData[3] = pesel.ToString();
+                                        userData[4] = emil.ToString();
+                                        userData[5] = telefon.ToString();
+                                        userData[6] = adres.ToString();
                                         add_CreateEdit(true, Convert.ToInt32(buttonName), userData);
                                         break;
                                 }
@@ -310,11 +353,11 @@ namespace Magazyn{
                     add_usr_form.Show();
                     break;
                 case "klienci":
-                    var add_client_form = new add_client();
+                    var add_client_form = new add_client(edit, datas, id);
                     add_client_form.Show();
                     break;
                 case "produkty":
-                    var addproduct_form = new product_form();
+                    var addproduct_form = new product_form(edit, datas, id);
                     addproduct_form.Show();
                     break;
                 case "dostawy":

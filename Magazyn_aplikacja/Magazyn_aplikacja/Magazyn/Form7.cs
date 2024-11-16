@@ -19,6 +19,7 @@ namespace Magazyn
         NpgsqlConnection vCon;
         NpgsqlCommand vCmd;
         string table = "";
+        public string addORedit = "";
         private void Connect_db() // Polaczenie z baza danych
         {
             try
@@ -34,9 +35,26 @@ namespace Magazyn
                 Application.Exit();
             }
         }
-        public add_client()
+        public add_client(bool edit, string[] datas, int p_id)
         {
             InitializeComponent();
+            if (edit)
+            {
+                name_txt.Text = datas[0];
+                nip_txt.Text = datas[1];
+                region_txt.Text = datas[2];
+                pesel_txt.Text = datas[3];
+                email_txt.Text = datas[4];
+                tel_txt.Text = datas[5];
+                adres_txt.Text = datas[6];
+                addORedit = "edit";
+                this.Text = "Edytuj Klienta";
+            }
+            else
+            {
+                addORedit = "add";
+                this.Text = "Dodaj Klienta";
+            }
         }
         public bool check_Empty() // sprawdzianie czy pola sa puste (nie dziala ze spacja)
         {
@@ -77,7 +95,7 @@ namespace Magazyn
                     using (NpgsqlCommand command = new NpgsqlCommand(query, connection)) // wysyłanie danych
                     {
                         command.Parameters.AddWithValue("id", id_rows);
-                        command.Parameters.AddWithValue("nazwa", name); 
+                        command.Parameters.AddWithValue("nazwa", name);
                         command.Parameters.AddWithValue("nip", nip);
                         command.Parameters.AddWithValue("region", region);
                         command.Parameters.AddWithValue("pesel", pesel);
@@ -90,6 +108,11 @@ namespace Magazyn
                     }
                 }
             }
+        }
+
+        private void add_client_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
