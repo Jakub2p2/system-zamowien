@@ -77,7 +77,7 @@ namespace Magazyn
                     using (NpgsqlCommand command = new NpgsqlCommand(query, connection)) // wysyłanie danych
                     {
                         command.Parameters.AddWithValue("id", id_rows);
-                        command.Parameters.AddWithValue("nazwa", name);
+                        command.Parameters.AddWithValue("nazwa", name); 
                         command.Parameters.AddWithValue("nip", nip);
                         command.Parameters.AddWithValue("region", region);
                         command.Parameters.AddWithValue("pesel", pesel);

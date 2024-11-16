@@ -16,6 +16,8 @@ namespace Magazyn
     public partial class add_user : Form
     {
         public string connect_string = "";
+        public string addORedit = "";
+        public int edit_id;
         private void Connect_db() // Polaczenie z baza danych
         {
             string strConnDtb = "Server=pg-26a19d25-paczkimagazyn.h.aivencloud.com; port=13890; user id=avnadmin; password=AVNS_3UbLex9BxU_ZYRZvxaY; database=paczuszki; ";
@@ -34,9 +36,27 @@ namespace Magazyn
                 Application.Exit();
             }
         }
-        public add_user()
+        public add_user(bool edit, string[] datas, int p_id)
         {
             InitializeComponent();
+            if (edit)
+            {
+                textBox1.Text = datas[0];
+                textBox2.Text = datas[1];
+                textBox3.Text = datas[2];
+                textBox4.Text = datas[3];
+                role_select.Text = datas[4];
+                password_text.Text = datas[5];
+                confirm_pass_text.Text = "";
+                edit_id = p_id;
+                addORedit = "edit";
+                this.Text = "Edytuj użytkownika";
+            }
+            else {
+                addORedit = "add";
+                this.Text = "Dodaj użytkownika";
+            }
+            
         }
         private void password_text_TextChanged(object sender, EventArgs e) // zakrywanie wyrazu
         {
@@ -85,21 +105,37 @@ namespace Magazyn
                             id_rows = Convert.ToInt32(result);
                             id_rows++;
                         }
-                        string query = "INSERT INTO uzytkownicy(id, imie, nazwisko, login, haslo, email, ranga) VALUES("
-                            + id_rows + ",'" + name + "','" + surname + "','" + login + "','" + password + "','" + email + "','" + role + "')";
+                        string query = "";
+                        if(addORedit == "add")
+                        {
+                            query = "INSERT INTO uzytkownicy(id, imie, nazwisko, login, haslo, email, ranga) VALUES("
+                           + id_rows + ",'" + name + "','" + surname + "','" + login + "','" + password + "','" + email + "','" + role + "')";
+                        }
+                        else if(addORedit == "edit")
+                        {
+                            query = "UPDATE uzytkownicy SET imie = @imie, nazwisko = @nazwisko, login = @login, " +
+                                    "haslo = @haslo, email = @email, ranga = @ranga " +
+                                    "WHERE id = @id;";
+                        }
+                       
                         using (NpgsqlCommand command = new NpgsqlCommand(query, connection)) // wysyłanie danych
                         {
                             try
                             {
-                                command.Parameters.AddWithValue("id", id_rows);
-                                command.Parameters.AddWithValue("imie", name);
-                                command.Parameters.AddWithValue("nazwisko", surname);
-                                command.Parameters.AddWithValue("login", login);
-                                command.Parameters.AddWithValue("haslo", password);
-                                command.Parameters.AddWithValue("email", email);
-                                command.Parameters.AddWithValue("ranga", role);
+                                if(addORedit == "add") command.Parameters.AddWithValue("id", id_rows);
+                                else if(addORedit == "edit") command.Parameters.AddWithValue("id", edit_id);
+                                command.Parameters.AddWithValue("@imie", name);
+                                command.Parameters.AddWithValue("@nazwisko", surname);
+                                command.Parameters.AddWithValue("@login", login);
+                                command.Parameters.AddWithValue("@haslo", password);
+                                command.Parameters.AddWithValue("@email", email);
+                                command.Parameters.AddWithValue("@ranga", role);
                                 int rowsAffected = command.ExecuteNonQuery(); // wysłanie danych
-                                MessageBox.Show("Dodano użytkownika!!!");
+
+                                if(addORedit == "add")
+                                    MessageBox.Show("Dodano użytkownika!!!");
+                                else if(addORedit == "edit")
+                                    MessageBox.Show("Zmieniono dane użytkownika!!!");
                                 this.Close();
                             }
                             catch (Exception ex)

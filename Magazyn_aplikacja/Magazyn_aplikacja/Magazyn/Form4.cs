@@ -14,9 +14,26 @@ namespace Magazyn
 {
     public partial class delivery_form : Form
     {
-        public delivery_form()
+        public string addORedit = "";
+        public int edit_id;
+        public delivery_form(bool edit, string[] datas, int p_id)
         {
             InitializeComponent();
+            if (edit)
+            {
+                textBox1.Text = datas[0];
+                textBox2.Text = datas[1].ToString();
+                numericUpDown1.Text = datas[3].ToString();
+                textBox3.Text = datas[3];
+                edit_id = p_id;
+                addORedit = "edit";
+                this.Text = "Edytuj sposób dostawy";
+            }
+            else
+            {
+                addORedit = "add";
+                this.Text = "Dodaj sposób dostawy";
+            }
         }
         public string connect_string = "";
         private void Connect_db() // Polaczenie z baza danych
@@ -67,15 +84,25 @@ namespace Magazyn
                 using (NpgsqlConnection connection = new NpgsqlConnection(connect_string))
                 {
                     connection.Open();
-                    string query = "INSERT INTO dostawy(nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia) VALUES('" + name + "'," + cena_kg + "," + cena_ubz + ",'" + link + "')";
+                    string query = "";
+                    if (addORedit == "add")
+                        query = "INSERT INTO dostawy(nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia) VALUES('" + name + "'," + cena_kg + "," + cena_ubz + ",'" + link + "')";
+                    else if (addORedit == "edit")
+                        query = "UPDATE dostawy SET nazwa = @nazwa, cena_za_kg = @cena_za_kg, " +
+                                   "cena_ubezpieczenia = @cena_ubezpieczenia, link_do_śledzenia = @link_do_śledzenia " +
+                                   "WHERE id = @id;";
                     using (NpgsqlCommand command = new NpgsqlCommand(query, connection)) // wysyłanie danych
                     {
-                        command.Parameters.AddWithValue("nazwa", name);
-                        command.Parameters.AddWithValue("cena_za_kg", cena_kg);
-                        command.Parameters.AddWithValue("cena_ubezpieczenia", cena_ubz);
-                        command.Parameters.AddWithValue("link_do_śledzenia", link);
+                        if(addORedit == "edit") command.Parameters.AddWithValue("@id", edit_id);
+                        command.Parameters.AddWithValue("@nazwa", name);
+                        command.Parameters.AddWithValue("@cena_za_kg", cena_kg);
+                        command.Parameters.AddWithValue("@cena_ubezpieczenia", cena_ubz);
+                        command.Parameters.AddWithValue("@link_do_śledzenia", link);
                         int rowsAffected = command.ExecuteNonQuery(); // wysłanie danych (nie działa)
-                        MessageBox.Show("Dodano sposób dostawy!!!");
+                        if (addORedit == "add")
+                            MessageBox.Show("Dodano sposób dostawy!!!");
+                        else if (addORedit == "edit")
+                            MessageBox.Show("Zmieniono sposób dostawy!!!");
                         this.Close();
                     }
                 }

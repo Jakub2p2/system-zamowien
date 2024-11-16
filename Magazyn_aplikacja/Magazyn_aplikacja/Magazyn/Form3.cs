@@ -28,7 +28,7 @@ namespace Magazyn
         private void button2_Click(object sender, EventArgs e)
         {
             this.Hide();
-            var add_usr_form = new add_user();
+            var add_usr_form = new add_user(false, [], 0);
             add_usr_form.Show();
         }
 

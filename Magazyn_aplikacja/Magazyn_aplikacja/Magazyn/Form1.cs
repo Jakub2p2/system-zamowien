@@ -1,6 +1,10 @@
+ï»¿using Microsoft.VisualBasic.ApplicationServices;
 using Npgsql;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics.Metrics;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 namespace Magazyn{
     public partial class Form1 : Form
     {
@@ -20,8 +24,8 @@ namespace Magazyn{
                 if (vCon.State == System.Data.ConnectionState.Closed) vCon.Open();
             }
             catch
-            { // w razie braku po³¹czenia z baz¹
-                MessageBox.Show("B³¹d po³¹czenia z baz¹ danych", "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            { // w razie braku poÅ‚Ä…czenia z bazÄ…
+                MessageBox.Show("BÅ‚Ä…d poÅ‚Ä…czenia z bazÄ… danych", "BÅ‚Ä…d", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
         }
@@ -34,13 +38,14 @@ namespace Magazyn{
             vCmd.CommandText = sql;
             NpgsqlDataReader dr = vCmd.ExecuteReader();
             dt.Load(dr);
+            vCon.Close();
             return dt;
         }
         public Form1()
         {
             InitializeComponent();
         }
-        public void show_table() // funkcja pokazujaca tabelê
+        public void show_table() // funkcja pokazujaca tabelÄ™
         {
             try
             {
@@ -48,91 +53,194 @@ namespace Magazyn{
                 switch (table)
                 {
                     case "uzytkownicy":
-                        dtgetdata = getData("SELECT imie, nazwisko, login, email, ranga" + "  FROM " + table + ";");
+                        dtgetdata = getData("SELECT id, imie, nazwisko, login, email, ranga" + "  FROM " + table + " ORDER BY id;");
                         break;
                     case "klienci":
-                        dtgetdata = getData("SELECT nazwa, nip, region, adres, email, telefon, pesel  FROM " + table + ";");
+                        dtgetdata = getData("SELECT id, nazwa, nip, region, adres, email, telefon, pesel  FROM " + table + " ORDER BY id;");
                         break;
                     case "produkty":
-                        dtgetdata = getData("SELECT nazwa, cechy, cena, waga, ilosc FROM " + table + ";");
+                        dtgetdata = getData("SELECT id, nazwa, cechy, cena, waga, ilosc FROM " + table + " ORDER BY id;");
                         break;
                     case "dostawy":
-                        dtgetdata = getData("SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_œledzenia FROM " + table + ";");
+                        dtgetdata = getData("SELECT id, nazwa, cena_za_kg, cena_ubezpieczenia, link_do_Å›ledzenia FROM " + table + " ORDER BY id;");
                         break;
                     case "paczki":
-                        dtgetdata = getData("SELECT status, data_utworzenia, data_odbioru, data_dostarczenia, ubezpieczenie, koszt_transportu, nr_listu, wartosc, klient_id FROM " 
-                            + table + ";");
+                        dtgetdata = getData("SELECT id, status, data_utworzenia, data_odbioru, data_dostarczenia, ubezpieczenie, koszt_transportu, nr_listu, wartosc, klient_id FROM " + table + " ORDER BY id;");
                         break;
                 }
                 tabela.DataSource = dtgetdata;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("B³ad po³¹czenia z tabel¹: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("BÅ‚ad poÅ‚Ä…czenia z tabelÄ…: " + ex.Message, "BÅ‚Ä…d", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             Cursor.Current = Cursor.Current;
         }
-        private void create_btn(string tab) // dodawanie przyciskow edytuj i usuñ
+        private void create_btn(string tab) // dodawanie przyciskow edytuj i usuÅ„
         {
-            foreach (Control control in Controls) if (control is Button && control.Name == "edit_btn") Controls.Remove(control);// usuwanie przyciskow "edytuj"
-            foreach (Control control in Controls) if (control is Button && control.Name == "delete_btn") Controls.Remove(control);// usuwanie przyciskow "usuñ"
+            int j = 0;
+            Control[] drop_btns = new Control[100]; // wartoÅ›Ä‡ 100, ktÃ³rÄ… trzeba zmieniÄ‡
+            foreach (Control control in Controls) // przypisywanie przyciskÃ³w "edytuj" oraz "usuÅ„" do tablicy
+            {
+                if (control is System.Windows.Forms.Button && (control.Name.StartsWith("edit_btn") || control.Name.StartsWith("delete_btn")))
+                {
+                    drop_btns[j] = control;
+                    j++;
+                }
+            }
+            for (int i = 0; i < j; i++) Controls.Remove(drop_btns[i]); // usuwanie przyciskÃ³w "edytuj" i "usuÅ„"
+
             using (NpgsqlConnection connection = new NpgsqlConnection(connect_string))
             {
                 connection.Open();
                 int id_rows = 0;
-                string get_id_query = "SELECT COUNT(*) FROM " + table + ";";
-                using (NpgsqlCommand command = new NpgsqlCommand(get_id_query, connection)) // liczenie iloœci wierszy w tabeli
+                string get_id_query = "SELECT COUNT(*) FROM " + tab + ";";
+                using (NpgsqlCommand command = new NpgsqlCommand(get_id_query, connection))
                 {
                     object result = command.ExecuteScalar();
                     id_rows = Convert.ToInt32(result);
                     id_rows++;
                 }
-                Button[] edit_arr = new Button[id_rows];
-                Button[] delete_arr = new Button[id_rows];
-                int height = 200;
-                for (int i = 0; i < id_rows - 1; i++)
+
+                System.Windows.Forms.Button[] edit_arr = new System.Windows.Forms.Button[id_rows];
+                System.Windows.Forms.Button[] delete_arr = new System.Windows.Forms.Button[id_rows];
+
+                string get_ids_query = $"SELECT id FROM {table} ORDER BY id ASC;";
+                using (NpgsqlCommand command = new NpgsqlCommand(get_ids_query, connection))
+                using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
-                    height += 25;
+                    int height = 225;
+                    int i = 0;
+                    while (reader.Read())
+                    {
+                        int id = reader.GetInt32(0);
 
-                    edit_arr[i] = new Button(); // tworzenie przycisków edit
-                    edit_arr[i].Height = 23;
-                    edit_arr[i].Width = 75;
-                    edit_arr[i].Name = "edit_btn";
-                    edit_arr[i].Location = new Point(968, height);
-                    edit_arr[i].Text = "edytuj";
-                    edit_arr[i].Click += EditButtonClick;
-                    this.Controls.Add(edit_arr[i]);
+                        edit_arr[i] = new System.Windows.Forms.Button();
+                        edit_arr[i].Height = 23;
+                        edit_arr[i].Width = 75;
+                        edit_arr[i].Name = "edit_btn" + id.ToString();
+                        edit_arr[i].Location = new Point(968, height);
+                        edit_arr[i].Text = "Edytuj " + id;
+                        edit_arr[i].Click += EditButtonClick;
+                        this.Controls.Add(edit_arr[i]);
 
-                    delete_arr[i] = new Button(); // tworzenie przycisków usuñ
-                    delete_arr[i].Height = 23;
-                    delete_arr[i].Width = 75;
-                    delete_arr[i].Name = "delete_btn";
-                    delete_arr[i].Location = new Point(1050, height);
-                    delete_arr[i].Text = "usuñ";
-                    delete_arr[i].Click += DeleteButtonClick;
-                    this.Controls.Add(delete_arr[i]);
-                    connection.Close();
+                        delete_arr[i] = new System.Windows.Forms.Button();
+                        delete_arr[i].Height = 23;
+                        delete_arr[i].Width = 75;
+                        delete_arr[i].Name = "delete_btn" + id.ToString();
+                        delete_arr[i].Location = new Point(1050, height);
+                        delete_arr[i].Text = "UsuÅ„ " + id;
+                        delete_arr[i].Click += DeleteButtonClick;
+                        this.Controls.Add(delete_arr[i]);
+
+                        i++;
+                        height += 25;
+                    }
                 }
             }
         }
         private void EditButtonClick(object sender, EventArgs e) // zdzarzenie edit
         {
-            MessageBox.Show("edit");
+            System.Windows.Forms.Button clickedButton = (System.Windows.Forms.Button)sender;
+            string buttonName = clickedButton.Name;
+            //MessageBox.Show("edit " + buttonName);
+            buttonName = buttonName.Replace("edit_btn", "");
+            string query = "";
+            switch (table)
+            {
+                case "uzytkownicy":
+                    query = $"SELECT imie, nazwisko, login, email, ranga, haslo FROM uzytkownicy WHERE id = {buttonName};";
+                    break;
+                case "dostawy":
+                    query = $"SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_Å›ledzenia FROM {table} WHERE id = {buttonName};";
+                    break;
+            }
+            
+            string[] userData;
+            using (NpgsqlConnection connection = new NpgsqlConnection(connect_string))
+            {
+                try
+                {
+                    connection.Open();
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                switch (table)
+                                {
+                                    case "uzytkownicy":
+                                        string imie = reader.GetString(0);
+                                        string nazwisko = reader.GetString(1);
+                                        string login = reader.GetString(2);
+                                        string email = reader.GetString(3);
+                                        string role = reader.GetString(4);
+                                        string password = reader.GetString(5);
+                                        userData = new string[6];
+                                        userData[0] = imie;
+                                        userData[1] = nazwisko;
+                                        userData[2] = login;
+                                        userData[3] = email;
+                                        userData[4] = role;
+                                        userData[5] = password;
+                                        add_CreateEdit(true, Convert.ToInt32(buttonName), userData);
+                                        break;
+                                    case "dostawy":
+                                        string name = reader.GetString(0);
+                                        double cena_kg = reader.GetDouble(1);
+                                        int cena_ubz = reader.GetInt32(2);
+                                        string link = reader.GetString(3);
+
+                                        userData = new string[4];
+                                        userData[0] = name;
+                                        userData[1] = cena_ubz.ToString();
+                                        userData[2] = link;
+                                        userData[3] = cena_kg.ToString();
+                                        add_CreateEdit(true, Convert.ToInt32(buttonName), userData);
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Brak uÅ¼ytkownika o podanym ID.");
+                            }
+                        }
+                    }
+                }catch (Exception ex) { Console.WriteLine(ex.Message); }
+            }
         }
-        private void DeleteButtonClick(object sender, EventArgs e) // zdarzenie usuñ
+        private void DeleteButtonClick(object sender, EventArgs e) // zdarzenie usuÅ„
         {
-            MessageBox.Show("usuñ");
+            System.Windows.Forms.Button clickedButton = (System.Windows.Forms.Button)sender;
+            string buttonName = clickedButton.Name;
+            DialogResult dialogResult = MessageBox.Show("Czy napewno chcesz usunÄ…Ä‡ tÄ… kolumnÄ™?", "UWAGA!!!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (dialogResult == DialogResult.Yes) 
+            {
+                using (NpgsqlConnection connection = new NpgsqlConnection(connect_string))
+                { 
+                    connection.Open();
+                    buttonName = buttonName.Replace("delete_btn", "");
+                    string delete_query = $"DELETE FROM {table} WHERE id = {buttonName};";
+                    using (NpgsqlCommand command = new NpgsqlCommand(delete_query, connection))
+                    {
+                        object result = command.ExecuteScalar();
+                    }
+                    connection.Close();
+                    show_table();   
+                }
+            }
         }
-        private void Form1_Load(object sender, EventArgs e) // przy za³adowaniu aplikacji
+        private void Form1_Load(object sender, EventArgs e) // przy zaÅ‚adowaniu aplikacji
         {
             Connect_db();
         }
-        /// ZDARZENIA PRZYCISKÓW
+        /// ZDARZENIA PRZYCISKÃ“W
         private void button_users_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
             table = "uzytkownicy";
-            add_btn.Text = "Dodaj u¿ytkownika";
+            add_btn.Text = "Dodaj uÅ¼ytkownika";
             show_table();
             create_btn(table);
             search_btn.Enabled = true;
@@ -171,7 +279,7 @@ namespace Magazyn{
         {
             Cursor.Current = Cursors.WaitCursor;
             table = "dostawy";
-            add_btn.Text = "Dodaj sposób dostawy";
+            add_btn.Text = "Dodaj sposÃ³b dostawy";
             show_table();
             create_btn(table);
             search_btn.Enabled = false;
@@ -184,7 +292,7 @@ namespace Magazyn{
         {
             Cursor.Current = Cursors.WaitCursor;
             table = "paczki";
-            add_btn.Text = "Dodaj now¹ paczkê";
+            add_btn.Text = "Dodaj nowÄ… paczkÄ™";
             show_table();
             create_btn(table);
             search_btn.Enabled = true;
@@ -193,12 +301,12 @@ namespace Magazyn{
             clear_btn.Visible = true;
             filtruj_tabele();
         }
-        private void add_btn_Click(object sender, EventArgs e) // otwiera formularz zale¿nie od wyboru
+        private void add_CreateEdit(bool edit, int id, string[] datas)
         {
             switch (table)
             {
                 case "uzytkownicy":
-                    var add_usr_form = new add_user();
+                    var add_usr_form = new add_user(edit, datas, id);
                     add_usr_form.Show();
                     break;
                 case "klienci":
@@ -210,7 +318,7 @@ namespace Magazyn{
                     addproduct_form.Show();
                     break;
                 case "dostawy":
-                    var addelivery_form = new delivery_form();
+                    var addelivery_form = new delivery_form(edit, datas, id);
                     addelivery_form.Show();
                     break;
                 case "paczki":
@@ -219,9 +327,13 @@ namespace Magazyn{
                     break;
             }
         }
+        private void add_btn_Click(object sender, EventArgs e) // otwiera formularz zaleÅ¼nie od wyboru
+        {
+            add_CreateEdit(false, 0, []) ;
+        }
         private void filtruj_tabele()
         {
-            czysc_pola_filtr();
+            czysc_pola_filtr(true);
             switch (table)
             {
                 case "dostawy":
@@ -239,6 +351,7 @@ namespace Magazyn{
                     filtr_lbl2.Visible = true;
                     filtr_lbl3.Visible = true;
                     filtr_lbl4.Visible = true;
+                    filtr_lbl8.Visible = true;
 
                     filtr_txt1.Visible = true;
                     filtr_txt2.Visible = true;
@@ -271,7 +384,7 @@ namespace Magazyn{
                     filtr_txt6.Visible = true;
                     filtr_txt7.Visible = true;
 
-                    filtr_lbl1.Text = "Nazwa/Imiê i nazwisko:";
+                    filtr_lbl1.Text = "Nazwa/ImiÄ™ i nazwisko:";
                     filtr_lbl2.Text = "NIP:";
                     filtr_lbl3.Text = "REGION:";
                     filtr_lbl4.Text = "PESEL:";
@@ -294,7 +407,7 @@ namespace Magazyn{
                     filtr_lbl2.Text = "Klient:";
                     filtr_lbl8.Text = "Status:";
                     filtr_lbl9.Text = "Data utworzenia:";
-                    string[] combobox_status = { "--Wszystkie--", "Nowa", "Towar zamówiony", "Kompletacja paczki", "Towar przygotowany od wysy³ki",
+                    string[] combobox_status = { "--Wszystkie--", "Nowa", "Towar zamÃ³wiony", "Kompletacja paczki", "Towar przygotowany od wysyÅ‚ki",
                     "Oczekiwanie na kuriera", "Towar odebrany przez kuriera", "Wstrzymany"};
                     comboBox_txt.Items.AddRange(combobox_status);
                     break;
@@ -313,7 +426,7 @@ namespace Magazyn{
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("B³ad po³¹czenia z tabel¹: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("BÅ‚ad poÅ‚Ä…czenia z tabelÄ…: " + ex.Message, "BÅ‚Ä…d", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     create_btn(table);
                     break;
@@ -327,7 +440,7 @@ namespace Magazyn{
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("B³ad po³¹czenia z tabel¹: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("BÅ‚ad poÅ‚Ä…czenia z tabelÄ…: " + ex.Message, "BÅ‚Ä…d", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     create_btn(table);
                     break;
@@ -341,7 +454,7 @@ namespace Magazyn{
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("B³ad po³¹czenia z tabel¹: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("BÅ‚ad poÅ‚Ä…czenia z tabelÄ…: " + ex.Message, "BÅ‚Ä…d", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     create_btn(table);
                     break;
@@ -355,7 +468,7 @@ namespace Magazyn{
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("B³ad po³¹czenia z tabel¹: " + ex.Message, "B³¹d", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("BÅ‚ad poÅ‚Ä…czenia z tabelÄ…: " + ex.Message, "BÅ‚Ä…d", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     create_btn(table);
                     break;
@@ -364,36 +477,32 @@ namespace Magazyn{
 
         private void clear_btn_Click(object sender, EventArgs e)
         {
-            filtr_txt1.Text = "";
-            filtr_txt2.Text = "";
-            filtr_txt3.Text = "";
-            filtr_txt4.Text = "";
-            filtr_txt5.Text = "";
-            filtr_txt6.Text = "";
-            filtr_txt7.Text = "";
+            czysc_pola_filtr(false);
         }
-        private void czysc_pola_filtr()
+        private void czysc_pola_filtr(bool clean_every)
         {
-            filtr_lbl1.Visible = false;
-            filtr_lbl2.Visible = false;
-            filtr_lbl3.Visible = false;
-            filtr_lbl4.Visible = false;
-            filtr_lbl5.Visible = false;
-            filtr_lbl6.Visible = false;
-            filtr_lbl7.Visible = false;
-            filtr_lbl8.Visible = false;
-            filtr_lbl9.Visible = false;
+            if (clean_every)
+            {
+                filtr_lbl1.Visible = false;
+                filtr_lbl2.Visible = false;
+                filtr_lbl3.Visible = false;
+                filtr_lbl4.Visible = false;
+                filtr_lbl5.Visible = false;
+                filtr_lbl6.Visible = false;
+                filtr_lbl7.Visible = false;
+                filtr_lbl8.Visible = false;
+                filtr_lbl9.Visible = false;
 
-            filtr_txt1.Visible = false;
-            filtr_txt2.Visible = false;
-            filtr_txt3.Visible = false;
-            filtr_txt4.Visible = false;
-            filtr_txt5.Visible = false;
-            filtr_txt6.Visible = false;
-            filtr_txt7.Visible = false;
-            comboBox_txt.Visible = false;
-            date_utworzenia_txt.Visible = false;
-
+                filtr_txt1.Visible = false;
+                filtr_txt2.Visible = false;
+                filtr_txt3.Visible = false;
+                filtr_txt4.Visible = false;
+                filtr_txt5.Visible = false;
+                filtr_txt6.Visible = false;
+                filtr_txt7.Visible = false;
+                comboBox_txt.Visible = false;
+                date_utworzenia_txt.Visible = false;
+            }
             filtr_txt1.Text = "";
             filtr_txt2.Text = "";
             filtr_txt3.Text = "";
