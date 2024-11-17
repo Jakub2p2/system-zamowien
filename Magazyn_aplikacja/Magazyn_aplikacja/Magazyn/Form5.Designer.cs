@@ -45,6 +45,9 @@
             searchbtn = new Button();
             button1 = new Button();
             tabela = new DataGridView();
+            klienci_txt = new ComboBox();
+            label8 = new Label();
+            confirm_btn = new Button();
             ((System.ComponentModel.ISupportInitialize)tabela).BeginInit();
             SuspendLayout();
             // 
@@ -168,6 +171,7 @@
             searchbtn.TabIndex = 14;
             searchbtn.Text = "Szukaj";
             searchbtn.UseVisualStyleBackColor = true;
+            searchbtn.Click += searchbtn_Click;
             // 
             // button1
             // 
@@ -177,21 +181,52 @@
             button1.TabIndex = 15;
             button1.Text = "Wyczyść";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // tabela
             // 
+            tabela.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             tabela.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            tabela.Location = new Point(16, 146);
+            tabela.Location = new Point(16, 188);
             tabela.Name = "tabela";
-            tabela.Size = new Size(666, 274);
+            tabela.Size = new Size(666, 232);
             tabela.TabIndex = 16;
-            tabela.CellContentClick += tabela_CellContentClick;
+            // 
+            // klienci_txt
+            // 
+            klienci_txt.FormattingEnabled = true;
+            klienci_txt.Location = new Point(66, 149);
+            klienci_txt.Name = "klienci_txt";
+            klienci_txt.Size = new Size(121, 23);
+            klienci_txt.TabIndex = 17;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(16, 152);
+            label8.Name = "label8";
+            label8.Size = new Size(45, 15);
+            label8.TabIndex = 18;
+            label8.Text = "Klienci:";
+            // 
+            // confirm_btn
+            // 
+            confirm_btn.Location = new Point(193, 149);
+            confirm_btn.Name = "confirm_btn";
+            confirm_btn.Size = new Size(114, 23);
+            confirm_btn.TabIndex = 19;
+            confirm_btn.Text = "Zatwierdź klienta";
+            confirm_btn.UseVisualStyleBackColor = true;
+            confirm_btn.Click += confirm_btn_Click;
             // 
             // package_form
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(734, 450);
+            Controls.Add(confirm_btn);
+            Controls.Add(label8);
+            Controls.Add(klienci_txt);
             Controls.Add(tabela);
             Controls.Add(button1);
             Controls.Add(searchbtn);
@@ -236,5 +271,8 @@
         private Button searchbtn;
         private Button button1;
         private DataGridView tabela;
+        private ComboBox klienci_txt;
+        private Label label8;
+        private Button confirm_btn;
     }
 }

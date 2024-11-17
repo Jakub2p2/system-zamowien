@@ -49,6 +49,7 @@ namespace Magazyn{
             InitializeComponent();
             uzyt = uzytkownik;
             password = pass;
+            user_bar.Text = uzyt;
         }
         public void show_table() // funkcja pokazujaca tabelę
         {
@@ -58,19 +59,19 @@ namespace Magazyn{
                 switch (table)
                 {
                     case "uzytkownicy":
-                        dtgetdata = getData("SELECT id, imie, nazwisko, login, email, ranga" + "  FROM " + table + " ORDER BY id;");
+                        dtgetdata = getData("SELECT imie, nazwisko, login, email, ranga" + "  FROM " + table + " ORDER BY id;");
                         break;
                     case "klienci":
-                        dtgetdata = getData("SELECT id, nazwa, nip, region, adres, email, telefon, pesel  FROM " + table + " ORDER BY id;");
+                        dtgetdata = getData("SELECT nazwa, nip, region, adres, email, telefon, pesel  FROM " + table + " ORDER BY id;");
                         break;
                     case "produkty":
-                        dtgetdata = getData("SELECT id, nazwa, cechy, cena, waga, ilosc FROM " + table + " ORDER BY id;");
+                        dtgetdata = getData("SELECT nazwa, cechy, cena, waga, ilosc FROM " + table + " ORDER BY id;");
                         break;
                     case "dostawy":
-                        dtgetdata = getData("SELECT id, nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia FROM " + table + " ORDER BY id;");
+                        dtgetdata = getData("SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia FROM " + table + " ORDER BY id;");
                         break;
                     case "paczki":
-                        dtgetdata = getData("SELECT id, status, data_utworzenia, data_odbioru, data_dostarczenia, ubezpieczenie, koszt_transportu, nr_listu, wartosc, klient_id FROM " + table + " ORDER BY id;");
+                        dtgetdata = getData("SELECT status, data_utworzenia, data_dostarczenia, ubezpieczenie, koszt_transportu, nr_listu, wartosc, klient_id FROM " + table + " ORDER BY id;"); // data_dostarczenia tego brakuje
                         break;
                 }
                 tabela.DataSource = dtgetdata;
@@ -125,8 +126,11 @@ namespace Magazyn{
                         edit_arr[i].Width = 75;
                         edit_arr[i].Name = "edit_btn" + id.ToString();
                         edit_arr[i].Location = new Point(968, height);
-                        edit_arr[i].Text = "Edytuj " + id;
+                        edit_arr[i].Text = "Edytuj";
                         edit_arr[i].Click += EditButtonClick;
+                        edit_arr[i].BackColor = Color.LightSkyBlue;
+                        edit_arr[i].ForeColor = Color.RoyalBlue;
+                        edit_arr[i].Font = new Font(edit_arr[i].Font ,FontStyle.Bold);
                         this.Controls.Add(edit_arr[i]);
 
                         delete_arr[i] = new System.Windows.Forms.Button();
@@ -134,8 +138,11 @@ namespace Magazyn{
                         delete_arr[i].Width = 75;
                         delete_arr[i].Name = "delete_btn" + id.ToString();
                         delete_arr[i].Location = new Point(1050, height);
-                        delete_arr[i].Text = "Usuń " + id;
+                        delete_arr[i].Text = "Usuń";
                         delete_arr[i].Click += DeleteButtonClick;
+                        delete_arr[i].BackColor = Color.LightSkyBlue;
+                        delete_arr[i].ForeColor = Color.RoyalBlue;
+                        delete_arr[i].Font = new Font(delete_arr[i].Font, FontStyle.Bold);
                         this.Controls.Add(delete_arr[i]);
 
                         i++;
@@ -160,13 +167,13 @@ namespace Magazyn{
                     query = $"SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia FROM {table} WHERE id = {buttonName};";
                     break;
                 case "produkty":
-                    query = $"SELECT nazwa, cechy, cena, waga, ilosc  FROM {table} WHERE id = {buttonName};";
+                    query = $"SELECT nazwa, cechy, cena, waga, ilosc FROM {table} WHERE id = {buttonName};";
                     break;
                 case "klienci":
-                    query = $"SELECT imie, nip, region, pesel, email, telefon, adres FROM {table} WHERE id = {buttonName};";
+                    query = $"SELECT nazwa, nip, region, pesel, email, telefon, adres FROM {table} WHERE id = {buttonName};";
                     break;
                 case "paczki":
-                    query = $"SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia FROM {table} WHERE id = {buttonName};"; //do poprawienia
+                    query = $"SELECT status, data_utworzenia, data_odbioru, data_dostarczenia, ubezpieczenia, koszt_transportu, nr_listu, wartosc FROM {table} WHERE id = {buttonName};"; //do poprawienia
                     break;
             }
 
@@ -245,6 +252,27 @@ namespace Magazyn{
                                         userData[4] = emil.ToString();
                                         userData[5] = telefon.ToString();
                                         userData[6] = adres.ToString();
+                                        add_CreateEdit(true, Convert.ToInt32(buttonName), userData);
+                                        break;
+                                    case "paczki":
+                                        string status = reader.GetString(0);
+                                        string data_utw = reader.GetString(1);
+                                        string data_odb = reader.GetString(2);
+                                        string data_dos = reader.GetString(3);
+                                        string ubz = reader.GetString(4);
+                                        string koszt = reader.GetString(5);
+                                        string nrlistu = reader.GetString(6);
+                                        string wartosc = reader.GetString(7);
+                                        userData = new string[8];
+                                        userData[0] = status;
+                                        userData[1] = data_utw;
+                                        userData[2] = data_odb;
+                                        userData[3] = ubz;
+                                        userData[4] = koszt;
+                                        userData[5] = nrlistu;
+                                        userData[6] = wartosc;
+                                        userData[7] = nrlistu;
+                                        userData[8] = wartosc;
                                         add_CreateEdit(true, Convert.ToInt32(buttonName), userData);
                                         break;
                                 }
@@ -565,13 +593,20 @@ namespace Magazyn{
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void zmieńHasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var change_pass = new Form8(uzyt, password);
             change_pass.Show();
+        }
+
+        private void wylogujToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            var form_login = new Form_Login();
+            form_login.ShowDialog();
         }
     }
 }

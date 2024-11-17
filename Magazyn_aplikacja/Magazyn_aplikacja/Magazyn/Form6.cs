@@ -20,6 +20,7 @@ namespace Magazyn
         NpgsqlConnection vCon;
         NpgsqlCommand vCmd;
         public string addORedit = "";
+        public int edit_id;
         string table = "";
         private void Connect_db() // Polaczenie z baza danych
         {
@@ -46,6 +47,7 @@ namespace Magazyn
                 price_txt.Text = datas[2];
                 weight_txt.Text = datas[3];
                 count_txt.Text = datas[4];
+                edit_id = p_id;
                 addORedit = "edit";
                 this.Text = "Edytuj Produkt";
             }
@@ -84,17 +86,24 @@ namespace Magazyn
                 using (NpgsqlConnection connection = new NpgsqlConnection(connect_string))
                 {
                     connection.Open();
-                    string query = "INSERT INTO produkty(nazwa, cechy, cena, waga, ilosc) VALUES('" + name + "','" + cecha
-                        + "'," + price + "," + weight + ","+count+")";
+                    string query = "";
+                    if (addORedit == "add")
+                        query = "INSERT INTO produkty(nazwa, cechy, cena, waga, ilosc) VALUES('" + name + "','" + cecha
+                        + "'," + price + "," + weight + "," + count + ")";
+                    else if (addORedit == "edit")
+                        query = "UPDATE produkty SET nazwa = @nazwa, cechy = @cechy, waga = @waga, ilosc = @ilosc WHERE id = @id";
                     using (NpgsqlCommand command = new NpgsqlCommand(query, connection)) // wysyłanie danych
                     {
-                        command.Parameters.AddWithValue("nazwa", name);
-                        command.Parameters.AddWithValue("cechy", cecha);
-                        command.Parameters.AddWithValue("cena", price);
-                        command.Parameters.AddWithValue("waga", weight);
-                        command.Parameters.AddWithValue("ilosc", count);
+                        if(addORedit == "edit") command.Parameters.AddWithValue("@id", edit_id);
+                        command.Parameters.AddWithValue("@nazwa", name);
+                        command.Parameters.AddWithValue("@cechy", cecha);
+                        command.Parameters.AddWithValue("@cena", price);
+                        command.Parameters.AddWithValue("@waga", weight);
+                        command.Parameters.AddWithValue("@ilosc", count);
                         int rowsAffected = command.ExecuteNonQuery(); // wysłanie danych (nie działa)
-                        MessageBox.Show("Dodano nowy produkt!!!");
+                        if(addORedit == "add") MessageBox.Show("Dodano nowy produkt!!!");
+                        if (addORedit == "edit") MessageBox.Show("Zmieniono produkt!!!");
+
                         this.Close();
                     }
                 }

@@ -20,6 +20,7 @@ namespace Magazyn
         NpgsqlCommand vCmd;
         string table = "";
         public string addORedit = "";
+        public int edit_id;
         private void Connect_db() // Polaczenie z baza danych
         {
             try
@@ -47,6 +48,7 @@ namespace Magazyn
                 email_txt.Text = datas[4];
                 tel_txt.Text = datas[5];
                 adres_txt.Text = datas[6];
+                edit_id = p_id;
                 addORedit = "edit";
                 this.Text = "Edytuj Klienta";
             }
@@ -82,7 +84,7 @@ namespace Magazyn
                 using (NpgsqlConnection connection = new NpgsqlConnection(connect_string))
                 {
                     connection.Open();
-                    string get_id_query = "SELECT COUNT(*) FROM klienci;";
+                    string get_id_query = "SELECT MAX(id) FROM klienci;";
                     int id_rows = 0;
                     using (NpgsqlCommand command = new NpgsqlCommand(get_id_query, connection)) // liczenie ilości wierszy w tabeli
                     {
@@ -90,20 +92,32 @@ namespace Magazyn
                         id_rows = Convert.ToInt32(result);
                         id_rows++;
                     }
-                    string query = "INSERT INTO klienci(id, nazwa, nip, region, pesel, email, telefon, adres) VALUES(" + id_rows + ",'" + name + "','" + nip
+                    string query = "";
+                    if(addORedit == "add")
+                    {
+                        query = "INSERT INTO klienci(id, nazwa, nip, region, pesel, email, telefon, adres) VALUES(" + id_rows + ",'" + name + "','" + nip
                         + "','" + region + "','" + pesel + "','" + email + "','" + tel + "','" + adres + "')";
+                    }
+                    else if(addORedit == "edit")
+                    {
+                        query = "UPDATE klienci SET nazwa = @nazwa, nip = @nip, region = @region, pesel = @pesel, email = @email, " +
+                            "telefon = @telefon, adres = @adres WHERE id = @id";
+                    }
                     using (NpgsqlCommand command = new NpgsqlCommand(query, connection)) // wysyłanie danych
                     {
-                        command.Parameters.AddWithValue("id", id_rows);
-                        command.Parameters.AddWithValue("nazwa", name);
-                        command.Parameters.AddWithValue("nip", nip);
-                        command.Parameters.AddWithValue("region", region);
-                        command.Parameters.AddWithValue("pesel", pesel);
-                        command.Parameters.AddWithValue("email", email);
-                        command.Parameters.AddWithValue("telefon", tel);
-                        command.Parameters.AddWithValue("adres", adres);
+                        if(addORedit == "add") command.Parameters.AddWithValue("id", id_rows);
+                        if(addORedit == "edit") command.Parameters.AddWithValue("@id", edit_id);
+                        command.Parameters.AddWithValue("@nazwa", name);
+                        command.Parameters.AddWithValue("@nip", nip);
+                        command.Parameters.AddWithValue("@region", region);
+                        command.Parameters.AddWithValue("@pesel", pesel);
+                        command.Parameters.AddWithValue("@email", email);
+                        command.Parameters.AddWithValue("@telefon", tel);
+                        command.Parameters.AddWithValue("@adres", adres);
                         int rowsAffected = command.ExecuteNonQuery(); // wysłanie danych (nie działa)
-                        MessageBox.Show("Dodano nowego klienta!!!");
+                        if (addORedit == "add") MessageBox.Show("Dodano nowego klienta!!!");
+                        if (addORedit == "edit") MessageBox.Show("Zmieniono klienta!!!");
+
                         this.Close();
                     }
                 }

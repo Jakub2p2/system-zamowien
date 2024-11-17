@@ -51,7 +51,7 @@ namespace Magazyn
                 {
                     string uzytkownik = usertxt.Text;
                     string pass = passtxt.Text;
-                   this.Hide();
+                    this.Hide();
                     var main_form = new Form1(uzytkownik, pass);
                     main_form.Show();
                 }

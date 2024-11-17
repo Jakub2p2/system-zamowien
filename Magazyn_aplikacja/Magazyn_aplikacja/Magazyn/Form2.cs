@@ -97,7 +97,7 @@ namespace Magazyn
                     {
                         connection.Open();
 
-                        string get_id_query = "SELECT COUNT(*) FROM uzytkownicy;";
+                        string get_id_query = "SELECT MAX(*) FROM uzytkownicy;";
                         int id_rows = 0;
                         using (NpgsqlCommand command = new NpgsqlCommand(get_id_query, connection)) // liczenie ilości wierszy w tabeli
                         {
