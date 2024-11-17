@@ -57,9 +57,14 @@
             date_utworzenia_txt = new DateTimePicker();
             search_btn = new Button();
             clear_btn = new Button();
+            menuStrip1 = new MenuStrip();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            zmieńHasToolStripMenuItem = new ToolStripMenuItem();
+            wylogujToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)tabela).BeginInit();
             toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // button_users
@@ -354,6 +359,36 @@
             clear_btn.Visible = false;
             clear_btn.Click += clear_btn_Click;
             // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1 });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(1147, 24);
+            menuStrip1.TabIndex = 19;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { zmieńHasToolStripMenuItem, wylogujToolStripMenuItem });
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(22, 20);
+            toolStripMenuItem1.Text = ".";
+            toolStripMenuItem1.Click += toolStripMenuItem1_Click;
+            // 
+            // zmieńHasToolStripMenuItem
+            // 
+            zmieńHasToolStripMenuItem.Name = "zmieńHasToolStripMenuItem";
+            zmieńHasToolStripMenuItem.Size = new Size(180, 22);
+            zmieńHasToolStripMenuItem.Text = "Zmień Haslo";
+            zmieńHasToolStripMenuItem.Click += zmieńHasToolStripMenuItem_Click;
+            // 
+            // wylogujToolStripMenuItem
+            // 
+            wylogujToolStripMenuItem.Name = "wylogujToolStripMenuItem";
+            wylogujToolStripMenuItem.Size = new Size(180, 22);
+            wylogujToolStripMenuItem.Text = "Wyloguj";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -370,6 +405,8 @@
             Controls.Add(button_client);
             Controls.Add(tabela);
             Controls.Add(button_users);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             MaximizeBox = false;
             Name = "Form1";
             Text = "Magazyn";
@@ -379,7 +416,10 @@
             toolStripContainer1.ContentPanel.PerformLayout();
             toolStripContainer1.ResumeLayout(false);
             toolStripContainer1.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -413,5 +453,9 @@
         private TextBox filtr_txt7;
         private Label filtr_lbl9;
         private Label filtr_lbl8;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem zmieńHasToolStripMenuItem;
+        private ToolStripMenuItem wylogujToolStripMenuItem;
     }
 }

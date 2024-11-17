@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics.Metrics;
 using System.Windows.Forms;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 namespace Magazyn{
     public partial class Form1 : Form
@@ -13,6 +14,8 @@ namespace Magazyn{
         NpgsqlCommand vCmd;
         string table = "";
         public string connect_string = "";
+        string uzyt = "";
+        string password = "";
 
         private void Connect_db() // Polaczenie z baza danych
         {
@@ -41,9 +44,11 @@ namespace Magazyn{
             vCon.Close();
             return dt;
         }
-        public Form1()
+        public Form1(string uzytkownik, string pass)
         {
             InitializeComponent();
+            uzyt = uzytkownik;
+            password = pass;
         }
         public void show_table() // funkcja pokazujaca tabelę
         {
@@ -164,7 +169,7 @@ namespace Magazyn{
                     query = $"SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia FROM {table} WHERE id = {buttonName};"; //do poprawienia
                     break;
             }
-            
+
             string[] userData;
             using (NpgsqlConnection connection = new NpgsqlConnection(connect_string))
             {
@@ -217,7 +222,7 @@ namespace Magazyn{
 
                                         userData = new string[5];
                                         userData[0] = nazwa.ToString();
-                                        userData[1] = cechy.ToString(); 
+                                        userData[1] = cechy.ToString();
                                         userData[2] = waga.ToString();
                                         userData[3] = ilosc.ToString();
                                         userData[4] = cena.ToString();
@@ -250,7 +255,8 @@ namespace Magazyn{
                             }
                         }
                     }
-                }catch (Exception ex) { Console.WriteLine(ex.Message); }
+                }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
             }
         }
         private void DeleteButtonClick(object sender, EventArgs e) // zdarzenie usuń
@@ -258,10 +264,10 @@ namespace Magazyn{
             System.Windows.Forms.Button clickedButton = (System.Windows.Forms.Button)sender;
             string buttonName = clickedButton.Name;
             DialogResult dialogResult = MessageBox.Show("Czy napewno chcesz usunąć tą kolumnę?", "UWAGA!!!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (dialogResult == DialogResult.Yes) 
+            if (dialogResult == DialogResult.Yes)
             {
                 using (NpgsqlConnection connection = new NpgsqlConnection(connect_string))
-                { 
+                {
                     connection.Open();
                     buttonName = buttonName.Replace("delete_btn", "");
                     string delete_query = $"DELETE FROM {table} WHERE id = {buttonName};";
@@ -270,7 +276,7 @@ namespace Magazyn{
                         object result = command.ExecuteScalar();
                     }
                     connection.Close();
-                    show_table();   
+                    show_table();
                 }
             }
         }
@@ -372,7 +378,7 @@ namespace Magazyn{
         }
         private void add_btn_Click(object sender, EventArgs e) // otwiera formularz zależnie od wyboru
         {
-            add_CreateEdit(false, 0, []) ;
+            add_CreateEdit(false, 0, []);
         }
         private void filtruj_tabele()
         {
@@ -407,7 +413,7 @@ namespace Magazyn{
                     filtr_lbl3.Text = "Email";
                     filtr_lbl4.Text = "Login";
                     filtr_lbl8.Text = "Rola";
-                    string[] combobox_role = {"Brak", "Administrator", "Sprzedawca", "Magazynier"};
+                    string[] combobox_role = { "Brak", "Administrator", "Sprzedawca", "Magazynier" };
                     comboBox_txt.Items.AddRange(combobox_role);
                     break;
                 case "klienci":
@@ -456,7 +462,7 @@ namespace Magazyn{
                     break;
             }
         }
-        private void search_btn_Click(object sender, EventArgs e) 
+        private void search_btn_Click(object sender, EventArgs e)
         {
             switch (table)
             {
@@ -478,7 +484,7 @@ namespace Magazyn{
                     {
                         DataTable dtgetdata = new DataTable();
                         dtgetdata = getData("SELECT * FROM " + table + " WHERE nr_listu = '" + filtr_txt1.Text + "' OR klient_id = '" + filtr_txt2.Text + "' OR status ='"
-                            + comboBox_txt.Text +"' OR data_utworzenia ='" + date_utworzenia_txt.Text + "' ;");
+                            + comboBox_txt.Text + "' OR data_utworzenia ='" + date_utworzenia_txt.Text + "' ;");
                         tabela.DataSource = dtgetdata;
                     }
                     catch (Exception ex)
@@ -491,7 +497,7 @@ namespace Magazyn{
                     try
                     {
                         DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM " + table + " WHERE nazwa = '" + filtr_txt1.Text + "' OR nip = '" + filtr_txt2.Text + 
+                        dtgetdata = getData("SELECT * FROM " + table + " WHERE nazwa = '" + filtr_txt1.Text + "' OR nip = '" + filtr_txt2.Text +
                         "' OR region = '" + filtr_txt3.Text + "' OR pesel = '" + filtr_txt4.Text + "' OR email = '" + filtr_txt5.Text + "' OR telefon = '" + filtr_txt6.Text + "' OR adres = '" + filtr_txt7.Text + "' ;");
                         tabela.DataSource = dtgetdata;
                     }
@@ -505,7 +511,7 @@ namespace Magazyn{
                     try
                     {
                         DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM " + table + " WHERE imie = '" + filtr_txt1.Text + "' OR nazwisko = '" + filtr_txt2.Text + "' OR email = '" + filtr_txt3.Text + 
+                        dtgetdata = getData("SELECT * FROM " + table + " WHERE imie = '" + filtr_txt1.Text + "' OR nazwisko = '" + filtr_txt2.Text + "' OR email = '" + filtr_txt3.Text +
                             "' OR login = '" + filtr_txt4.Text + "' OR ranga = '" + comboBox_txt.Text + "' ;");
                         tabela.DataSource = dtgetdata;
                     }
@@ -555,6 +561,17 @@ namespace Magazyn{
             filtr_txt7.Text = "";
             comboBox_txt.Items.Clear();
             date_utworzenia_txt.Text = "";
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void zmieńHasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var change_pass = new Form8(uzyt, password);
+            change_pass.Show();
         }
     }
 }

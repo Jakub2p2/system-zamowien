@@ -43,13 +43,16 @@ namespace Magazyn
                 cmd.Parameters.AddWithValue("_username", usertxt.Text);
                 cmd.Parameters.AddWithValue("_password", passtxt.Text);
 
+
                 int res = (int)cmd.ExecuteScalar();
 
                 con.Close();
                 if (res == 1) //kwerenda zakonczona sukcesem
                 {
+                    string uzytkownik = usertxt.Text;
+                    string pass = passtxt.Text;
                    this.Hide();
-                    var main_form = new Form1();
+                    var main_form = new Form1(uzytkownik, pass);
                     main_form.Show();
                 }
                 else if (res == 0) //blad
