@@ -111,6 +111,80 @@ if (isset($_SESSION['user_id'])) {
                                 
                                 echo "</div>";
                                 echo "</div>";
+
+                                echo "<div class='package-products' style='width: 100%; margin-top: 20px;'>";
+                                echo "<h3>Produkty w paczce</h3>";
+
+                                echo "<button onclick='openProductModal()' class='add-product-btn'>Dodaj produkt do paczki</button>";
+
+                                echo "<div class='table-container' style='margin-top: 15px;'>";
+                                echo "<table class='products-table'>
+                                        <thead>
+                                            <tr>
+                                                <th>Nazwa produktu</th>
+                                                <th>Cena</th>
+                                                <th>Waga</th>
+                                                <th>Ilość</th>
+                                                <th>Akcje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>";
+
+                                $query = "SELECT pp.id as pozycja_id, pp.ilosc, p.nazwa, p.cena, p.waga 
+                                          FROM paczki_produkty pp 
+                                          JOIN produkty p ON pp.produkt_id = p.id 
+                                          WHERE pp.paczka_id = $1 
+                                          ORDER BY pp.created_at DESC";
+                                $stmt = pg_prepare($connection, "get_package_products", $query);
+                                $result = pg_execute($connection, "get_package_products", [$id_paczki]);
+
+                                while ($produkt = pg_fetch_assoc($result)) {
+                                    echo "<tr>";
+                                    echo "<td>" . htmlspecialchars($produkt['nazwa']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($produkt['cena']) . " zł</td>";
+                                    echo "<td>" . htmlspecialchars($produkt['waga']) . " kg</td>";
+                                    echo "<td>" . htmlspecialchars($produkt['ilosc']) . "</td>";
+                                    echo "<td><button onclick='deleteProduct(" . $produkt['pozycja_id'] . ")' class='delete-btn'>Usuń</button></td>";
+                                    echo "</tr>";
+                                }
+
+                                echo "</tbody></table>";
+                                echo "</div>";
+
+                                echo "<div id='productModal' class='modal'>
+                                        <div class='modal-content'>
+                                            <span class='close' onclick='closeProductModal()'>&times;</span>
+                                            <h3>Dodaj produkt do paczki</h3>
+                                            <form id='addProductForm'>
+                                                <input type='hidden' name='paczka_id' value='" . $id_paczki . "'>
+                                                <div class='form-group'>
+                                                    <label for='produkt_id'>Wybierz produkt:</label>
+                                                    <select id='produkt_id' name='produkt_id' required class='form-control'>
+                                                        <option value=''>Wybierz produkt</option>";
+
+                                                $produkty_query = "SELECT * FROM produkty WHERE ilosc > 0 ORDER BY nazwa";
+                                                $produkty_result = pg_query($connection, $produkty_query);
+
+                                                while ($produkt = pg_fetch_assoc($produkty_result)) {
+                                                    echo "<option value='" . $produkt['id'] . "'>" . 
+                                                         htmlspecialchars($produkt['nazwa']) . 
+                                                         " (Dostępne: " . $produkt['ilosc'] . " szt., " .
+                                                         "Cena: " . $produkt['cena'] . " zł, " .
+                                                         "Waga: " . $produkt['waga'] . " kg)</option>";
+                                                }
+
+                                                echo "</select>
+                                                </div>
+                                                <div class='form-group'>
+                                                    <label for='ilosc'>Ilość:</label>
+                                                    <input type='number' id='ilosc' name='ilosc' min='1' value='1' required class='form-control'>
+                                                </div>
+                                                <button type='submit' class='submit-btn'>Dodaj</button>
+                                            </form>
+                                        </div>
+                                    </div>";
+
+                                echo "</div>";
                             } else {
                                 echo "<div class='error-message'>Nie znaleziono paczki</div>";
                             }
@@ -134,4 +208,6 @@ if (isset($_SESSION['user_id'])) {
 ?>
 
 <link rel="stylesheet" type="text/css" href="main.css">
-<script src="paczki.js"></script>
+<script src="package_products.js"></script>
+</body>
+</html>
