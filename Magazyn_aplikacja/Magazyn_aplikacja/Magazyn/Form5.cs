@@ -15,13 +15,15 @@ namespace Magazyn
     public partial class package_form : Form
     {
         string usr = "";
+        string uzytkownik = "";
         public string connect_string;
         string strConnDtb = "Server=pg-26a19d25-paczkimagazyn.h.aivencloud.com; port=13890; user id=avnadmin; password=AVNS_3UbLex9BxU_ZYRZvxaY; database=paczuszki; ";
         NpgsqlConnection vCon;
         NpgsqlCommand vCmd;
-        public package_form()
+        public package_form(string uzyt)
         {
             InitializeComponent();
+            uzytkownik = uzyt;
         }
 
         private void Connect_db() // Polaczenie z baza danych
@@ -105,7 +107,7 @@ namespace Magazyn
         {
             usr = klienci_txt.Text;
             this.Close();
-            var form_paczki = new Form9(usr);
+            var form_paczki = new Form9(usr, uzytkownik, false, "", 0, 0,0, "");
             form_paczki.Show();
         }
     }

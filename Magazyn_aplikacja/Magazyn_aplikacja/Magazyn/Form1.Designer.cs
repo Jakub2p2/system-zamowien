@@ -83,6 +83,7 @@
             // tabela
             // 
             tabela.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            tabela.BackgroundColor = Color.Gainsboro;
             tabela.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             tabela.EditMode = DataGridViewEditMode.EditOnEnter;
             tabela.Location = new Point(169, 201);
@@ -379,7 +380,7 @@
             date_utworzenia_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             date_utworzenia_txt.Location = new Point(154, 71);
             date_utworzenia_txt.Name = "date_utworzenia_txt";
-            date_utworzenia_txt.Size = new Size(200, 23);
+            date_utworzenia_txt.Size = new Size(225, 23);
             date_utworzenia_txt.TabIndex = 16;
             date_utworzenia_txt.Visible = false;
             // 
@@ -417,29 +418,32 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { user_bar });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1147, 24);
+            menuStrip1.Size = new Size(1147, 29);
             menuStrip1.TabIndex = 19;
             menuStrip1.Text = "menuStrip1";
             // 
             // user_bar
             // 
             user_bar.DropDownItems.AddRange(new ToolStripItem[] { zmieńHasToolStripMenuItem, wylogujToolStripMenuItem });
+            user_bar.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Underline);
+            user_bar.ForeColor = Color.DarkBlue;
             user_bar.Name = "user_bar";
-            user_bar.Size = new Size(80, 20);
+            user_bar.RightToLeft = RightToLeft.No;
+            user_bar.Size = new Size(113, 25);
             user_bar.Text = "Użytkownik";
             user_bar.Click += toolStripMenuItem1_Click;
             // 
             // zmieńHasToolStripMenuItem
             // 
             zmieńHasToolStripMenuItem.Name = "zmieńHasToolStripMenuItem";
-            zmieńHasToolStripMenuItem.Size = new Size(141, 22);
+            zmieńHasToolStripMenuItem.Size = new Size(176, 26);
             zmieńHasToolStripMenuItem.Text = "Zmień Haslo";
             zmieńHasToolStripMenuItem.Click += zmieńHasToolStripMenuItem_Click;
             // 
             // wylogujToolStripMenuItem
             // 
             wylogujToolStripMenuItem.Name = "wylogujToolStripMenuItem";
-            wylogujToolStripMenuItem.Size = new Size(141, 22);
+            wylogujToolStripMenuItem.Size = new Size(176, 26);
             wylogujToolStripMenuItem.Text = "Wyloguj";
             wylogujToolStripMenuItem.Click += wylogujToolStripMenuItem_Click;
             // 

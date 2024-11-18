@@ -71,7 +71,7 @@ namespace Magazyn{
                         dtgetdata = getData("SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia FROM " + table + " ORDER BY id;");
                         break;
                     case "paczki":
-                        dtgetdata = getData("SELECT status, data_utworzenia, data_dostarczenia, ubezpieczenie, koszt_transportu, nr_listu, wartosc, klient_id FROM " + table + " ORDER BY id;"); // data_dostarczenia tego brakuje
+                        dtgetdata = getData("SELECT id, status, data_utworzenia, data_dostarczenia, ubezpieczenie, koszt_transportu, nr_listu, wartosc, klient_id FROM " + table + " ORDER BY id;"); // data_dostarczenia tego brakuje
                         break;
                 }
                 tabela.DataSource = dtgetdata;
@@ -304,6 +304,7 @@ namespace Magazyn{
                         object result = command.ExecuteScalar();
                     }
                     connection.Close();
+                    create_btn(table);
                     show_table();
                 }
             }
@@ -399,7 +400,7 @@ namespace Magazyn{
                     addelivery_form.Show();
                     break;
                 case "paczki":
-                    var addpackage_form = new package_form();
+                    var addpackage_form = new package_form(uzyt);
                     addpackage_form.Show();
                     break;
             }
