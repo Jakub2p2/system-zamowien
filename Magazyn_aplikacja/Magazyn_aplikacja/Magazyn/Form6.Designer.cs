@@ -46,6 +46,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.ForeColor = Color.RoyalBlue;
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
             label1.Size = new Size(97, 15);
@@ -55,6 +56,7 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.ForeColor = Color.RoyalBlue;
             label2.Location = new Point(12, 86);
             label2.Name = "label2";
             label2.Size = new Size(43, 15);
@@ -64,6 +66,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = Color.RoyalBlue;
             label3.Location = new Point(12, 177);
             label3.Name = "label3";
             label3.Size = new Size(37, 15);
@@ -73,6 +76,7 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.ForeColor = Color.RoyalBlue;
             label4.Location = new Point(12, 262);
             label4.Name = "label4";
             label4.Size = new Size(87, 15);
@@ -82,6 +86,7 @@
             // label5
             // 
             label5.AutoSize = true;
+            label5.ForeColor = Color.RoyalBlue;
             label5.Location = new Point(12, 348);
             label5.Name = "label5";
             label5.Size = new Size(106, 15);
@@ -111,22 +116,26 @@
             // 
             // quit_btn
             // 
+            quit_btn.BackColor = Color.LightSkyBlue;
+            quit_btn.ForeColor = Color.RoyalBlue;
             quit_btn.Location = new Point(12, 473);
             quit_btn.Name = "quit_btn";
             quit_btn.Size = new Size(131, 23);
             quit_btn.TabIndex = 11;
             quit_btn.Text = "Anuluj";
-            quit_btn.UseVisualStyleBackColor = true;
+            quit_btn.UseVisualStyleBackColor = false;
             quit_btn.Click += quit_btn_Click;
             // 
             // add_btn
             // 
+            add_btn.BackColor = Color.LightSkyBlue;
+            add_btn.ForeColor = Color.RoyalBlue;
             add_btn.Location = new Point(221, 473);
             add_btn.Name = "add_btn";
             add_btn.Size = new Size(131, 23);
             add_btn.TabIndex = 12;
             add_btn.Text = "Dodaj produkt";
-            add_btn.UseVisualStyleBackColor = true;
+            add_btn.UseVisualStyleBackColor = false;
             add_btn.Click += add_btn_Click;
             // 
             // count_txt
@@ -147,6 +156,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Gainsboro;
             ClientSize = new Size(364, 508);
             ControlBox = false;
             Controls.Add(cecha_txt);
@@ -161,6 +171,9 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
+            ForeColor = SystemColors.ControlText;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "product_form";
             Text = "Dodaj nowy produkt";
             Load += product_form_Load;

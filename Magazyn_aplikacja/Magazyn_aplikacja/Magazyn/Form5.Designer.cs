@@ -103,6 +103,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.ForeColor = Color.RoyalBlue;
             label1.Location = new Point(16, 60);
             label1.Name = "label1";
             label1.Size = new Size(132, 15);
@@ -112,6 +113,7 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.ForeColor = Color.RoyalBlue;
             label2.Location = new Point(158, 39);
             label2.Name = "label2";
             label2.Size = new Size(29, 15);
@@ -121,6 +123,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = Color.RoyalBlue;
             label3.Location = new Point(158, 90);
             label3.Name = "label3";
             label3.Size = new Size(39, 15);
@@ -130,6 +133,7 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.ForeColor = Color.RoyalBlue;
             label4.Location = new Point(281, 39);
             label4.Name = "label4";
             label4.Size = new Size(52, 15);
@@ -139,6 +143,7 @@
             // label5
             // 
             label5.AutoSize = true;
+            label5.ForeColor = Color.RoyalBlue;
             label5.Location = new Point(281, 90);
             label5.Name = "label5";
             label5.Size = new Size(48, 15);
@@ -148,6 +153,7 @@
             // label6
             // 
             label6.AutoSize = true;
+            label6.ForeColor = Color.RoyalBlue;
             label6.Location = new Point(396, 90);
             label6.Name = "label6";
             label6.Size = new Size(40, 15);
@@ -157,6 +163,7 @@
             // label7
             // 
             label7.AutoSize = true;
+            label7.ForeColor = Color.RoyalBlue;
             label7.Location = new Point(396, 39);
             label7.Name = "label7";
             label7.Size = new Size(41, 15);
@@ -165,22 +172,26 @@
             // 
             // searchbtn
             // 
+            searchbtn.BackColor = Color.LightSkyBlue;
+            searchbtn.ForeColor = Color.RoyalBlue;
             searchbtn.Location = new Point(551, 105);
             searchbtn.Name = "searchbtn";
             searchbtn.Size = new Size(99, 23);
             searchbtn.TabIndex = 14;
             searchbtn.Text = "Szukaj";
-            searchbtn.UseVisualStyleBackColor = true;
+            searchbtn.UseVisualStyleBackColor = false;
             searchbtn.Click += searchbtn_Click;
             // 
             // button1
             // 
+            button1.BackColor = Color.LightSkyBlue;
+            button1.ForeColor = Color.RoyalBlue;
             button1.Location = new Point(551, 57);
             button1.Name = "button1";
             button1.Size = new Size(99, 23);
             button1.TabIndex = 15;
             button1.Text = "Wyczyść";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // tabela
@@ -203,6 +214,7 @@
             // label8
             // 
             label8.AutoSize = true;
+            label8.ForeColor = Color.RoyalBlue;
             label8.Location = new Point(16, 152);
             label8.Name = "label8";
             label8.Size = new Size(45, 15);
@@ -211,18 +223,21 @@
             // 
             // confirm_btn
             // 
+            confirm_btn.BackColor = Color.LightSkyBlue;
+            confirm_btn.ForeColor = Color.RoyalBlue;
             confirm_btn.Location = new Point(193, 149);
             confirm_btn.Name = "confirm_btn";
             confirm_btn.Size = new Size(114, 23);
             confirm_btn.TabIndex = 19;
             confirm_btn.Text = "Zatwierdź klienta";
-            confirm_btn.UseVisualStyleBackColor = true;
+            confirm_btn.UseVisualStyleBackColor = false;
             confirm_btn.Click += confirm_btn_Click;
             // 
             // package_form
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Gainsboro;
             ClientSize = new Size(734, 450);
             Controls.Add(confirm_btn);
             Controls.Add(label8);
@@ -244,6 +259,8 @@
             Controls.Add(emailtxtbox);
             Controls.Add(niptxtbox);
             Controls.Add(nametxtbox);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "package_form";
             Text = "Dodaj Nową Paczkę";
             Load += Form5_Load;

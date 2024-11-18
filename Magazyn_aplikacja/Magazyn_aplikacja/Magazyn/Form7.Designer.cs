@@ -49,6 +49,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.ForeColor = Color.RoyalBlue;
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
             label1.Size = new Size(30, 15);
@@ -58,6 +59,7 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.ForeColor = Color.RoyalBlue;
             label2.Location = new Point(12, 75);
             label2.Name = "label2";
             label2.Size = new Size(26, 15);
@@ -67,6 +69,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = Color.RoyalBlue;
             label3.Location = new Point(12, 141);
             label3.Name = "label3";
             label3.Size = new Size(49, 15);
@@ -76,6 +79,7 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.ForeColor = Color.RoyalBlue;
             label4.Location = new Point(12, 205);
             label4.Name = "label4";
             label4.Size = new Size(38, 15);
@@ -85,6 +89,7 @@
             // label5
             // 
             label5.AutoSize = true;
+            label5.ForeColor = Color.RoyalBlue;
             label5.Location = new Point(12, 267);
             label5.Name = "label5";
             label5.Size = new Size(36, 15);
@@ -94,6 +99,7 @@
             // label6
             // 
             label6.AutoSize = true;
+            label6.ForeColor = Color.RoyalBlue;
             label6.Location = new Point(12, 331);
             label6.Name = "label6";
             label6.Size = new Size(45, 15);
@@ -103,6 +109,7 @@
             // label7
             // 
             label7.AutoSize = true;
+            label7.ForeColor = Color.RoyalBlue;
             label7.Location = new Point(12, 389);
             label7.Name = "label7";
             label7.Size = new Size(37, 15);
@@ -160,28 +167,33 @@
             // 
             // close_btn
             // 
+            close_btn.BackColor = Color.LightSkyBlue;
+            close_btn.ForeColor = Color.RoyalBlue;
             close_btn.Location = new Point(12, 456);
             close_btn.Name = "close_btn";
             close_btn.Size = new Size(75, 23);
             close_btn.TabIndex = 14;
             close_btn.Text = "Anuluj";
-            close_btn.UseVisualStyleBackColor = true;
+            close_btn.UseVisualStyleBackColor = false;
             close_btn.Click += close_btn_Click;
             // 
             // button2
             // 
+            button2.BackColor = Color.LightSkyBlue;
+            button2.ForeColor = Color.RoyalBlue;
             button2.Location = new Point(148, 456);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);
             button2.TabIndex = 15;
             button2.Text = "Dodaj";
-            button2.UseVisualStyleBackColor = true;
+            button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
             // add_client
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Gainsboro;
             ClientSize = new Size(394, 502);
             Controls.Add(button2);
             Controls.Add(close_btn);
@@ -199,6 +211,8 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "add_client";
             Text = "Dodaj klienta";
             Load += add_client_Load;

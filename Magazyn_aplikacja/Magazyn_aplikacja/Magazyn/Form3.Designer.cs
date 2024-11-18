@@ -103,6 +103,8 @@
             Controls.Add(passtxt);
             Controls.Add(usertxt);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "Form_Login";
             Text = "Login";
             Load += Form_Login_Load;

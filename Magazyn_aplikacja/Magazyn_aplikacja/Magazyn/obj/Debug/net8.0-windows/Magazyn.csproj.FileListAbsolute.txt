@@ -275,3 +275,4 @@ C:\Users\USER\Documents\GitHub\system-zamowien\Magazyn_aplikacja\Magazyn_aplikac
 C:\Users\USER\Documents\GitHub\system-zamowien\Magazyn_aplikacja\Magazyn_aplikacja\Magazyn\obj\Debug\net8.0-windows\Magazyn.pdb
 C:\Users\USER\Documents\GitHub\system-zamowien\Magazyn_aplikacja\Magazyn_aplikacja\Magazyn\obj\Debug\net8.0-windows\Magazyn.genruntimeconfig.cache
 C:\Users\USER\Documents\GitHub\system-zamowien\Magazyn_aplikacja\Magazyn_aplikacja\Magazyn\obj\Debug\net8.0-windows\ref\Magazyn.dll
+C:\Users\aleks\OneDrive\Dokumenty\GitHub\system-zamowien\Magazyn_aplikacja\Magazyn_aplikacja\Magazyn\obj\Debug\net8.0-windows\Magazyn.Form8.resources

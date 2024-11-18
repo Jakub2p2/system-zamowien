@@ -40,6 +40,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.ForeColor = Color.RoyalBlue;
             label1.Location = new Point(83, 19);
             label1.Name = "label1";
             label1.Size = new Size(116, 15);
@@ -49,6 +50,7 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.ForeColor = Color.RoyalBlue;
             label2.Location = new Point(83, 93);
             label2.Name = "label2";
             label2.Size = new Size(106, 15);
@@ -58,6 +60,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = Color.RoyalBlue;
             label3.Location = new Point(83, 164);
             label3.Name = "label3";
             label3.Size = new Size(162, 15);
@@ -87,18 +90,21 @@
             // 
             // confirmbtn
             // 
+            confirmbtn.BackColor = Color.LightSkyBlue;
+            confirmbtn.ForeColor = Color.RoyalBlue;
             confirmbtn.Location = new Point(83, 224);
             confirmbtn.Name = "confirmbtn";
             confirmbtn.Size = new Size(106, 23);
             confirmbtn.TabIndex = 6;
             confirmbtn.Text = "Zmien Haslo";
-            confirmbtn.UseVisualStyleBackColor = true;
+            confirmbtn.UseVisualStyleBackColor = false;
             confirmbtn.Click += confirmbtn_Click;
             // 
             // Form8
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Gainsboro;
             ClientSize = new Size(321, 285);
             Controls.Add(confirmbtn);
             Controls.Add(confirmpasstxt);
@@ -107,6 +113,9 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
+            ForeColor = SystemColors.ControlText;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "Form8";
             Text = "Zmień Haslo";
             Load += Form_Login_Load;

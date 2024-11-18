@@ -461,6 +461,7 @@
             Controls.Add(tabela);
             Controls.Add(button_users);
             Controls.Add(menuStrip1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             MainMenuStrip = menuStrip1;
             MaximizeBox = false;
             Name = "Form1";

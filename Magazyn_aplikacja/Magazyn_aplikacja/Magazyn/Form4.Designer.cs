@@ -45,6 +45,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.ForeColor = Color.RoyalBlue;
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
             label1.Size = new Size(42, 15);
@@ -54,6 +55,7 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.ForeColor = Color.RoyalBlue;
             label2.Location = new Point(12, 87);
             label2.Name = "label2";
             label2.Size = new Size(64, 15);
@@ -63,6 +65,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = Color.RoyalBlue;
             label3.Location = new Point(12, 175);
             label3.Name = "label3";
             label3.Size = new Size(179, 15);
@@ -72,6 +75,7 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.ForeColor = Color.RoyalBlue;
             label4.Location = new Point(12, 260);
             label4.Name = "label4";
             label4.Size = new Size(97, 15);
@@ -111,22 +115,26 @@
             // 
             // close_window
             // 
+            close_window.BackColor = Color.LightSkyBlue;
+            close_window.ForeColor = Color.RoyalBlue;
             close_window.Location = new Point(12, 351);
             close_window.Name = "close_window";
             close_window.Size = new Size(75, 23);
             close_window.TabIndex = 10;
             close_window.Text = "Anuluj";
-            close_window.UseVisualStyleBackColor = true;
+            close_window.UseVisualStyleBackColor = false;
             close_window.Click += close_window_Click_1;
             // 
             // save_button
             // 
+            save_button.BackColor = Color.LightSkyBlue;
+            save_button.ForeColor = Color.RoyalBlue;
             save_button.Location = new Point(138, 351);
             save_button.Name = "save_button";
             save_button.Size = new Size(75, 23);
             save_button.TabIndex = 11;
             save_button.Text = "Zapisz";
-            save_button.UseVisualStyleBackColor = true;
+            save_button.UseVisualStyleBackColor = false;
             save_button.Click += save_button_Click_1;
             // 
             // textBox2
@@ -140,6 +148,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Gainsboro;
             ClientSize = new Size(370, 406);
             Controls.Add(save_button);
             Controls.Add(close_window);
@@ -152,6 +161,8 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "delivery_form";
             Text = "Dodaj sposób dostawy";
             Load += delivery_form_Load;
