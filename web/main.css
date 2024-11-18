@@ -727,3 +727,34 @@ body {
 .delete-btn:hover {
     background-color: #da190b;
 }
+
+.package-status-summary {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.status-summary-item {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.status-summary-item:last-child {
+    margin-bottom: 0;
+}
+
+.status-summary-item h4 {
+    color: #666;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.status-summary-item p {
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
