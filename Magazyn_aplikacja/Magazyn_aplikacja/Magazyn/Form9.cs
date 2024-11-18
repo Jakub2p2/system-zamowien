@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -157,7 +158,7 @@ namespace Magazyn
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(state == "przygotowany_do_wys")
+            if (state == "przygotowany_do_wys")
             {
                 this.Close();
                 var choose_delivery = new Form11(uzyt, uzytkownik, produkt, id_produkt, price, weigth, state);
@@ -173,11 +174,11 @@ namespace Magazyn
                 string getid_query = "SELECT MAX(id) FROM paczki;";
                 int clientid = 0, userid = 0, id = 0;
                 using (var command = new NpgsqlCommand(getclient_id, connection))
-                    using (var reader = command.ExecuteReader()) if (reader.Read()) clientid = reader.GetInt32(0);
+                using (var reader = command.ExecuteReader()) if (reader.Read()) clientid = reader.GetInt32(0);
                 using (var command = new NpgsqlCommand(getuser_id, connection))
-                    using (var reader = command.ExecuteReader()) if (reader.Read()) userid = reader.GetInt32(0);
+                using (var reader = command.ExecuteReader()) if (reader.Read()) userid = reader.GetInt32(0);
                 using (var command = new NpgsqlCommand(getid_query, connection))
-                    using (var reader = command.ExecuteReader()) if (reader.Read()) id = reader.GetInt32(0);
+                using (var reader = command.ExecuteReader()) if (reader.Read()) id = reader.GetInt32(0);
                 using (var command = new NpgsqlCommand($"UPDATE paczki SET status = @status WHERE id = @id", connection))
                 {
                     command.Parameters.AddWithValue("@status", state);
@@ -192,7 +193,28 @@ namespace Magazyn
 
         private void look_paczka_Click(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void wstrzymaj_btn_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Czy napewno chcesz wstrzymać paczkę?", "UWAGA!!!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (dialogResult == DialogResult.Yes)
+            {
+                using (NpgsqlConnection connection = new NpgsqlConnection(con_string))
+                {
+                    string getid_query = "SELECT MAX(id) FROM paczki;";
+                    int id = 0;
+                    using (var command = new NpgsqlCommand(getid_query, connection))
+                    using (var reader = command.ExecuteReader()) if (reader.Read()) id = reader.GetInt32(0);
+                    using (var command = new NpgsqlCommand($"UPDATE paczki SET status = @status WHERE id = @id", connection))
+                    {
+                        command.Parameters.AddWithValue("@status", "wstrzymany");
+                        command.Parameters.AddWithValue("@id", id);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
         }
     }
 }

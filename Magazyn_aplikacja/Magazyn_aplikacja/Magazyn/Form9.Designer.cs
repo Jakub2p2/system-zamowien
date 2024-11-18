@@ -592,6 +592,7 @@
             wstrzymaj_btn.Text = "Wstrzymaj paczkę (oczekiwanie na towar)";
             wstrzymaj_btn.UseVisualStyleBackColor = false;
             wstrzymaj_btn.Visible = false;
+            wstrzymaj_btn.Click += wstrzymaj_btn_Click;
             // 
             // Form9
             // 
