@@ -112,6 +112,54 @@ if (isset($_SESSION['user_id'])) {
                                 echo "</div>";
                                 echo "</div>";
 
+                                echo "<div class='package-status-summary'>";
+                                echo "<h3>Podsumowanie paczki</h3>";
+
+                                $query_count = "SELECT COUNT(*) as total FROM paczki_produkty WHERE paczka_id = $1";
+                                $stmt = pg_prepare($connection, "count_products", $query_count);
+                                $result_count = pg_execute($connection, "count_products", [$id_paczki]);
+                                $count = pg_fetch_assoc($result_count);
+
+                                $query_value = "SELECT COALESCE(SUM(pp.ilosc * p.cena), 0) as total_value 
+                                                FROM paczki_produkty pp 
+                                                JOIN produkty p ON pp.produkt_id = p.id 
+                                                WHERE pp.paczka_id = $1";
+                                $stmt = pg_prepare($connection, "calc_value", $query_value);
+                                $result_value = pg_execute($connection, "calc_value", [$id_paczki]);
+                                $value = pg_fetch_assoc($result_value);
+                                $total_value = $value['total_value'];
+
+                                $query_weight = "SELECT COALESCE(SUM(pp.ilosc * p.waga), 0) as total_weight 
+                                                 FROM paczki_produkty pp 
+                                                 JOIN produkty p ON pp.produkt_id = p.id 
+                                                 WHERE pp.paczka_id = $1";
+                                $stmt = pg_prepare($connection, "calc_weight", $query_weight);
+                                $result_weight = pg_execute($connection, "calc_weight", [$id_paczki]);
+                                $weight = pg_fetch_assoc($result_weight);
+                                $total_weight = $weight['total_weight'];
+
+                                echo "<div class='status-summary-item'>";
+                                echo "<h4>Status paczki</h4>";
+                                echo "<p>" . htmlspecialchars($row['status']) . " 0%</p>";
+                                echo "</div>";
+
+                                echo "<div class='status-summary-item'>";
+                                echo "<h4>Spakowanych produktów</h4>";
+                                echo "<p>0/" . ($count['total'] ?? 0) . "</p>";
+                                echo "</div>";
+
+                                echo "<div class='status-summary-item'>";
+                                echo "<h4>Wartość paczki</h4>";
+                                echo "<p>" . number_format($total_value, 2) . " zł</p>";
+                                echo "</div>";
+
+                                echo "<div class='status-summary-item'>";
+                                echo "<h4>Waga paczki</h4>";
+                                echo "<p>" . number_format($total_weight, 2) . " kg</p>";
+                                echo "</div>";
+
+                                echo "</div>";
+
                                 echo "<div class='package-products' style='width: 100%; margin-top: 20px;'>";
                                 echo "<h3>Produkty w paczce</h3>";
 
