@@ -139,7 +139,7 @@ namespace Magazyn
                 }
                 connection.Close();
             }
-            var form_paczki = new Form9(klient, uzytkownik, true, selected_product, produkt_id, cena, waga, "nowy");
+            var form_paczki = new Form9(klient, uzytkownik, selected_product, produkt_id, cena, waga, "nowy");
             form_paczki.Show();
             this.Close();
         }

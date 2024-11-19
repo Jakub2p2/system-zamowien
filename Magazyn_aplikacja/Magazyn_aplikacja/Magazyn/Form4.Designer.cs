@@ -45,45 +45,50 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label1.ForeColor = Color.RoyalBlue;
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
-            label1.Size = new Size(42, 15);
+            label1.Size = new Size(44, 15);
             label1.TabIndex = 0;
             label1.Text = "Nazwa";
             // 
             // label2
             // 
             label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label2.ForeColor = Color.RoyalBlue;
             label2.Location = new Point(12, 87);
             label2.Name = "label2";
-            label2.Size = new Size(64, 15);
+            label2.Size = new Size(66, 15);
             label2.TabIndex = 1;
             label2.Text = "Cena za kg";
             // 
             // label3
             // 
             label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label3.ForeColor = Color.RoyalBlue;
             label3.Location = new Point(12, 175);
             label3.Name = "label3";
-            label3.Size = new Size(179, 15);
+            label3.Size = new Size(187, 15);
             label3.TabIndex = 2;
             label3.Text = "Cena ubezpieczenia [% wartości]";
             // 
             // label4
             // 
             label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label4.ForeColor = Color.RoyalBlue;
             label4.Location = new Point(12, 260);
             label4.Name = "label4";
-            label4.Size = new Size(97, 15);
+            label4.Size = new Size(101, 15);
             label4.TabIndex = 3;
             label4.Text = "Link do śledzenia";
             // 
             // textBox1
             // 
+            textBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             textBox1.Location = new Point(12, 27);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(100, 23);
@@ -91,6 +96,7 @@
             // 
             // textBox3
             // 
+            textBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             textBox3.Location = new Point(12, 278);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(100, 23);
@@ -98,24 +104,28 @@
             // 
             // numericUpDown1
             // 
+            numericUpDown1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             numericUpDown1.Location = new Point(12, 193);
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(120, 23);
             numericUpDown1.TabIndex = 8;
+            numericUpDown1.ValueChanged += numericUpDown1_ValueChanged;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 10F);
+            label5.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             label5.Location = new Point(138, 195);
             label5.Name = "label5";
-            label5.Size = new Size(20, 19);
+            label5.Size = new Size(21, 19);
             label5.TabIndex = 9;
             label5.Text = "%";
+            label5.Click += label5_Click;
             // 
             // close_window
             // 
             close_window.BackColor = Color.LightSkyBlue;
+            close_window.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             close_window.ForeColor = Color.RoyalBlue;
             close_window.Location = new Point(12, 351);
             close_window.Name = "close_window";
@@ -128,6 +138,7 @@
             // save_button
             // 
             save_button.BackColor = Color.LightSkyBlue;
+            save_button.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             save_button.ForeColor = Color.RoyalBlue;
             save_button.Location = new Point(138, 351);
             save_button.Name = "save_button";
@@ -139,6 +150,7 @@
             // 
             // textBox2
             // 
+            textBox2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             textBox2.Location = new Point(12, 105);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(100, 23);

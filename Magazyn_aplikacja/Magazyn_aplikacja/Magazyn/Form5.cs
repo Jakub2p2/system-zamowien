@@ -107,7 +107,7 @@ namespace Magazyn
         {
             usr = klienci_txt.Text;
             this.Close();
-            var form_paczki = new Form9(usr, uzytkownik, false, "", 0, 0,0, "");
+            var form_paczki = new Form9(usr, uzytkownik);
             form_paczki.Show();
         }
     }

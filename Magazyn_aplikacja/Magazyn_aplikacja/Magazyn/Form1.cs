@@ -71,7 +71,7 @@ namespace Magazyn{
                         dtgetdata = getData("SELECT nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia FROM " + table + " ORDER BY id;");
                         break;
                     case "paczki":
-                        dtgetdata = getData("SELECT id, status, data_utworzenia, data_dostarczenia, ubezpieczenie, koszt_transportu, nr_listu, wartosc, klient_id FROM " + table + " ORDER BY id;"); // data_dostarczenia tego brakuje
+                        dtgetdata = getData("SELECT status, data_utworzenia, data_dostarczenia, ubezpieczenie, koszt_transportu, nr_listu, wartosc, klient_id FROM " + table + " ORDER BY id;"); // data_dostarczenia tego brakuje
                         break;
                 }
                 tabela.DataSource = dtgetdata;
@@ -210,7 +210,7 @@ namespace Magazyn{
                                     case "dostawy":
                                         string name = reader.GetString(0);
                                         double cena_kg = reader.GetDouble(1);
-                                        int cena_ubz = reader.GetInt32(2);
+                                        double cena_ubz = reader.GetInt32(2);
                                         string link = reader.GetString(3);
 
                                         userData = new string[4];
@@ -589,6 +589,10 @@ namespace Magazyn{
             filtr_txt6.Text = "";
             filtr_txt7.Text = "";
             comboBox_txt.Items.Clear();
+            comboBox_txt.Text = string.Empty;
+           /* if(table == "uzytkownicy") comboBox_txt.Items.AddRange(new object[] { "Brak", "Administrator", "Sprzedawca", "Magazynier" });
+            if (table == "paczki") comboBox_txt.Items.AddRange(new object[] { "--Wszystkie--", "Nowa", "Towar zamówiony", "Kompletacja paczki", "Towar przygotowany od wysyłki",
+                    "Oczekiwanie na kuriera", "Towar odebrany przez kuriera", "Wstrzymany" });*/
             date_utworzenia_txt.Text = "";
         }
 

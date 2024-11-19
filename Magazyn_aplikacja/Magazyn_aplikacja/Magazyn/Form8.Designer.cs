@@ -40,35 +40,39 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label1.ForeColor = Color.RoyalBlue;
             label1.Location = new Point(83, 19);
             label1.Name = "label1";
-            label1.Size = new Size(116, 15);
+            label1.Size = new Size(120, 15);
             label1.TabIndex = 0;
             label1.Text = "Wpisz obecne Haslo:";
             // 
             // label2
             // 
             label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label2.ForeColor = Color.RoyalBlue;
             label2.Location = new Point(83, 93);
             label2.Name = "label2";
-            label2.Size = new Size(106, 15);
+            label2.Size = new Size(110, 15);
             label2.TabIndex = 1;
             label2.Text = "Wpisz nowe Haslo:";
             // 
             // label3
             // 
             label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label3.ForeColor = Color.RoyalBlue;
             label3.Location = new Point(83, 164);
             label3.Name = "label3";
-            label3.Size = new Size(162, 15);
+            label3.Size = new Size(168, 15);
             label3.TabIndex = 2;
             label3.Text = "Wpisz nowe Haslo ponownie:";
             // 
             // currentpasstxt
             // 
+            currentpasstxt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             currentpasstxt.Location = new Point(83, 37);
             currentpasstxt.Name = "currentpasstxt";
             currentpasstxt.Size = new Size(100, 23);
@@ -76,6 +80,7 @@
             // 
             // newpasstxt
             // 
+            newpasstxt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             newpasstxt.Location = new Point(83, 111);
             newpasstxt.Name = "newpasstxt";
             newpasstxt.Size = new Size(100, 23);
@@ -83,6 +88,7 @@
             // 
             // confirmpasstxt
             // 
+            confirmpasstxt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             confirmpasstxt.Location = new Point(83, 182);
             confirmpasstxt.Name = "confirmpasstxt";
             confirmpasstxt.Size = new Size(100, 23);
@@ -91,6 +97,7 @@
             // confirmbtn
             // 
             confirmbtn.BackColor = Color.LightSkyBlue;
+            confirmbtn.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             confirmbtn.ForeColor = Color.RoyalBlue;
             confirmbtn.Location = new Point(83, 224);
             confirmbtn.Name = "confirmbtn";

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/WFEmBXpAm252FzX7Ck2PFndRrLoZ1mCFB4ZlQfROsaSFuSdOTLB9FekcSFChbkMD/GNJqBACvGpx9XR2LI42Q==",
+  "dgSpecHash": "PVJD6g6b8Wa6FSE6vGzYLHgZkxkwtiMXY3yE6La1zXiXOY70rHEjNM48+tKo2mRxxX9hRAcsBjZwp8/6m0ICgA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\USER\\Documents\\GitHub\\system-zamowien\\Magazyn_aplikacja\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj",
+  "projectFilePath": "D:\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\USER\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\USER\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",

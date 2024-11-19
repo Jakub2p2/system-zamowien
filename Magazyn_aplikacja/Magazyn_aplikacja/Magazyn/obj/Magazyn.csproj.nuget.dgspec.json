@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\USER\\Documents\\GitHub\\system-zamowien\\Magazyn_aplikacja\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj": {}
+    "D:\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj": {}
   },
   "projects": {
-    "C:\\Users\\USER\\Documents\\GitHub\\system-zamowien\\Magazyn_aplikacja\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj": {
+    "D:\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\USER\\Documents\\GitHub\\system-zamowien\\Magazyn_aplikacja\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj",
+        "projectUniqueName": "D:\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj",
         "projectName": "Magazyn",
-        "projectPath": "C:\\Users\\USER\\Documents\\GitHub\\system-zamowien\\Magazyn_aplikacja\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj",
+        "projectPath": "D:\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj",
         "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\USER\\Documents\\GitHub\\system-zamowien\\Magazyn_aplikacja\\Magazyn_aplikacja\\Magazyn\\obj\\",
+        "outputPath": "D:\\Magazyn_aplikacja\\Magazyn\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -41,50 +41,84 @@ namespace Magazyn
         {
             string dostawa = dostawcy_txt.Text;
             string list = textBox1.Text;
-            string data_odb = dateTimePicker1.Text;
-            string data_przew = dateTimePicker2.Text;
-            double ubz = 0, cena = 0;
+
+            DateTime data_odb = dateTimePicker1.Value.Date;  
+            DateTime data_przew = dateTimePicker2.Value.Date;
+            double? ubz = 0; 
+            double cena = 0;
+
             using (NpgsqlConnection connection = new NpgsqlConnection(con_string))
             {
                 connection.Open();
+
                 int id = 0;
-                using (var command = new NpgsqlCommand($"SELECT MAX(id) FROM paczki", connection)) // tymczasowe rozwiązanie
+                using (var command = new NpgsqlCommand("SELECT MAX(id) FROM paczki", connection))
                 {
-                    using (var reader = command.ExecuteReader()) if (reader.Read()) id = reader.GetInt32(0);
-                }
-                int dostawcy_id = 0;
-                string getdelivery_id = $"SELECT id FROM dostawy WHERE nazwa = '{dostawa}';";
-                string update_paczki = "UPDATE paczki SET data_odbioru = @data_odbioru, data_dostarczenia = @data_dostarczenia, " +
-                    "ubezpieczenie = @ubezpieczenie, nr_listu = @nr_listu, koszt_transportu = @koszt_transportu, dostawa_id = @dostawa_id WHERE id = @id;";
-                using (var command = new NpgsqlCommand(getdelivery_id, connection)) using (var reader = command.ExecuteReader()) if (reader.Read()) dostawcy_id = reader.GetInt32(0);
-                if (checkBox1.Checked)
-                {
-                    using (var command = new NpgsqlCommand($"SELECT cena_ubezpieczenia FROM dostawy WHERE id = {dostawcy_id}", connection))
+                    using (var reader = command.ExecuteReader())
                     {
-                        using (var reader = command.ExecuteReader()) if (reader.Read()) ubz = reader.GetInt32(0);
+                        if (reader.Read()) id = reader.GetInt32(0);
                     }
                 }
-                using (var command = new NpgsqlCommand($"SELECT cena_za_kg FROM dostawy WHERE id = {dostawcy_id}", connection))
+
+                int dostawcy_id = 0;
+                string getdelivery_id = $"SELECT id FROM dostawy WHERE nazwa = @dostawa";
+                using (var command = new NpgsqlCommand(getdelivery_id, connection))
                 {
-                    using (var reader = command.ExecuteReader()) if (reader.Read()) cena = reader.GetInt32(0);
+                    command.Parameters.AddWithValue("@dostawa", dostawa);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read()) dostawcy_id = reader.GetInt32(0);
+                    }
                 }
+                if (checkBox1.Checked)
+                {
+                    using (var command = new NpgsqlCommand("SELECT cena_ubezpieczenia FROM dostawy WHERE id = @dostawa_id", connection))
+                    {
+                        command.Parameters.AddWithValue("@dostawa_id", dostawcy_id);
+                        using (var reader = command.ExecuteReader())
+                        {
+                            if (reader.Read()) ubz = reader.GetInt32(0);
+                        }
+                    }
+                }
+                using (var command = new NpgsqlCommand("SELECT cena_za_kg FROM dostawy WHERE id = @dostawa_id", connection))
+                {
+                    command.Parameters.AddWithValue("@dostawa_id", dostawcy_id);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read()) cena = reader.GetInt32(0);
+                    }
+                }
+                string update_paczki = "UPDATE paczki SET data_odbioru = @data_odbioru, data_dostarczenia = @data_dostarczenia, " +
+                                       "ubezpieczenie = @ubezpieczenie, nr_listu = @nr_listu, koszt_transportu = @koszt_transportu, dostawa_id = @dostawa_id WHERE id = @id;";
+
                 using (var command = new NpgsqlCommand(update_paczki, connection))
                 {
-                    command.Parameters.AddWithValue("@data_odbioru", data_odb);
-                    command.Parameters.AddWithValue("@data_dostarczania", data_przew);
+                    command.Parameters.AddWithValue("@data_odbioru", data_odb); 
+                    command.Parameters.AddWithValue("@data_dostarczenia", data_przew);
                     command.Parameters.AddWithValue("@ubezpieczenie", ubz);
                     command.Parameters.AddWithValue("@nr_listu", list);
                     command.Parameters.AddWithValue("@koszt_transportu", cena);
                     command.Parameters.AddWithValue("@dostawa_id", dostawcy_id);
                     command.Parameters.AddWithValue("@id", id);
+
                     command.ExecuteNonQuery();
+                }
+                string name_dostawa = string.Empty;
+                using (var command = new NpgsqlCommand($"SELECT nazwa FROM dostawy WHERE id = {dostawcy_id};", connection)) {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read()) name_dostawa = reader.GetString(0);
+                    }
                 }
                 connection.Close();
                 this.Close();
-                var form_paczki = new Form9(klient, uzytkownik, true, produkt, id_produkt, cena, weigth, state);
+                var form_paczki = new Form9(klient, uzytkownik, produkt, id_produkt, cena, weigth, "oczekiwanie", name_dostawa, list, 
+                    data_odb.ToString("yyyy-MM-dd"), data_przew.ToString("yyyy-MM-dd"), cena, ubz);
                 form_paczki.Show();
             }
         }
+
 
         private void Form11_Load(object sender, EventArgs e)
         {
@@ -106,6 +140,16 @@ namespace Magazyn
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

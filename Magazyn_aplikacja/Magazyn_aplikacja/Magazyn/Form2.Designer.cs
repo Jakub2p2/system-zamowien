@@ -49,26 +49,29 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label1.ForeColor = Color.RoyalBlue;
             label1.Location = new Point(10, 9);
             label1.Name = "label1";
-            label1.Size = new Size(30, 15);
+            label1.Size = new Size(32, 15);
             label1.TabIndex = 0;
             label1.Text = "Imię";
             // 
             // label2
             // 
             label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label2.ForeColor = Color.RoyalBlue;
             label2.Location = new Point(10, 69);
             label2.Name = "label2";
-            label2.Size = new Size(57, 15);
+            label2.Size = new Size(60, 15);
             label2.TabIndex = 1;
             label2.Text = "Nazwisko";
             // 
             // label3
             // 
             label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label3.ForeColor = Color.RoyalBlue;
             label3.Location = new Point(10, 118);
             label3.Name = "label3";
@@ -79,6 +82,7 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label4.ForeColor = Color.RoyalBlue;
             label4.Location = new Point(12, 167);
             label4.Name = "label4";
@@ -89,25 +93,28 @@
             // label5
             // 
             label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label5.ForeColor = Color.RoyalBlue;
             label5.Location = new Point(12, 221);
             label5.Name = "label5";
-            label5.Size = new Size(30, 15);
+            label5.Size = new Size(31, 15);
             label5.TabIndex = 4;
             label5.Text = "Rola";
             // 
             // label6
             // 
             label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label6.ForeColor = Color.RoyalBlue;
             label6.Location = new Point(12, 337);
             label6.Name = "label6";
-            label6.Size = new Size(81, 15);
+            label6.Size = new Size(86, 15);
             label6.TabIndex = 5;
             label6.Text = "Powtórz hasło";
             // 
             // role_select
             // 
+            role_select.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             role_select.FormattingEnabled = true;
             role_select.Items.AddRange(new object[] { "Administrator", "Brak", "Magazynier", "Sprzedawca" });
             role_select.Location = new Point(12, 239);
@@ -119,15 +126,17 @@
             // label7
             // 
             label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label7.ForeColor = Color.RoyalBlue;
             label7.Location = new Point(11, 278);
             label7.Name = "label7";
-            label7.Size = new Size(37, 15);
+            label7.Size = new Size(38, 15);
             label7.TabIndex = 7;
             label7.Text = "Hasło";
             // 
             // textBox1
             // 
+            textBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             textBox1.Location = new Point(12, 27);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(171, 23);
@@ -135,6 +144,7 @@
             // 
             // textBox2
             // 
+            textBox2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             textBox2.Location = new Point(12, 87);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(169, 23);
@@ -142,6 +152,7 @@
             // 
             // textBox3
             // 
+            textBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             textBox3.Location = new Point(12, 136);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(169, 23);
@@ -149,6 +160,7 @@
             // 
             // textBox4
             // 
+            textBox4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             textBox4.Location = new Point(12, 185);
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(169, 23);
@@ -157,6 +169,7 @@
             // close_window
             // 
             close_window.BackColor = Color.LightSkyBlue;
+            close_window.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             close_window.ForeColor = Color.RoyalBlue;
             close_window.Location = new Point(12, 403);
             close_window.Name = "close_window";
@@ -169,6 +182,7 @@
             // save_button
             // 
             save_button.BackColor = Color.LightSkyBlue;
+            save_button.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             save_button.ForeColor = Color.RoyalBlue;
             save_button.Location = new Point(106, 403);
             save_button.Name = "save_button";
@@ -180,6 +194,7 @@
             // 
             // password_text
             // 
+            password_text.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             password_text.Location = new Point(12, 296);
             password_text.Name = "password_text";
             password_text.Size = new Size(169, 23);
@@ -188,6 +203,7 @@
             // 
             // confirm_pass_text
             // 
+            confirm_pass_text.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             confirm_pass_text.Location = new Point(12, 355);
             confirm_pass_text.Name = "confirm_pass_text";
             confirm_pass_text.Size = new Size(169, 23);

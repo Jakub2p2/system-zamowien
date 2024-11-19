@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,23 +25,54 @@ namespace Magazyn
         int id_produkt = 0;
         double price = 0, weigth = 0;
         string state = string.Empty, next_state = string.Empty;
+        string dostawca = string.Empty, nr_listu = string.Empty, data_odb = string.Empty, data_dos = string.Empty;
+        double? ubz;
+        double koszt_wys = 0;
         NpgsqlCommand vCmd;
         string con_string = String.Format("server=pg-26a19d25-paczkimagazyn.h.aivencloud.com;" + "port=13890;" + "user id=avnadmin;" + "password=AVNS_3UbLex9BxU_ZYRZvxaY; " + "database=paczuszki;"); //string polaczeniowy z baza
         private NpgsqlConnection con;
 
-        public Form9(string usr, string uzyt_p, bool is_product, string produkt_p, int p_id, double p_price, double p_weigth, string state_p)
+        public Form9(string usr, string uzyt_p, string produkt_p, int p_id, double p_price, double p_weigth, string state_p,
+            string dostawca_p, string nr_listu_p, string data_odb_p, string data_dos_p, double koszt_p, double? ubz_p)
         {
             InitializeComponent();
             uzyt = usr;
             uzytkownik = uzyt_p;
-            if (is_product)
-            {
-                produkt = produkt_p;
-                id_produkt = p_id;
-                price = p_price;
-                state = state_p;
-                weigth = p_weigth;
-            }
+            produkt = produkt_p;
+            id_produkt = p_id;
+            price = p_price;
+            state = state_p;
+            weigth = p_weigth;
+            dostawca = dostawca_p;
+            nr_listu = nr_listu_p;
+            data_odb = data_odb_p;
+            data_dos = data_dos_p;
+            koszt_wys = koszt_p;
+            ubz = ubz_p;
+            couriertxt.Text = dostawca;
+            letter_num_txt.Text = nr_listu;
+            package_delivered_date_txt.Text = data_dos;
+            package_received_date_txt.Text = data_odb;
+            delivery_cost_txt.Text = koszt_wys + " zł";
+            insurance_txt.Text = ubz + " zł";
+
+        }
+        public Form9(string usr, string uzyt_p)
+        {
+            InitializeComponent();
+            uzyt = usr;
+            uzytkownik = uzyt_p;
+        }
+        public Form9(string usr, string uzyt_p, string produkt_p, int p_id, double p_price, double p_weigth, string state_p)
+        {
+            InitializeComponent();
+            uzyt = usr;
+            uzytkownik = uzyt_p;
+            produkt = produkt_p;
+            id_produkt = p_id;
+            price = p_price;
+            state = state_p;
+            weigth = p_weigth;
         }
         private void Connect_db() // Polaczenie z baza danych
         {
@@ -167,7 +200,7 @@ namespace Magazyn
             using (NpgsqlConnection connection = new NpgsqlConnection(con_string))
             {
                 connection.Open();
-                state = next_state;
+                if (!state.Equals("przygotowany_do_wys")) state = next_state;
                 string getclient_id = $"SELECT id FROM klienci WHERE nazwa = '{uzyt}';";
                 string getuser_id = $"SELECT id FROM uzytkownicy WHERE login = '{uzytkownik}';";
                 //string getid_query = "SELECT id FROM paczki WHERE klient_id = @klient_id AND created_by = @created_by;";
@@ -193,7 +226,31 @@ namespace Magazyn
 
         private void look_paczka_Click(object sender, EventArgs e)
         {
-
+            string dostawa_link = string.Empty;
+            using (var connection = new NpgsqlConnection(con_string))
+            {
+                connection.Open();
+                using (var command = new NpgsqlCommand($"SELECT link_do_śledzenia FROM dostawy WHERE nazwa = '{dostawca}'", connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read()) dostawa_link = reader.GetString(0);
+                    }
+                }
+                try
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "https://www." + dostawa_link,
+                        UseShellExecute = true
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Błąd: Nieznaleziono takiej strony. " + ex.Message);
+                }
+                connection.Close();
+            }
         }
 
         private void wstrzymaj_btn_Click(object sender, EventArgs e)
@@ -203,6 +260,7 @@ namespace Magazyn
             {
                 using (NpgsqlConnection connection = new NpgsqlConnection(con_string))
                 {
+                    connection.Open();
                     string getid_query = "SELECT MAX(id) FROM paczki;";
                     int id = 0;
                     using (var command = new NpgsqlCommand(getid_query, connection))
@@ -213,8 +271,15 @@ namespace Magazyn
                         command.Parameters.AddWithValue("@id", id);
                         command.ExecuteNonQuery();
                     }
+                    connection.Close();
                 }
+                wstrzymaj_btn.Visible = false;
             }
+        }
+
+        private void datetxt_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

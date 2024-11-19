@@ -22,9 +22,9 @@ namespace Magazyn
             if (edit)
             {
                 textBox1.Text = datas[0];
-                textBox2.Text = datas[1].ToString();
-                numericUpDown1.Text = datas[3].ToString();
-                textBox3.Text = datas[3];
+                textBox2.Text = datas[3].ToString();
+                numericUpDown1.Text = datas[1].ToString();
+                textBox3.Text = datas[2];
                 edit_id = p_id;
                 addORedit = "edit";
                 this.Text = "Edytuj sposób dostawy";
@@ -77,23 +77,23 @@ namespace Magazyn
             else // jesli wszystkie pola sa zapelnione
             {
                 string name = textBox1.Text;
-                int cena_ubz = Convert.ToInt32(textBox2.Text);
+                double cena_ubz = Convert.ToDouble(numericUpDown1.Value);
                 string link = textBox3.Text;
-                double cena_kg = Convert.ToDouble(numericUpDown1.Value);
+                double cena_kg = Convert.ToDouble(textBox2.Text);
                 Connect_db();
                 using (NpgsqlConnection connection = new NpgsqlConnection(connect_string))
                 {
                     connection.Open();
                     string query = "";
                     if (addORedit == "add")
-                        query = "INSERT INTO dostawy(nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia) VALUES('" + name + "'," + cena_kg + "," + cena_ubz + ",'" + link + "')";
+                        query = "INSERT INTO dostawy(nazwa, cena_za_kg, cena_ubezpieczenia, link_do_śledzenia) VALUES(@nazwa, @cena_za_kg, @cena_ubezpieczenia, @link_do_śledzenia)";
                     else if (addORedit == "edit")
                         query = "UPDATE dostawy SET nazwa = @nazwa, cena_za_kg = @cena_za_kg, " +
                                    "cena_ubezpieczenia = @cena_ubezpieczenia, link_do_śledzenia = @link_do_śledzenia " +
                                    "WHERE id = @id;";
                     using (NpgsqlCommand command = new NpgsqlCommand(query, connection)) // wysyłanie danych
                     {
-                        if(addORedit == "edit") command.Parameters.AddWithValue("@id", edit_id);
+                        if (addORedit == "edit") command.Parameters.AddWithValue("@id", edit_id);
                         command.Parameters.AddWithValue("@nazwa", name);
                         command.Parameters.AddWithValue("@cena_za_kg", cena_kg);
                         command.Parameters.AddWithValue("@cena_ubezpieczenia", cena_ubz);
@@ -115,6 +115,16 @@ namespace Magazyn
         }
 
         private void delivery_form_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
         {
 
         }

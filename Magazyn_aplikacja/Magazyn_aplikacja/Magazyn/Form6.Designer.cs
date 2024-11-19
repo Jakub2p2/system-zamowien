@@ -46,16 +46,18 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label1.ForeColor = Color.RoyalBlue;
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
-            label1.Size = new Size(97, 15);
+            label1.Size = new Size(102, 15);
             label1.TabIndex = 1;
             label1.Text = "Nazwa produktu:";
             // 
             // label2
             // 
             label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label2.ForeColor = Color.RoyalBlue;
             label2.Location = new Point(12, 86);
             label2.Name = "label2";
@@ -66,6 +68,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label3.ForeColor = Color.RoyalBlue;
             label3.Location = new Point(12, 177);
             label3.Name = "label3";
@@ -76,25 +79,28 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label4.ForeColor = Color.RoyalBlue;
             label4.Location = new Point(12, 262);
             label4.Name = "label4";
-            label4.Size = new Size(87, 15);
+            label4.Size = new Size(92, 15);
             label4.TabIndex = 4;
             label4.Text = "Waga 1szt [kg]:";
             // 
             // label5
             // 
             label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label5.ForeColor = Color.RoyalBlue;
             label5.Location = new Point(12, 348);
             label5.Name = "label5";
-            label5.Size = new Size(106, 15);
+            label5.Size = new Size(110, 15);
             label5.TabIndex = 5;
             label5.Text = "Ilość w magazynie:";
             // 
             // name_txt
             // 
+            name_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             name_txt.Location = new Point(12, 27);
             name_txt.Name = "name_txt";
             name_txt.Size = new Size(138, 23);
@@ -102,6 +108,7 @@
             // 
             // price_txt
             // 
+            price_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             price_txt.Location = new Point(12, 195);
             price_txt.Name = "price_txt";
             price_txt.Size = new Size(138, 23);
@@ -109,6 +116,7 @@
             // 
             // weight_txt
             // 
+            weight_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             weight_txt.Location = new Point(12, 280);
             weight_txt.Name = "weight_txt";
             weight_txt.Size = new Size(138, 23);
@@ -117,6 +125,7 @@
             // quit_btn
             // 
             quit_btn.BackColor = Color.LightSkyBlue;
+            quit_btn.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             quit_btn.ForeColor = Color.RoyalBlue;
             quit_btn.Location = new Point(12, 473);
             quit_btn.Name = "quit_btn";
@@ -129,17 +138,19 @@
             // add_btn
             // 
             add_btn.BackColor = Color.LightSkyBlue;
+            add_btn.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             add_btn.ForeColor = Color.RoyalBlue;
             add_btn.Location = new Point(221, 473);
             add_btn.Name = "add_btn";
             add_btn.Size = new Size(131, 23);
             add_btn.TabIndex = 12;
-            add_btn.Text = "Dodaj produkt";
+            add_btn.Text = "Zapisz";
             add_btn.UseVisualStyleBackColor = false;
             add_btn.Click += add_btn_Click;
             // 
             // count_txt
             // 
+            count_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             count_txt.Location = new Point(12, 366);
             count_txt.Name = "count_txt";
             count_txt.Size = new Size(120, 23);
@@ -147,6 +158,7 @@
             // 
             // cecha_txt
             // 
+            cecha_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             cecha_txt.Location = new Point(12, 104);
             cecha_txt.Name = "cecha_txt";
             cecha_txt.Size = new Size(100, 23);

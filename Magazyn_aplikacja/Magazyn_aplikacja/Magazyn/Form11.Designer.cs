@@ -116,19 +116,23 @@
             // 
             dateTimePicker2.CalendarTitleForeColor = SystemColors.ControlText;
             dateTimePicker2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dateTimePicker2.Format = DateTimePickerFormat.Short;
             dateTimePicker2.Location = new Point(12, 262);
             dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(222, 23);
+            dateTimePicker2.Size = new Size(108, 23);
             dateTimePicker2.TabIndex = 17;
+            dateTimePicker2.ValueChanged += dateTimePicker2_ValueChanged;
             // 
             // dateTimePicker1
             // 
             dateTimePicker1.CalendarTitleForeColor = SystemColors.ControlText;
             dateTimePicker1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dateTimePicker1.Format = DateTimePickerFormat.Short;
             dateTimePicker1.Location = new Point(12, 193);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(222, 23);
+            dateTimePicker1.Size = new Size(108, 23);
             dateTimePicker1.TabIndex = 18;
+            dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 
             // search_btn
             // 
