@@ -126,6 +126,7 @@
             // nip_txt
             // 
             nip_txt.Location = new Point(12, 93);
+            nip_txt.MaxLength = 10;
             nip_txt.Name = "nip_txt";
             nip_txt.Size = new Size(100, 23);
             nip_txt.TabIndex = 8;
@@ -133,6 +134,7 @@
             // region_txt
             // 
             region_txt.Location = new Point(12, 159);
+            region_txt.MaxLength = 9;
             region_txt.Name = "region_txt";
             region_txt.Size = new Size(100, 23);
             region_txt.TabIndex = 9;
@@ -140,6 +142,7 @@
             // pesel_txt
             // 
             pesel_txt.Location = new Point(12, 223);
+            pesel_txt.MaxLength = 11;
             pesel_txt.Name = "pesel_txt";
             pesel_txt.Size = new Size(100, 23);
             pesel_txt.TabIndex = 10;
