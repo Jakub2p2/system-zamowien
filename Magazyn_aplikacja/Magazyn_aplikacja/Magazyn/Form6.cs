@@ -22,6 +22,7 @@ namespace Magazyn
         public string addORedit = "";
         public int edit_id;
         string table = "";
+        private Form1 main_form;
         private void Connect_db() // Polaczenie z baza danych
         {
             try
@@ -37,7 +38,7 @@ namespace Magazyn
                 Application.Exit();
             }
         }
-        public product_form(bool edit, string[] datas, int p_id)
+        public product_form(bool edit, string[] datas, int p_id, Form1 main_form)
         {
             InitializeComponent();
             if (edit)
@@ -56,6 +57,9 @@ namespace Magazyn
                 addORedit = "add";
                 this.Text = "Dodaj Produkt";
             }
+
+            this.main_form = main_form;
+
         }
         public bool check_Empty() // sprawdzianie czy pola sa puste (nie dziala ze spacja)
         {
@@ -105,6 +109,8 @@ namespace Magazyn
                         if (addORedit == "edit") MessageBox.Show("Zmieniono produkt!!!");
 
                         this.Close();
+                        main_form.show_table();
+                        main_form.create_btn("produkty");
                     }
                 }
             }

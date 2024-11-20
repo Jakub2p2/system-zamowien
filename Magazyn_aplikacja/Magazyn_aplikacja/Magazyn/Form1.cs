@@ -82,7 +82,7 @@ namespace Magazyn{
             }
             Cursor.Current = Cursor.Current;
         }
-        private void create_btn(string tab) // dodawanie przyciskow edytuj i usuń
+        public void create_btn(string tab) // dodawanie przyciskow edytuj i usuń
         {
             int j = 0;
             Control[] drop_btns = new Control[100]; // wartość 100, którą trzeba zmienić
@@ -384,19 +384,19 @@ namespace Magazyn{
             switch (table)
             {
                 case "uzytkownicy":
-                    var add_usr_form = new add_user(edit, datas, id);
+                    var add_usr_form = new add_user(edit, datas, id, this);
                     add_usr_form.Show();
                     break;
                 case "klienci":
-                    var add_client_form = new add_client(edit, datas, id);
+                    var add_client_form = new add_client(edit, datas, id, this);
                     add_client_form.Show();
                     break;
                 case "produkty":
-                    var addproduct_form = new product_form(edit, datas, id);
+                    var addproduct_form = new product_form(edit, datas, id, this);
                     addproduct_form.Show();
                     break;
                 case "dostawy":
-                    var addelivery_form = new delivery_form(edit, datas, id);
+                    var addelivery_form = new delivery_form(edit, datas, id, this);
                     addelivery_form.Show();
                     break;
                 case "paczki":

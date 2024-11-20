@@ -196,11 +196,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj",
+      "projectUniqueName": "C:\\Users\\USER\\source\\repos\\Magazyn_aplikacja\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj",
       "projectName": "Magazyn",
-      "projectPath": "D:\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj",
+      "projectPath": "C:\\Users\\USER\\source\\repos\\Magazyn_aplikacja\\Magazyn_aplikacja\\Magazyn\\Magazyn.csproj",
       "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-      "outputPath": "D:\\Magazyn_aplikacja\\Magazyn\\obj\\",
+      "outputPath": "C:\\Users\\USER\\source\\repos\\Magazyn_aplikacja\\Magazyn_aplikacja\\Magazyn\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",

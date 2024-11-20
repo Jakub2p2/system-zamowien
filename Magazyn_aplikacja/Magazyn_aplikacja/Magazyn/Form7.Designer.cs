@@ -49,46 +49,51 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label1.ForeColor = Color.RoyalBlue;
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
-            label1.Size = new Size(30, 15);
+            label1.Size = new Size(32, 15);
             label1.TabIndex = 0;
             label1.Text = "Imie";
             // 
             // label2
             // 
             label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label2.ForeColor = Color.RoyalBlue;
             label2.Location = new Point(12, 75);
             label2.Name = "label2";
-            label2.Size = new Size(26, 15);
+            label2.Size = new Size(27, 15);
             label2.TabIndex = 1;
             label2.Text = "NIP";
             // 
             // label3
             // 
             label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label3.ForeColor = Color.RoyalBlue;
             label3.Location = new Point(12, 141);
             label3.Name = "label3";
-            label3.Size = new Size(49, 15);
+            label3.Size = new Size(52, 15);
             label3.TabIndex = 2;
             label3.Text = "REGION";
             // 
             // label4
             // 
             label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label4.ForeColor = Color.RoyalBlue;
             label4.Location = new Point(12, 205);
             label4.Name = "label4";
-            label4.Size = new Size(38, 15);
+            label4.Size = new Size(39, 15);
             label4.TabIndex = 3;
             label4.Text = "PESEL";
             // 
             // label5
             // 
             label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label5.ForeColor = Color.RoyalBlue;
             label5.Location = new Point(12, 267);
             label5.Name = "label5";
@@ -99,25 +104,28 @@
             // label6
             // 
             label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label6.ForeColor = Color.RoyalBlue;
             label6.Location = new Point(12, 331);
             label6.Name = "label6";
-            label6.Size = new Size(45, 15);
+            label6.Size = new Size(49, 15);
             label6.TabIndex = 5;
             label6.Text = "Telefon";
             // 
             // label7
             // 
             label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label7.ForeColor = Color.RoyalBlue;
             label7.Location = new Point(12, 389);
             label7.Name = "label7";
-            label7.Size = new Size(37, 15);
+            label7.Size = new Size(39, 15);
             label7.TabIndex = 6;
             label7.Text = "Adres";
             // 
             // name_txt
             // 
+            name_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             name_txt.Location = new Point(12, 27);
             name_txt.Name = "name_txt";
             name_txt.Size = new Size(100, 23);
@@ -125,27 +133,34 @@
             // 
             // nip_txt
             // 
+            nip_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             nip_txt.Location = new Point(12, 93);
+            nip_txt.MaxLength = 10;
             nip_txt.Name = "nip_txt";
             nip_txt.Size = new Size(100, 23);
             nip_txt.TabIndex = 8;
             // 
             // region_txt
             // 
+            region_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             region_txt.Location = new Point(12, 159);
+            region_txt.MaxLength = 9;
             region_txt.Name = "region_txt";
             region_txt.Size = new Size(100, 23);
             region_txt.TabIndex = 9;
             // 
             // pesel_txt
             // 
+            pesel_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             pesel_txt.Location = new Point(12, 223);
+            pesel_txt.MaxLength = 11;
             pesel_txt.Name = "pesel_txt";
             pesel_txt.Size = new Size(100, 23);
             pesel_txt.TabIndex = 10;
             // 
             // email_txt
             // 
+            email_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             email_txt.Location = new Point(12, 285);
             email_txt.Name = "email_txt";
             email_txt.Size = new Size(100, 23);
@@ -153,6 +168,7 @@
             // 
             // tel_txt
             // 
+            tel_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             tel_txt.Location = new Point(12, 349);
             tel_txt.Name = "tel_txt";
             tel_txt.Size = new Size(100, 23);
@@ -160,6 +176,7 @@
             // 
             // adres_txt
             // 
+            adres_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             adres_txt.Location = new Point(12, 407);
             adres_txt.Name = "adres_txt";
             adres_txt.Size = new Size(100, 23);
@@ -168,6 +185,7 @@
             // close_btn
             // 
             close_btn.BackColor = Color.LightSkyBlue;
+            close_btn.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             close_btn.ForeColor = Color.RoyalBlue;
             close_btn.Location = new Point(12, 456);
             close_btn.Name = "close_btn";
@@ -180,6 +198,7 @@
             // button2
             // 
             button2.BackColor = Color.LightSkyBlue;
+            button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button2.ForeColor = Color.RoyalBlue;
             button2.Location = new Point(148, 456);
             button2.Name = "button2";

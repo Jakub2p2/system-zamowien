@@ -16,7 +16,8 @@ namespace Magazyn
     {
         public string addORedit = "";
         public int edit_id;
-        public delivery_form(bool edit, string[] datas, int p_id)
+        private Form1 main_form;
+        public delivery_form(bool edit, string[] datas, int p_id, Form1 main_form)
         {
             InitializeComponent();
             if (edit)
@@ -34,6 +35,9 @@ namespace Magazyn
                 addORedit = "add";
                 this.Text = "Dodaj sposób dostawy";
             }
+
+            this.main_form = main_form;
+
         }
         public string connect_string = "";
         private void Connect_db() // Polaczenie z baza danych
@@ -104,6 +108,8 @@ namespace Magazyn
                         else if (addORedit == "edit")
                             MessageBox.Show("Zmieniono sposób dostawy!!!");
                         this.Close();
+                        main_form.show_table();
+                        main_form.create_btn("dostawy");
                     }
                 }
             }

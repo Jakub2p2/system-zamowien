@@ -152,6 +152,7 @@
             // 
             count_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             count_txt.Location = new Point(12, 366);
+            count_txt.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             count_txt.Name = "count_txt";
             count_txt.Size = new Size(120, 23);
             count_txt.TabIndex = 13;

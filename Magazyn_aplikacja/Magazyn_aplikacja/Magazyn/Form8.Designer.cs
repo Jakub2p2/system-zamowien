@@ -75,6 +75,8 @@
             currentpasstxt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             currentpasstxt.Location = new Point(83, 37);
             currentpasstxt.Name = "currentpasstxt";
+            currentpasstxt.PasswordChar = '*';
+            currentpasstxt.PlaceholderText = "Obecne hasło";
             currentpasstxt.Size = new Size(100, 23);
             currentpasstxt.TabIndex = 3;
             // 
@@ -83,6 +85,8 @@
             newpasstxt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             newpasstxt.Location = new Point(83, 111);
             newpasstxt.Name = "newpasstxt";
+            newpasstxt.PasswordChar = '*';
+            newpasstxt.PlaceholderText = "Nowe hasło";
             newpasstxt.Size = new Size(100, 23);
             newpasstxt.TabIndex = 4;
             // 
@@ -91,6 +95,8 @@
             confirmpasstxt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             confirmpasstxt.Location = new Point(83, 182);
             confirmpasstxt.Name = "confirmpasstxt";
+            confirmpasstxt.PasswordChar = '*';
+            confirmpasstxt.PlaceholderText = "Powtórz hasło";
             confirmpasstxt.Size = new Size(100, 23);
             confirmpasstxt.TabIndex = 5;
             // 

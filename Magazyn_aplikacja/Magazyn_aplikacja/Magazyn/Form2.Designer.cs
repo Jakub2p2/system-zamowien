@@ -44,6 +44,7 @@
             save_button = new Button();
             password_text = new TextBox();
             confirm_pass_text = new TextBox();
+            checkBox1 = new CheckBox();
             SuspendLayout();
             // 
             // label1
@@ -106,7 +107,7 @@
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label6.ForeColor = Color.RoyalBlue;
-            label6.Location = new Point(12, 337);
+            label6.Location = new Point(11, 350);
             label6.Name = "label6";
             label6.Size = new Size(86, 15);
             label6.TabIndex = 5;
@@ -128,7 +129,7 @@
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label7.ForeColor = Color.RoyalBlue;
-            label7.Location = new Point(11, 278);
+            label7.Location = new Point(10, 291);
             label7.Name = "label7";
             label7.Size = new Size(38, 15);
             label7.TabIndex = 7;
@@ -195,7 +196,7 @@
             // password_text
             // 
             password_text.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            password_text.Location = new Point(12, 296);
+            password_text.Location = new Point(11, 309);
             password_text.Name = "password_text";
             password_text.Size = new Size(169, 23);
             password_text.TabIndex = 14;
@@ -204,11 +205,24 @@
             // confirm_pass_text
             // 
             confirm_pass_text.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            confirm_pass_text.Location = new Point(12, 355);
+            confirm_pass_text.Location = new Point(11, 368);
             confirm_pass_text.Name = "confirm_pass_text";
             confirm_pass_text.Size = new Size(169, 23);
             confirm_pass_text.TabIndex = 15;
             confirm_pass_text.TextChanged += confirm_pass_text_TextChanged;
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            checkBox1.ForeColor = Color.RoyalBlue;
+            checkBox1.Location = new Point(14, 269);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(113, 19);
+            checkBox1.TabIndex = 16;
+            checkBox1.Text = "Zmieniać hasło?";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // add_user
             // 
@@ -216,6 +230,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gainsboro;
             ClientSize = new Size(345, 450);
+            Controls.Add(checkBox1);
             Controls.Add(confirm_pass_text);
             Controls.Add(password_text);
             Controls.Add(save_button);
@@ -259,5 +274,6 @@
         private Button save_button;
         private TextBox password_text;
         private TextBox confirm_pass_text;
+        private CheckBox checkBox1;
     }
 }
