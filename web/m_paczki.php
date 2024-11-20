@@ -71,7 +71,7 @@ if (isset($_SESSION['user_id'])) {
                             
                             if ($result && $row = pg_fetch_assoc($result)) {
                                 echo "<div class='package-details'>";
-                                echo "<h3>Paczka o numerze: " . htmlspecialchars($row['nr_listu']) . "</h3>";
+                                echo "<h3>Paczka o numerze: " . htmlspecialchars($row['id']) . "</h3>";
                                 
                                 echo "<div style='display: flex; justify-content: space-between;'>";
 
@@ -110,52 +110,44 @@ if (isset($_SESSION['user_id'])) {
                                 echo "</div>";
                                 
                                 echo "</div>";
+
+                                echo "<div style='display: flex; justify-content: space-between; margin-top: 20px;'>";
+
+                                $query_stats = "SELECT 
+                                    COUNT(*) as total,
+                                    COUNT(CASE WHEN spakowany = true THEN 1 END) as packed,
+                                    SUM(pp.ilosc * p.cena) as total_value,
+                                    SUM(pp.ilosc * p.waga) as total_weight
+                                FROM paczki_produkty pp
+                                JOIN produkty p ON pp.produkt_id = p.id
+                                WHERE pp.paczka_id = $1";
+
+                                $result_stats = pg_query_params($connection, $query_stats, [$id_paczki]);
+                                $stats = pg_fetch_assoc($result_stats);
+
+                                $total_products = $stats['total'] ?? 0;
+                                $packed_products = $stats['packed'] ?? 0;
+                                $total_value = $stats['total_value'] ?? 0;
+                                $total_weight = $stats['total_weight'] ?? 0;
+
+                                $pack_percentage = $total_products > 0 ? round(($packed_products / $total_products) * 100) : 0;
+
+                                echo "<div class='package-info' style='width: 48%;'>";
+                                echo "<p><strong>Podsumowanie paczki</strong></p>";
+                                echo "<p>Status paczki: " . htmlspecialchars($row['status']) . " " . $pack_percentage . "%</p>";
+                                echo "<p>Spakowanych produktów: " . $packed_products . "/" . $total_products . "</p>";
+                                echo "<p>Wartość paczki: " . number_format($total_value, 2) . " zł</p>";
+                                echo "<p>Waga paczki: " . number_format($total_weight, 2) . " kg</p>";
                                 echo "</div>";
 
-                                echo "<div class='package-status-summary'>";
-                                echo "<h3>Podsumowanie paczki</h3>";
-
-                                $query_count = "SELECT COUNT(*) as total FROM paczki_produkty WHERE paczka_id = $1";
-                                $stmt = pg_prepare($connection, "count_products", $query_count);
-                                $result_count = pg_execute($connection, "count_products", [$id_paczki]);
-                                $count = pg_fetch_assoc($result_count);
-
-                                $query_value = "SELECT COALESCE(SUM(pp.ilosc * p.cena), 0) as total_value 
-                                                FROM paczki_produkty pp 
-                                                JOIN produkty p ON pp.produkt_id = p.id 
-                                                WHERE pp.paczka_id = $1";
-                                $stmt = pg_prepare($connection, "calc_value", $query_value);
-                                $result_value = pg_execute($connection, "calc_value", [$id_paczki]);
-                                $value = pg_fetch_assoc($result_value);
-                                $total_value = $value['total_value'];
-
-                                $query_weight = "SELECT COALESCE(SUM(pp.ilosc * p.waga), 0) as total_weight 
-                                                 FROM paczki_produkty pp 
-                                                 JOIN produkty p ON pp.produkt_id = p.id 
-                                                 WHERE pp.paczka_id = $1";
-                                $stmt = pg_prepare($connection, "calc_weight", $query_weight);
-                                $result_weight = pg_execute($connection, "calc_weight", [$id_paczki]);
-                                $weight = pg_fetch_assoc($result_weight);
-                                $total_weight = $weight['total_weight'];
-
-                                echo "<div class='status-summary-item'>";
-                                echo "<h4>Status paczki</h4>";
-                                echo "<p>" . htmlspecialchars($row['status']) . " 0%</p>";
-                                echo "</div>";
-
-                                echo "<div class='status-summary-item'>";
-                                echo "<h4>Spakowanych produktów</h4>";
-                                echo "<p>0/" . ($count['total'] ?? 0) . "</p>";
-                                echo "</div>";
-
-                                echo "<div class='status-summary-item'>";
-                                echo "<h4>Wartość paczki</h4>";
-                                echo "<p>" . number_format($total_value, 2) . " zł</p>";
-                                echo "</div>";
-
-                                echo "<div class='status-summary-item'>";
-                                echo "<h4>Waga paczki</h4>";
-                                echo "<p>" . number_format($total_weight, 2) . " kg</p>";
+                                echo "<div class='package-info' style='width: 48%;'>";
+                                echo "<p><strong>Szczegóły dostawy</strong></p>";
+                                echo "<p>Dostawca: " . (empty($row['dostawca']) ? "-" : htmlspecialchars($row['dostawca'])) . "</p>";
+                                echo "<p>Numer listu przewozowego: " . (empty($row['nr_listu']) ? "-" : htmlspecialchars($row['nr_listu'])) . "</p>";
+                                echo "<p>Data odbioru paczki: " . (empty($row['data_odbioru']) ? "-" : htmlspecialchars($row['data_odbioru'])) . "</p>";
+                                echo "<p>Data dostarczenia paczki: " . (empty($row['data_dostarczenia']) ? "-" : htmlspecialchars($row['data_dostarczenia'])) . "</p>";
+                                echo "<p>Koszt transportu: " . (empty($row['koszt_transportu']) ? "0" : htmlspecialchars($row['koszt_transportu'])) . " zł</p>";
+                                echo "<p>Ubezpieczenie: " . ($row['ubezpieczenie'] ? "TAK" : "NIE") . "</p>";
                                 echo "</div>";
 
                                 echo "</div>";
@@ -163,22 +155,34 @@ if (isset($_SESSION['user_id'])) {
                                 echo "<div class='package-products' style='width: 100%; margin-top: 20px;'>";
                                 echo "<h3>Produkty w paczce</h3>";
 
-                                echo "<button onclick='openProductModal()' class='add-product-btn'>Dodaj produkt do paczki</button>";
+                                $check_products = "SELECT COUNT(*) as count FROM paczki_produkty WHERE paczka_id = $1";
+                                $stmt = pg_prepare($connection, "check_products", $check_products);
+                                $result = pg_execute($connection, "check_products", [$id_paczki]);
+                                $has_products = (pg_fetch_assoc($result)['count'] > 0);
+
+                                if ($row['status'] == 'nowa') {
+                                    echo "<button onclick='openProductModal()' class='add-product-btn'>Dodaj produkt do paczki</button>";
+                                }
 
                                 echo "<div class='table-container' style='margin-top: 15px;'>";
                                 echo "<table class='products-table'>
                                         <thead>
-                                            <tr>
-                                                <th>Nazwa produktu</th>
+                                            <tr>";
+                                                if ($row['status'] == 'komplementacja paczki') {
+                                                    echo "<th>Spakowany</th>";
+                                                }
+                                            echo "          <th>Nazwa produktu</th>
                                                 <th>Cena</th>
                                                 <th>Waga</th>
-                                                <th>Ilość</th>
-                                                <th>Akcje</th>
-                                            </tr>
+                                                <th>Ilość</th>";
+                                                if ($row['status'] == 'nowa') {
+                                                    echo "<th>Akcje</th>";
+                                                }
+                                            echo "      </tr>
                                         </thead>
                                         <tbody>";
 
-                                $query = "SELECT pp.id as pozycja_id, pp.ilosc, p.nazwa, p.cena, p.waga 
+                                $query = "SELECT pp.id as pozycja_id, pp.ilosc, pp.spakowany, p.nazwa, p.cena, p.waga 
                                           FROM paczki_produkty pp 
                                           JOIN produkty p ON pp.produkt_id = p.id 
                                           WHERE pp.paczka_id = $1 
@@ -188,11 +192,20 @@ if (isset($_SESSION['user_id'])) {
 
                                 while ($produkt = pg_fetch_assoc($result)) {
                                     echo "<tr>";
+                                    if ($row['status'] == 'komplementacja paczki') {
+                                        echo "<td>
+                                                <input type='checkbox' 
+                                                       onchange='updatePackedStatus(" . $produkt['pozycja_id'] . ", this.checked, this)'
+                                                       " . ($produkt['spakowany'] == 't' ? 'checked' : '') . ">
+                                              </td>";
+                                    }
                                     echo "<td>" . htmlspecialchars($produkt['nazwa']) . "</td>";
                                     echo "<td>" . htmlspecialchars($produkt['cena']) . " zł</td>";
                                     echo "<td>" . htmlspecialchars($produkt['waga']) . " kg</td>";
                                     echo "<td>" . htmlspecialchars($produkt['ilosc']) . "</td>";
-                                    echo "<td><button onclick='deleteProduct(" . $produkt['pozycja_id'] . ")' class='delete-btn'>Usuń</button></td>";
+                                    if ($row['status'] == 'nowa') {
+                                        echo "<td><button onclick='deleteProduct(" . $produkt['pozycja_id'] . ")' class='delete-btn'>Usuń</button></td>";
+                                    }
                                     echo "</tr>";
                                 }
 
@@ -231,6 +244,46 @@ if (isset($_SESSION['user_id'])) {
                                             </form>
                                         </div>
                                     </div>";
+
+                                echo "</div>";
+
+                                if ($row['status'] == 'nowa') {
+                                    echo "<button id='sendToWarehouse' 
+                                          class='action-button " . ($has_products ? '' : 'disabled') . "'
+                                          onclick='sendToWarehouse(" . $id_paczki . ")'
+                                          " . ($has_products ? '' : 'disabled') . ">
+                                            Prześlij do magazynu
+                                          </button>";
+                                } elseif ($row['status'] == 'towar zamowiony') {
+                                    echo "<button class='action-button' onclick='startCompletion(" . $id_paczki . ")'>
+                                            Kompletacja paczki
+                                          </button>";
+                                } elseif ($row['status'] == 'komplementacja paczki') {
+                                    $check_packed = "SELECT 
+                                                        COUNT(*) as total, 
+                                                        COUNT(CASE WHEN spakowany = true THEN 1 END) as packed 
+                                                     FROM paczki_produkty 
+                                                     WHERE paczka_id = $1";
+                                    $stmt = pg_prepare($connection, "check_packed", $check_packed);
+                                    $result = pg_execute($connection, "check_packed", [$id_paczki]);
+                                    $packed_status = pg_fetch_assoc($result);
+                                    $all_packed = ($packed_status['total'] == $packed_status['packed'] && $packed_status['total'] > 0);
+
+                                    echo "<button id='readyToShip' 
+                                          class='action-button " . ($all_packed ? '' : 'disabled') . "'
+                                          onclick='markReadyToShip(" . $id_paczki . ")'
+                                          " . ($all_packed ? '' : 'disabled') . ">
+                                            Towar przygotowany do wysyłki
+                                          </button>";
+                                } elseif ($row['status'] == 'towar przygotowany do wysylki') {
+                                    echo "<button class='action-button' onclick='waitForCourier(" . $id_paczki . ")'>
+                                            Oczekiwanie na kuriera
+                                          </button>";
+                                } elseif ($row['status'] == 'oczekiwanie na kuriera') {
+                                    echo "<button class='action-button' onclick='markPickedUpByCourier(" . $id_paczki . ")'>
+                                            Towar odebrany przez kuriera
+                                          </button>";
+                                }
 
                                 echo "</div>";
                             } else {

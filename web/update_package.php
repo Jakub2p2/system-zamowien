@@ -1,43 +1,53 @@
 <?php
-require 'connect.php';
+header('Content-Type: application/json');
 require 'czy_zalogowany.php';
+require 'connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $response = ['success' => false, 'message' => ''];
-    
-    try {
-        $query = "UPDATE paczki 
-                 SET nr_listu = $1, status = $2, data_utworzenia = $3, 
-                     data_odbioru = $4, data_dostarczenia = $5, wartosc = $6, 
-                     ubezpieczenie = $7, koszt_transportu = $8, klient_id = $9 
-                 WHERE id = $10";
-        
-        $params = array(
-            $_POST['nr_listu'],
-            $_POST['status'],
-            $_POST['data_utworzenia'],
-            $_POST['data_odbioru'] ?: null,
-            $_POST['data_dostarczenia'] ?: null,
-            $_POST['wartosc'] ?: null,
-            $_POST['ubezpieczenie'] ?: null,
-            $_POST['koszt_transportu'] ?: null,
-            $_POST['klient_id'],
-            $_POST['id']
-        );
-        
-        $stmt = pg_prepare($connection, "update_package", $query);
-        $result = pg_execute($connection, "update_package", $params);
-        
-        if ($result) {
-            $response['success'] = true;
-            $response['message'] = 'Paczka została zaktualizowana pomyślnie.';
-        } else {
-            $response['message'] = 'Błąd podczas aktualizacji paczki.';
-        }
-    } catch (Exception $e) {
-        $response['message'] = 'Wystąpił błąd: ' . $e->getMessage();
+try {
+    if (!isset($_POST['id'])) {
+        throw new Exception('Nie przekazano ID paczki do aktualizacji');
     }
+
+    $package_id = $_POST['id'];
     
-    echo json_encode($response);
+    $update_query = "UPDATE paczki SET 
+        nr_listu = $1,
+        status = $2,
+        data_utworzenia = $3,
+        data_odbioru = $4,
+        data_dostarczenia = $5,
+        wartosc = $6,
+        ubezpieczenie = $7,
+        koszt_transportu = $8,
+        klient_id = $9
+        WHERE id = $10";
+        
+    $result = pg_query_params($connection, $update_query, array(
+        $_POST['nr_listu'],
+        $_POST['status'],
+        $_POST['data_utworzenia'],
+        $_POST['data_odbioru'],
+        $_POST['data_dostarczenia'],
+        $_POST['wartosc'],
+        $_POST['ubezpieczenie'],
+        $_POST['koszt_transportu'],
+        $_POST['klient_id'],
+        $package_id
+    ));
+
+    if (!$result) {
+        throw new Exception("Błąd podczas aktualizacji paczki: " . pg_last_error($connection));
+    }
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Paczka została zaktualizowana'
+    ]);
+
+} catch (Exception $e) {
+    echo json_encode([
+        'success' => false,
+        'message' => $e->getMessage()
+    ]);
 }
 ?> 

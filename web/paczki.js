@@ -20,7 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function addPackage(formData) {
     try {
-        const response = await fetch('add_package.php', {
+        const isEdit = formData.get('id') ? true : false;
+        const url = isEdit ? 'update_package.php' : 'add_package.php';
+        
+        const response = await fetch(url, {
             method: 'POST',
             body: formData
         });
@@ -96,37 +99,31 @@ function editPackage(id) {
         });
 }
 
-function deletePackage(id) {
-    if (!confirm('Czy na pewno chcesz usunąć tę paczkę?')) {
+function deletePackage(packageId) {
+    console.log('Otrzymane ID:', packageId);
+    
+    if (!confirm('Czy na pewno chcesz usunąć paczkę #' + packageId + '?')) {
         return;
     }
-
-    const formData = new FormData();
-    formData.append('id', id);
-
+    
     fetch('delete_package.php', {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'package_id=' + packageId
     })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => {
-                throw new Error('Błąd serwera: ' + text);
-            });
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
+        console.log('Odpowiedź:', data);
+        alert(data.message);
         if (data.success) {
-            alert(data.message);
             window.location.reload();
-        } else {
-            throw new Error(data.message || 'Wystąpił nieznany błąd');
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        alert('Wystąpił błąd podczas usuwania paczki: ' + error.message);
+        console.error('Błąd:', error);
+        alert('Wystąpił błąd podczas usuwania paczki');
     });
 }
 

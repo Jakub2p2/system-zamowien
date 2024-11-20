@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+    $hashedPassword = md5($newPassword);
 
     $result = pg_query_params($connection, 
         "INSERT INTO uzytkownicy (imie, nazwisko, login, haslo, email, ranga) 
@@ -52,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Zamknięcie połączenia przed przekierowaniem
     pg_close($connection);
     
     $_SESSION['success'] = 'Rejestracja przebiegła pomyślnie.';

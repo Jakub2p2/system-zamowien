@@ -26,11 +26,14 @@ try {
     }
 
     $user = pg_fetch_assoc($result);
-    if (!$user || !password_verify($_POST['old_password'], $user['haslo'])) {
+    
+    $old_password_hash = md5($_POST['old_password']);
+    if (!$user || $user['haslo'] !== $old_password_hash) {
         throw new Exception('Nieprawidłowe stare hasło');
     }
 
-    $new_password_hash = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+    $new_password_hash = md5($_POST['new_password']);
+    
     $update_query = "UPDATE uzytkownicy SET haslo = $1 WHERE id = $2";
     $update_result = pg_query_params($connection, $update_query, array($new_password_hash, $_SESSION['user_id']));
 

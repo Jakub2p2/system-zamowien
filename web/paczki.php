@@ -3,6 +3,16 @@ require 'czy_zalogowany.php';
 require 'connect.php';
 require 'menu_permissions.php';
 
+if (isset($_SESSION['success_message'])) {
+    echo "<div class='alert alert-success'>" . htmlspecialchars($_SESSION['success_message']) . "</div>";
+    unset($_SESSION['success_message']);
+}
+
+if (isset($_SESSION['error_message'])) {
+    echo "<div class='alert alert-danger'>" . htmlspecialchars($_SESSION['error_message']) . "</div>";
+    unset($_SESSION['error_message']);
+}
+
 $current_page = basename($_SERVER['PHP_SELF']);
 if (!hasPageAccess($_SESSION['user_ranga'], $current_page)) {
     header("Location: dashboard.php");

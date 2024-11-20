@@ -55,6 +55,18 @@ if (isset($_SESSION['user_id'])) {
 
                 <div class="content-area">
                     <div class="main-content">
+                        <?php if (isset($_GET['deleted']) && $_GET['deleted'] === 'true'): ?>
+                            <script>
+                                alert('Produkt został pomyślnie usunięty');
+                            </script>
+                        <?php endif; ?>
+                        
+                        <?php if (isset($_GET['error'])): ?>
+                            <script>
+                                alert('Wystąpił błąd: <?php echo addslashes($_GET['error']); ?>');
+                            </script>
+                        <?php endif; ?>
+
                         <h2>Produkty</h2>
                         <form class="client-form" id="searchForm" method="GET">
                             <div class="form-group">
@@ -189,7 +201,10 @@ if (isset($_SESSION['user_id'])) {
                                         echo "<td>" . htmlspecialchars($row['ilosc']) . "</td>";
                                         echo "<td>
                                                 <button onclick='editProduct(" . $row['id'] . ")'>Edytuj</button>
-                                                <button onclick='deleteProduct(" . $row['id'] . ")'>Usuń</button>
+                                                <form method='POST' action='delete_product.php' style='display: inline;' onsubmit='return confirm(\"Czy na pewno chcesz usunąć ten produkt? Zostanie on również usunięty ze wszystkich paczek!\");'>
+                                                    <input type='hidden' name='product_id' value='" . $row['id'] . "'>
+                                                    <button type='submit' class='delete-btn'>Usuń</button>
+                                                </form>
                                               </td>";
                                         echo "</tr>";
                                     }

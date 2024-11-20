@@ -1,0 +1,19 @@
+=== DEBUG DELETE PRODUCT ===
+Time: 2024-11-20 23:43:48
+GET: Array
+(
+)
+
+POST: Array
+(
+    [id] => 6
+)
+
+REQUEST: Array
+(
+    [id] => 6
+)
+
+Raw input: id=6
+========================
+Error: Nie przekazano ID produktu

@@ -26,21 +26,27 @@ function editProduct(id) {
         .catch(error => console.error('Error:', error));
 }
 
-function deleteProduct(id) {
-    if (confirm('Czy na pewno chcesz usunąć ten produkt?')) {
+function deleteProduct(productId) {
+    if (confirm('Czy na pewno chcesz usunąć ten produkt? Zostanie on również usunięty ze wszystkich paczek!')) {
+        const formData = new FormData();
+        formData.append('product_id', productId);
+
         fetch('delete_product.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'id=' + id
+            body: formData
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            alert(data);
-            location.reload();
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Wystąpił błąd: ' + data.message);
+            }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Wystąpił błąd podczas usuwania produktu');
+        });
     }
 }
 
