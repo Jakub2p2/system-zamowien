@@ -89,7 +89,27 @@ namespace Magazyn
         }
         private void searchbtn_Click(object sender, EventArgs e)
         {
-            show_table();
+            if (nametxtbox.Text == String.Empty && niptxtbox.Text == String.Empty && regiontxtbox.Text == String.Empty && peseltxtbox.Text == String.Empty && emailtxtbox.Text == String.Empty && teltxtbox.Text == String.Empty && adrestxtbox.Text == String.Empty)
+            {
+                DataTable dtgetdata = new DataTable();
+                dtgetdata = getData("SELECT nazwa, nip, region, pesel, email, telefon, adres FROM klienci;");
+                tabela.DataSource = dtgetdata;
+            } else
+            {
+                try
+                {
+                    DataTable dtgetdata = new DataTable();
+                    dtgetdata = getData("SELECT * FROM klienci WHERE nazwa = '" + nametxtbox.Text + "' OR nip = '" + niptxtbox.Text +
+                            "' OR region = '" + regiontxtbox.Text + "' OR pesel = '" + peseltxtbox.Text + "' OR email = '" + emailtxtbox.Text +
+                            "' OR telefon = '" + teltxtbox.Text + "' OR adres = '" + adrestxtbox.Text + "' ;");
+                    tabela.DataSource = dtgetdata;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Bład połączenia z tabelą: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            
         }
 
         private void button1_Click(object sender, EventArgs e)

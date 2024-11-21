@@ -378,6 +378,7 @@
             // 
             date_utworzenia_txt.CalendarTitleForeColor = SystemColors.ControlText;
             date_utworzenia_txt.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            date_utworzenia_txt.Format = DateTimePickerFormat.Short;
             date_utworzenia_txt.Location = new Point(154, 71);
             date_utworzenia_txt.Name = "date_utworzenia_txt";
             date_utworzenia_txt.Size = new Size(225, 23);

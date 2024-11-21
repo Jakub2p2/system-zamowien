@@ -493,64 +493,77 @@ namespace Magazyn{
         }
         private void search_btn_Click(object sender, EventArgs e)
         {
-            switch (table)
+            if (string.IsNullOrEmpty(filtr_txt1.Text) &&
+    string.IsNullOrEmpty(filtr_txt2.Text) &&
+    string.IsNullOrEmpty(filtr_txt3.Text) &&
+    string.IsNullOrEmpty(filtr_txt4.Text) &&
+    string.IsNullOrEmpty(filtr_txt5.Text) &&
+    string.IsNullOrEmpty(filtr_txt6.Text) &&
+    string.IsNullOrEmpty(filtr_txt7.Text))
             {
-                case "produkty":
-                    try
-                    {
-                        DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM " + table + " WHERE nazwa = '" + filtr_txt1.Text + "' OR cechy= '" + filtr_txt2.Text + "' ;");
-                        tabela.DataSource = dtgetdata;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Bład połączenia z tabelą: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    create_btn(table);
-                    break;
-                case "paczki":
-                    try
-                    {
-                        DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM " + table + " WHERE nr_listu = '" + filtr_txt1.Text + "' OR klient_id = '" + filtr_txt2.Text + "' OR status ='"
-                            + comboBox_txt.Text + "' OR data_utworzenia ='" + date_utworzenia_txt.Text + "' ;");
-                        tabela.DataSource = dtgetdata;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Bład połączenia z tabelą: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    create_btn(table);
-                    break;
-                case "klienci":
-                    try
-                    {
-                        DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM " + table + " WHERE nazwa = '" + filtr_txt1.Text + "' OR nip = '" + filtr_txt2.Text +
-                        "' OR region = '" + filtr_txt3.Text + "' OR pesel = '" + filtr_txt4.Text + "' OR email = '" + filtr_txt5.Text + "' OR telefon = '" + filtr_txt6.Text + "' OR adres = '" + filtr_txt7.Text + "' ;");
-                        tabela.DataSource = dtgetdata;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Bład połączenia z tabelą: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    create_btn(table);
-                    break;
-                case "uzytkownicy":
-                    try
-                    {
-                        DataTable dtgetdata = new DataTable();
-                        dtgetdata = getData("SELECT * FROM " + table + " WHERE imie = '" + filtr_txt1.Text + "' OR nazwisko = '" + filtr_txt2.Text + "' OR email = '" + filtr_txt3.Text +
-                            "' OR login = '" + filtr_txt4.Text + "' OR ranga = '" + comboBox_txt.Text + "' ;");
-                        tabela.DataSource = dtgetdata;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Bład połączenia z tabelą: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    create_btn(table);
-                    break;
+                show_table();
+            } else
+            {
+                switch (table)
+                {
+                    case "produkty":
+                        try
+                        {
+                            DataTable dtgetdata = new DataTable();
+                            dtgetdata = getData("SELECT * FROM " + table + " WHERE nazwa = '" + filtr_txt1.Text + "' OR cechy= '" + filtr_txt2.Text + "' ;");
+                            tabela.DataSource = dtgetdata;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Bład połączenia z tabelą: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        create_btn(table);
+                        break;
+                    case "paczki":
+                        try
+                        {
+                            DataTable dtgetdata = new DataTable();
+                            dtgetdata = getData("SELECT * FROM " + table + " WHERE nr_listu = '" + filtr_txt1.Text + "' OR klient_id = '" + filtr_txt2.Text + "' OR status ='"
+                                + comboBox_txt.Text + "' OR data_utworzenia ='" + date_utworzenia_txt.Text + "' ;");
+                            tabela.DataSource = dtgetdata;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Bład połączenia z tabelą: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        create_btn(table);
+                        break;
+                    case "klienci":
+                        try
+                        {
+                            DataTable dtgetdata = new DataTable();
+                            dtgetdata = getData("SELECT * FROM " + table + " WHERE nazwa = '" + filtr_txt1.Text + "' OR nip = '" + filtr_txt2.Text +
+                            "' OR region = '" + filtr_txt3.Text + "' OR pesel = '" + filtr_txt4.Text + "' OR email = '" + filtr_txt5.Text + "' OR telefon = '" + filtr_txt6.Text + "' OR adres = '" + filtr_txt7.Text + "' ;");
+                            tabela.DataSource = dtgetdata;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Bład połączenia z tabelą: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        create_btn(table);
+                        break;
+                    case "uzytkownicy":
+                        try
+                        {
+                            DataTable dtgetdata = new DataTable();
+                            dtgetdata = getData("SELECT * FROM " + table + " WHERE imie = '" + filtr_txt1.Text + "' OR nazwisko = '" + filtr_txt2.Text + "' OR email = '" + filtr_txt3.Text +
+                                "' OR login = '" + filtr_txt4.Text + "' OR ranga = '" + comboBox_txt.Text + "' ;");
+                            tabela.DataSource = dtgetdata;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Bład połączenia z tabelą: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        create_btn(table);
+                        break;
+                }
             }
+                
         }
 
         private void clear_btn_Click(object sender, EventArgs e)
