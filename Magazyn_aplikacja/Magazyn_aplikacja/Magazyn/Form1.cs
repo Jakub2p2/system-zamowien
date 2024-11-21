@@ -84,18 +84,26 @@ namespace Magazyn{
         }
         public void create_btn(string tab) // dodawanie przyciskow edytuj i usuń
         {
-            int j = 0;
-            Control[] drop_btns = new Control[100]; // wartość 100, którą trzeba zmienić
-            foreach (Control control in Controls) // przypisywanie przycisków "edytuj" oraz "usuń" do tablicy
+            List<Control> drop_btns = new List<Control>();
+            List<Control> drop_zarzadzaj_btns = new List<Control>();
+            foreach (Control control in Controls)
             {
-                if (control is System.Windows.Forms.Button && (control.Name.StartsWith("edit_btn") || control.Name.StartsWith("delete_btn")))
-                {
-                    drop_btns[j] = control;
-                    j++;
+                if (control is System.Windows.Forms.Button &&
+                    (control.Name.StartsWith("edit_btn") ||
+                     control.Name.StartsWith("delete_btn") ||
+                     control.Name.StartsWith("zarzadzaj_btn"))){
+                    drop_btns.Add(control);
                 }
             }
-            for (int i = 0; i < j; i++) Controls.Remove(drop_btns[i]); // usuwanie przycisków "edytuj" i "usuń"
-
+            foreach (Control control in tabela.Controls)
+            {
+                if (control is System.Windows.Forms.Button &&
+                     control.Name.StartsWith("zarzadzaj_btn")){
+                    drop_zarzadzaj_btns.Add(control);
+                }
+            }
+            foreach (Control control in drop_btns) Controls.Remove(control);
+            foreach (Control control in drop_zarzadzaj_btns) tabela.Controls.Remove(control);
             using (NpgsqlConnection connection = new NpgsqlConnection(connect_string))
             {
                 connection.Open();
@@ -110,12 +118,13 @@ namespace Magazyn{
 
                 System.Windows.Forms.Button[] edit_arr = new System.Windows.Forms.Button[id_rows];
                 System.Windows.Forms.Button[] delete_arr = new System.Windows.Forms.Button[id_rows];
+                System.Windows.Forms.Button[] manage_arr = new System.Windows.Forms.Button[id_rows];
 
                 string get_ids_query = $"SELECT id FROM {table} ORDER BY id ASC;";
                 using (NpgsqlCommand command = new NpgsqlCommand(get_ids_query, connection))
                 using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
-                    int height = 225;
+                    int height = 225, paczki_height = 23;
                     int i = 0;
                     while (reader.Read())
                     {
@@ -140,22 +149,108 @@ namespace Magazyn{
                         delete_arr[i].Location = new Point(1050, height);
                         delete_arr[i].Text = "Usuń";
                         delete_arr[i].Click += DeleteButtonClick;
-                        delete_arr[i].BackColor = Color.LightSkyBlue;
-                        delete_arr[i].ForeColor = Color.RoyalBlue;
+                        delete_arr[i].BackColor = Color.IndianRed;
+                        delete_arr[i].ForeColor = Color.DarkRed;
                         delete_arr[i].Font = new Font(delete_arr[i].Font, FontStyle.Bold);
                         this.Controls.Add(delete_arr[i]);
-
+                        
+                        if(table == "paczki")
+                        {
+                            manage_arr[i] = new System.Windows.Forms.Button();
+                            manage_arr[i].Height = 25;
+                            manage_arr[i].Width = 38;
+                            manage_arr[i].Name = "zarzadzaj_btn" + id.ToString();
+                            manage_arr[i].Location = new Point(2, paczki_height);
+                            manage_arr[i].BackColor = Color.RoyalBlue;
+                            manage_arr[i].ForeColor = Color.LightSkyBlue;
+                            manage_arr[i].Padding = new Padding(0);
+                            manage_arr[i].Click += ZarzadajPaczkaClick;
+                            tabela.Controls.Add(manage_arr[i]);
+                            paczki_height += 25;
+                        }
                         i++;
                         height += 25;
                     }
                 }
             }
         }
+        private void ZarzadajPaczkaClick(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Button clickedButton = (System.Windows.Forms.Button)sender;
+            string buttonName = clickedButton.Name;
+            string id_btn = buttonName.Replace("zarzadzaj_btn", "");
+            using (var con = new NpgsqlConnection(connect_string))
+            {
+                con.Open();
+                string get_paczka_sql = $"SELECT klient_id, dostawa_id, status, data_odbioru, data_dostarczenia, data_utworzenia," +
+                    $" ubezpieczenie, nr_listu, wartosc, koszt_transportu" +
+                    $" FROM paczki WHERE id = {id_btn}";
+                string status_paczka = string.Empty, nr_listu = string.Empty;
+                int client_id = 0;
+                int? dostawa_id = null;
+                double? ubz = 0;
+                double wrt = 0, koszt = 0;
+                DateTime data_utw = DateTime.Now, data_odb = DateTime.Now, data_dos = DateTime.Now;
+                bool is_dostawa = false;
+                using (var command = new NpgsqlCommand(get_paczka_sql, con))
+                {
+                    using (var reader = command.ExecuteReader()) if (reader.Read()) {
+                        client_id = reader.GetInt32(0);
+                            try
+                            {
+                                ubz = reader.GetDouble(6);
+                                dostawa_id = reader.GetInt32(1);
+                                data_odb = reader.GetDateTime(3);
+                                data_dos = reader.GetDateTime(4);
+                                nr_listu = reader.GetString(7);
+                                is_dostawa = true;
+                                koszt = reader.GetDouble(9);
+                            }
+                            catch { }
+                            client_id = reader.GetInt32(0);
+                            status_paczka = reader.GetString(2);
+                            data_utw = reader.GetDateTime(5);
+                            wrt = reader.GetDouble(8);
+                    }
+                    string client_name = string.Empty, produkt_name = string.Empty;
+                    int produkt_id = 0;
+                    double waga_produkt = 0;
+                    using (var command1 = new NpgsqlCommand($"SELECT nazwa FROM klienci WHERE id = {client_id}", con))
+                    {
+                        using (var reader = command1.ExecuteReader()) if (reader.Read()) client_name = reader.GetString(0);
+                    }
+                    string produkt_name_sql = $"SELECT nazwa, id, waga FROM produkty WHERE id = (SELECT DISTINCT produkt_id FROM paczki_produkty WHERE paczka_id = {Convert.ToInt32(id_btn)})";
+                    using (var command2 = new NpgsqlCommand(produkt_name_sql, con))
+                    {
+                        using (var reader = command2.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                produkt_name = reader.GetString(0);
+                                produkt_id = reader.GetInt32(1);
+                                waga_produkt = reader.GetDouble(2);
+                            }
+                        }   
+                    }
+                    if (!is_dostawa) {
+                        var form_paczki = new Form9(client_name, uzyt, produkt_name, produkt_id, wrt, waga_produkt, status_paczka, Convert.ToInt32(id_btn));
+                        form_paczki.Show();
+                    }
+                    else
+                    {
+                        var form_paczki = new Form9(client_name, uzyt, produkt_name, produkt_id, wrt, waga_produkt, status_paczka, dostawa_id.ToString(), nr_listu, data_odb.ToString(), data_dos.ToString(), koszt, ubz, Convert.ToInt32(id_btn));
+                        form_paczki.Show();
+                    }
+                    
+                }
+                con.Close();
+            }
+        }
         private void EditButtonClick(object sender, EventArgs e) // zdzarzenie edit
         {
             System.Windows.Forms.Button clickedButton = (System.Windows.Forms.Button)sender;
             string buttonName = clickedButton.Name;
-            //MessageBox.Show("edit " + buttonName);
+            MessageBox.Show("edit " + buttonName);
             buttonName = buttonName.Replace("edit_btn", "");
             string query = "";
             switch (table)
@@ -299,6 +394,14 @@ namespace Magazyn{
                     connection.Open();
                     buttonName = buttonName.Replace("delete_btn", "");
                     string delete_query = $"DELETE FROM {table} WHERE id = {buttonName};";
+                    string delete_paczki_query = $"DELETE FROM paczki_produkty WHERE paczka_id = {buttonName}";
+                    if(table == "paczki")
+                    {
+                        using (NpgsqlCommand command = new NpgsqlCommand(delete_paczki_query, connection))
+                        {
+                            object result = command.ExecuteScalar();
+                        }
+                    }
                     using (NpgsqlCommand command = new NpgsqlCommand(delete_query, connection))
                     {
                         object result = command.ExecuteScalar();

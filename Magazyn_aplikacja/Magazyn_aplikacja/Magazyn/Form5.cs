@@ -126,9 +126,34 @@ namespace Magazyn
         private void confirm_btn_Click(object sender, EventArgs e)
         {
             usr = klienci_txt.Text;
+            using (var con = new NpgsqlConnection(connect_string))
+            {
+                con.Open();
+                string max_paczki_id = "SELECT MAX(id) FROM paczki;";
+                int max_id = 0;
+                using (var command = new NpgsqlCommand(max_paczki_id, con)) using (var reader = command.ExecuteReader()) if (reader.Read()) max_id = reader.GetInt32(0);
+                
+                using (var command = new NpgsqlCommand(max_paczki_id, con)) using (var reader = command.ExecuteReader()) if (reader.Read()) max_id = reader.GetInt32(0);
+
+                string insert_paczki_query = "INSERT INTO paczki_produkty(paczka_id, ilosc, created_at, spakowany) " +
+                    "VALUES(@paczka_id, @ilosc, @created_at, @spakowany)";
+
+                /*using (var command = new NpgsqlCommand(insert_query, connection))
+                {
+                    command.Parameters.AddWithValue("@status", "nowy");
+                    command.Parameters.AddWithValue("@wartosc", cena);
+                    command.Parameters.AddWithValue("@created_by", userid);
+                    command.Parameters.AddWithValue("@klient_id", clientid);
+                    command.Parameters.AddWithValue("@data_utworzenia", DateTime.Now);
+                    int rowsAffected = command.ExecuteNonQuery();
+                }*/
+                con.Close();
+                var form_paczki = new Form9(usr, uzytkownik, max_id++);
+                form_paczki.Show();
+            }
+            
             this.Close();
-            var form_paczki = new Form9(usr, uzytkownik);
-            form_paczki.Show();
+            
         }
     }
 }

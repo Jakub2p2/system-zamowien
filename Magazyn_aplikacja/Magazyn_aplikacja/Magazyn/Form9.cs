@@ -22,7 +22,7 @@ namespace Magazyn
         string uzyt = "";
         string uzytkownik = string.Empty;
         string produkt = string.Empty;
-        int id_produkt = 0;
+        int id_produkt = 0, id_paczki = 0;
         double price = 0, weigth = 0;
         string state = string.Empty, next_state = string.Empty;
         string dostawca = string.Empty, nr_listu = string.Empty, data_odb = string.Empty, data_dos = string.Empty;
@@ -33,7 +33,7 @@ namespace Magazyn
         private NpgsqlConnection con;
 
         public Form9(string usr, string uzyt_p, string produkt_p, int p_id, double p_price, double p_weigth, string state_p,
-            string dostawca_p, string nr_listu_p, string data_odb_p, string data_dos_p, double koszt_p, double? ubz_p)
+            string dostawca_p, string nr_listu_p, string data_odb_p, string data_dos_p, double koszt_p, double? ubz_p, int paczki_id_p)
         {
             InitializeComponent();
             uzyt = usr;
@@ -55,15 +55,16 @@ namespace Magazyn
             package_received_date_txt.Text = data_odb;
             delivery_cost_txt.Text = koszt_wys + " zł";
             insurance_txt.Text = ubz + " zł";
-
+            id_paczki = paczki_id_p;
         }
-        public Form9(string usr, string uzyt_p)
+        public Form9(string usr, string uzyt_p, int paczki_id_p)
         {
             InitializeComponent();
             uzyt = usr;
             uzytkownik = uzyt_p;
+            id_paczki = paczki_id_p;
         }
-        public Form9(string usr, string uzyt_p, string produkt_p, int p_id, double p_price, double p_weigth, string state_p)
+        public Form9(string usr, string uzyt_p, string produkt_p, int p_id, double p_price, double p_weigth, string state_p, int paczki_id_p)
         {
             InitializeComponent();
             uzyt = usr;
@@ -73,6 +74,7 @@ namespace Magazyn
             price = p_price;
             state = state_p;
             weigth = p_weigth;
+            id_paczki = paczki_id_p;
         }
         private void Connect_db() // Polaczenie z baza danych
         {
@@ -101,7 +103,7 @@ namespace Magazyn
             con.Close();
             return dt;
         }
-        private void change_state()
+        public void change_state()
         {
             if (state == "nowy")
             {
@@ -120,11 +122,21 @@ namespace Magazyn
             else if (state == "kompletacja")
             {
                 state_paczka.Value = 40;
-                next_state = "przygotowany_do_wys";
+                next_state = "Przygotowany do wysyłki";
                 next_button.Text = "Towar przygotowany do wysyłki";
+                using (var connection = new NpgsqlConnection(connect_string))
+                {
+                    connection.Open();
+                    using (var com = new NpgsqlCommand($"UPDATE paczki_produkty SET spakowany = @spakowany WHERE id = {id_paczki}", connection))
+                    {
+                        com.Parameters.AddWithValue("@spakowany", true);
+                        int rowsAffected = com.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
                 wstrzymaj_btn.Visible = true;
             }
-            else if (state == "przygotowany_do_wys")
+            else if (state == "Przygotowany do wysyłki")
             {
                 state_paczka.Value = 60;
                 next_state = "oczekiwanie";
@@ -142,6 +154,13 @@ namespace Magazyn
             {
                 state_paczka.Value = 100;
                 next_button.Visible = false;
+            }
+            else if(state == "wstrzymany")
+            {
+                wstrzymaj_btn.Visible = false;
+                next_button.Text = "Towar przygotowany do wysyłki";
+                next_state = "Przygotowany do wysyłki";
+                state_paczka.Value = 40;
             }
             if (state_paczka.Value >= 60) spakowany_bar.Value = 100;
         }
@@ -170,6 +189,8 @@ namespace Magazyn
                         madebytxt.Text = uzytkownik;
                         valuetxt.Text = price.ToString() + " zł";
                         weighttxt.Text = weigth.ToString() + " kg";
+                        statustxt.Text = state;
+                        id_paczkitxt.Text = "ID paczki: " + id_paczki.ToString();
                     }
                 }
             }
@@ -191,16 +212,17 @@ namespace Magazyn
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (state == "przygotowany_do_wys")
+            if (state == "Przygotowany do wysyłki")
             {
                 this.Close();
-                var choose_delivery = new Form11(uzyt, uzytkownik, produkt, id_produkt, price, weigth, state);
+                var choose_delivery = new Form11(uzyt, uzytkownik, produkt, id_produkt, price, weigth, state, id_paczki);
                 choose_delivery.Show();
             }
+
             using (NpgsqlConnection connection = new NpgsqlConnection(con_string))
             {
                 connection.Open();
-                if (!state.Equals("przygotowany_do_wys")) state = next_state;
+                if (!state.Equals("Przygotowany do wysyłki")) state = next_state;
                 string getclient_id = $"SELECT id FROM klienci WHERE nazwa = '{uzyt}';";
                 string getuser_id = $"SELECT id FROM uzytkownicy WHERE login = '{uzytkownik}';";
                 //string getid_query = "SELECT id FROM paczki WHERE klient_id = @klient_id AND created_by = @created_by;";
@@ -221,6 +243,7 @@ namespace Magazyn
                     command.ExecuteNonQuery();
                 }
                 change_state();
+                statustxt.Text = state;
             }
         }
 

@@ -22,10 +22,10 @@ namespace Magazyn
         string klient = string.Empty;
         string uzytkownik = string.Empty;
         string produkt = string.Empty;
-        int id_produkt = 0;
+        int id_produkt = 0, paczki_id = 0;
         double price = 0, weigth = 0;
         string state = string.Empty, next_state = string.Empty;
-        public Form11(string usr, string uzyt_p, string produkt_p, int p_id, double p_price, double p_weigth, string state_p)
+        public Form11(string usr, string uzyt_p, string produkt_p, int p_id, double p_price, double p_weigth, string state_p, int paczkid_p)
         {
             klient = usr;
             uzytkownik = uzyt_p;
@@ -34,6 +34,7 @@ namespace Magazyn
             price = p_price;
             state = state_p;
             weigth = p_weigth;
+            paczki_id = paczkid_p;
             InitializeComponent();
         }
 
@@ -114,7 +115,7 @@ namespace Magazyn
                 connection.Close();
                 this.Close();
                 var form_paczki = new Form9(klient, uzytkownik, produkt, id_produkt, cena, weigth, "oczekiwanie", name_dostawa, list, 
-                    data_odb.ToString("yyyy-MM-dd"), data_przew.ToString("yyyy-MM-dd"), cena, ubz);
+                    data_odb.ToString("yyyy-MM-dd"), data_przew.ToString("yyyy-MM-dd"), cena, ubz, paczki_id);
                 form_paczki.Show();
             }
         }

@@ -72,6 +72,7 @@
             tabela_produkt = new DataGridView();
             look_paczka = new Button();
             wstrzymaj_btn = new Button();
+            id_paczkitxt = new Label();
             ((System.ComponentModel.ISupportInitialize)tabela_produkt).BeginInit();
             SuspendLayout();
             // 
@@ -595,12 +596,25 @@
             wstrzymaj_btn.Visible = false;
             wstrzymaj_btn.Click += wstrzymaj_btn_Click;
             // 
+            // id_paczkitxt
+            // 
+            id_paczkitxt.AutoSize = true;
+            id_paczkitxt.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            id_paczkitxt.ForeColor = Color.RoyalBlue;
+            id_paczkitxt.Location = new Point(540, 14);
+            id_paczkitxt.Margin = new Padding(4, 0, 4, 0);
+            id_paczkitxt.Name = "id_paczkitxt";
+            id_paczkitxt.Size = new Size(148, 37);
+            id_paczkitxt.TabIndex = 46;
+            id_paczkitxt.Text = "ID paczki: ";
+            // 
             // Form9
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gainsboro;
             ClientSize = new Size(841, 555);
+            Controls.Add(id_paczkitxt);
             Controls.Add(wstrzymaj_btn);
             Controls.Add(look_paczka);
             Controls.Add(button2);
@@ -704,5 +718,6 @@
         private DataGridView tabela_produkt;
         private Button look_paczka;
         private Button wstrzymaj_btn;
+        private Label id_paczkitxt;
     }
 }

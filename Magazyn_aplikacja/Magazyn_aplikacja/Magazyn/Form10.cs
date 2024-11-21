@@ -17,6 +17,7 @@ namespace Magazyn
     {
         string klient = string.Empty;
         string uzytkownik = string.Empty;
+        int paczki_id = 0;
         public Form10(string p_klt, string uzyt_p)
         {
             klient = p_klt;
@@ -137,11 +138,27 @@ namespace Magazyn
                     command.Parameters.AddWithValue("@data_utworzenia", DateTime.Now);
                     int rowsAffected = command.ExecuteNonQuery();
                 }
+                string max_paczki_id = "SELECT MAX(id) FROM paczki;";
+                int max_id = 0;
+                using (var command = new NpgsqlCommand(max_paczki_id, connection)) using (var reader = command.ExecuteReader()) if(reader.Read()) max_id = reader.GetInt32(0);
+                
+                string insert_paczki_query = "INSERT INTO paczki_produkty(paczka_id, produkt_id, ilosc, created_at, spakowany) " +
+                    "VALUES(@paczka_id, @produkt_id, @ilosc, @created_at, @spakowany)";
+                
+                using (var command = new NpgsqlCommand(insert_paczki_query, connection))
+                {
+                    command.Parameters.AddWithValue("@paczka_id", max_id);
+                    command.Parameters.AddWithValue("@produkt_id", produkt_id);
+                    command.Parameters.AddWithValue("@ilosc", 1);
+                    command.Parameters.AddWithValue("@created_at", DateTime.Now);
+                    command.Parameters.AddWithValue("@spakowany", false);
+                    int rowsAffected = command.ExecuteNonQuery();
+                }
                 connection.Close();
-            }
-            var form_paczki = new Form9(klient, uzytkownik, selected_product, produkt_id, cena, waga, "nowy");
-            form_paczki.Show();
-            this.Close();
+                var form_paczki = new Form9(klient, uzytkownik, selected_product, produkt_id, cena, waga, "nowy", max_id);
+                form_paczki.Show();
+                this.Close();
+            } 
         }
     }
 }
